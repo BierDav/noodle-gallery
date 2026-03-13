@@ -15,11 +15,12 @@ class MaintenanceStatusResponseDto {
   MaintenanceStatusResponseDto({
     required this.action,
     required this.active,
-    this.error = const Optional.absent(),
-    this.progress = const Optional.absent(),
-    this.task = const Optional.absent(),
+    this.error,
+    this.progress,
+    this.task,
   });
 
+  /// Maintenance action
   MaintenanceAction action;
 
   bool active;
@@ -30,17 +31,7 @@ class MaintenanceStatusResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<String?> error;
-
-  /// Minimum value: -9007199254740991
-  /// Maximum value: 9007199254740991
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  Optional<int?> progress;
+  String? error;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -48,7 +39,15 @@ class MaintenanceStatusResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<String?> task;
+  num? progress;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? task;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MaintenanceStatusResponseDto &&
@@ -74,17 +73,20 @@ class MaintenanceStatusResponseDto {
     final json = <String, dynamic>{};
       json[r'action'] = this.action;
       json[r'active'] = this.active;
-    if (this.error.isPresent) {
-      final value = this.error.value;
-      json[r'error'] = value;
+    if (this.error != null) {
+      json[r'error'] = this.error;
+    } else {
+    //  json[r'error'] = null;
     }
-    if (this.progress.isPresent) {
-      final value = this.progress.value;
-      json[r'progress'] = value;
+    if (this.progress != null) {
+      json[r'progress'] = this.progress;
+    } else {
+    //  json[r'progress'] = null;
     }
-    if (this.task.isPresent) {
-      final value = this.task.value;
-      json[r'task'] = value;
+    if (this.task != null) {
+      json[r'task'] = this.task;
+    } else {
+    //  json[r'task'] = null;
     }
     return json;
   }
@@ -100,9 +102,11 @@ class MaintenanceStatusResponseDto {
       return MaintenanceStatusResponseDto(
         action: MaintenanceAction.fromJson(json[r'action'])!,
         active: mapValueOfType<bool>(json, r'active')!,
-        error: json.containsKey(r'error') ? Optional.present(mapValueOfType<String>(json, r'error')) : const Optional.absent(),
-        progress: json.containsKey(r'progress') ? Optional.present(json[r'progress'] == null ? null : int.parse('${json[r'progress']}')) : const Optional.absent(),
-        task: json.containsKey(r'task') ? Optional.present(mapValueOfType<String>(json, r'task')) : const Optional.absent(),
+        error: mapValueOfType<String>(json, r'error'),
+        progress: json[r'progress'] == null
+            ? null
+            : num.parse('${json[r'progress']}'),
+        task: mapValueOfType<String>(json, r'task'),
       );
     }
     return null;

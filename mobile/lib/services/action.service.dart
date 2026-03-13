@@ -20,6 +20,7 @@ import 'package:immich_mobile/repositories/asset_api.repository.dart';
 import 'package:immich_mobile/repositories/asset_media.repository.dart';
 import 'package:immich_mobile/repositories/download.repository.dart';
 import 'package:immich_mobile/repositories/drift_album_api_repository.dart';
+import 'package:immich_mobile/repositories/shared_space_api.repository.dart';
 import 'package:immich_mobile/routing/router.dart';
 import 'package:immich_mobile/utils/timezone.dart';
 import 'package:immich_mobile/widgets/common/date_time_picker.dart';
@@ -38,6 +39,7 @@ final actionServiceProvider = Provider<ActionService>(
     ref.watch(assetMediaRepositoryProvider),
     ref.watch(downloadRepositoryProvider),
     ref.watch(tagServiceProvider),
+    ref.watch(sharedSpaceApiRepositoryProvider),
   ),
 );
 
@@ -51,6 +53,7 @@ class ActionService {
   final AssetMediaRepository _assetMediaRepository;
   final DownloadRepository _downloadRepository;
   final TagService _tagService;
+  final SharedSpaceApiRepository _sharedSpaceApiRepository;
 
   const ActionService(
     this._assetApiRepository,
@@ -62,6 +65,7 @@ class ActionService {
     this._assetMediaRepository,
     this._downloadRepository,
     this._tagService,
+    this._sharedSpaceApiRepository,
   );
 
   Future<void> shareLink(List<String> remoteIds, BuildContext context) async {
@@ -230,6 +234,11 @@ class ActionService {
       await _remoteAlbumRepository.removeAssets(albumId, result.removed);
     }
     return result.removed.length;
+  }
+
+  Future<int> removeFromSpace(List<String> remoteIds, String spaceId) async {
+    await _sharedSpaceApiRepository.removeAssets(spaceId, remoteIds);
+    return remoteIds.length;
   }
 
   Future<bool> updateDescription(String assetId, String description) async {

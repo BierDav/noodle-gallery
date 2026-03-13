@@ -13,9 +13,9 @@ part of openapi.api;
 class SessionCreateDto {
   /// Returns a new [SessionCreateDto] instance.
   SessionCreateDto({
-    this.deviceOS = const Optional.absent(),
-    this.deviceType = const Optional.absent(),
-    this.duration = const Optional.absent(),
+    this.deviceOS,
+    this.deviceType,
+    this.duration,
   });
 
   /// Device OS
@@ -25,7 +25,7 @@ class SessionCreateDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<String?> deviceOS;
+  String? deviceOS;
 
   /// Device type
   ///
@@ -34,19 +34,18 @@ class SessionCreateDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<String?> deviceType;
+  String? deviceType;
 
   /// Session duration in seconds
   ///
   /// Minimum value: 1
-  /// Maximum value: 9007199254740991
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
   /// does not include a default value (using the "default:" property), however, the generated
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<int?> duration;
+  num? duration;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SessionCreateDto &&
@@ -66,17 +65,20 @@ class SessionCreateDto {
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.deviceOS.isPresent) {
-      final value = this.deviceOS.value;
-      json[r'deviceOS'] = value;
+    if (this.deviceOS != null) {
+      json[r'deviceOS'] = this.deviceOS;
+    } else {
+    //  json[r'deviceOS'] = null;
     }
-    if (this.deviceType.isPresent) {
-      final value = this.deviceType.value;
-      json[r'deviceType'] = value;
+    if (this.deviceType != null) {
+      json[r'deviceType'] = this.deviceType;
+    } else {
+    //  json[r'deviceType'] = null;
     }
-    if (this.duration.isPresent) {
-      final value = this.duration.value;
-      json[r'duration'] = value;
+    if (this.duration != null) {
+      json[r'duration'] = this.duration;
+    } else {
+    //  json[r'duration'] = null;
     }
     return json;
   }
@@ -90,9 +92,11 @@ class SessionCreateDto {
       final json = value.cast<String, dynamic>();
 
       return SessionCreateDto(
-        deviceOS: json.containsKey(r'deviceOS') ? Optional.present(mapValueOfType<String>(json, r'deviceOS')) : const Optional.absent(),
-        deviceType: json.containsKey(r'deviceType') ? Optional.present(mapValueOfType<String>(json, r'deviceType')) : const Optional.absent(),
-        duration: json.containsKey(r'duration') ? Optional.present(json[r'duration'] == null ? null : int.parse('${json[r'duration']}')) : const Optional.absent(),
+        deviceOS: mapValueOfType<String>(json, r'deviceOS'),
+        deviceType: mapValueOfType<String>(json, r'deviceType'),
+        duration: json[r'duration'] == null
+            ? null
+            : num.parse('${json[r'duration']}'),
       );
     }
     return null;

@@ -14,13 +14,15 @@ class PersonResponseDto {
   /// Returns a new [PersonResponseDto] instance.
   PersonResponseDto({
     required this.birthDate,
-    this.color = const Optional.absent(),
+    this.color,
     required this.id,
-    this.isFavorite = const Optional.absent(),
+    this.isFavorite,
     required this.isHidden,
     required this.name,
+    this.species,
     required this.thumbnailPath,
-    this.updatedAt = const Optional.absent(),
+    this.type = 'person',
+    this.updatedAt,
   });
 
   /// Person date of birth
@@ -33,7 +35,7 @@ class PersonResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<String?> color;
+  String? color;
 
   /// Person ID
   String id;
@@ -45,7 +47,7 @@ class PersonResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<bool?> isFavorite;
+  bool? isFavorite;
 
   /// Is hidden
   bool isHidden;
@@ -53,8 +55,14 @@ class PersonResponseDto {
   /// Person name
   String name;
 
+  /// Pet species (e.g. dog, cat)
+  String? species;
+
   /// Thumbnail path
   String thumbnailPath;
+
+  /// Entity type (person or pet)
+  String type;
 
   /// Last update date
   ///
@@ -63,7 +71,7 @@ class PersonResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<DateTime?> updatedAt;
+  DateTime? updatedAt;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PersonResponseDto &&
@@ -73,7 +81,9 @@ class PersonResponseDto {
     other.isFavorite == isFavorite &&
     other.isHidden == isHidden &&
     other.name == name &&
+    other.species == species &&
     other.thumbnailPath == thumbnailPath &&
+    other.type == type &&
     other.updatedAt == updatedAt;
 
   @override
@@ -85,34 +95,45 @@ class PersonResponseDto {
     (isFavorite == null ? 0 : isFavorite!.hashCode) +
     (isHidden.hashCode) +
     (name.hashCode) +
+    (species == null ? 0 : species!.hashCode) +
     (thumbnailPath.hashCode) +
+    (type.hashCode) +
     (updatedAt == null ? 0 : updatedAt!.hashCode);
 
   @override
-  String toString() => 'PersonResponseDto[birthDate=$birthDate, color=$color, id=$id, isFavorite=$isFavorite, isHidden=$isHidden, name=$name, thumbnailPath=$thumbnailPath, updatedAt=$updatedAt]';
+  String toString() => 'PersonResponseDto[birthDate=$birthDate, color=$color, id=$id, isFavorite=$isFavorite, isHidden=$isHidden, name=$name, species=$species, thumbnailPath=$thumbnailPath, type=$type, updatedAt=$updatedAt]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
     if (this.birthDate != null) {
       json[r'birthDate'] = _dateFormatter.format(this.birthDate!.toUtc());
     } else {
-      json[r'birthDate'] = null;
+    //  json[r'birthDate'] = null;
     }
-    if (this.color.isPresent) {
-      final value = this.color.value;
-      json[r'color'] = value;
+    if (this.color != null) {
+      json[r'color'] = this.color;
+    } else {
+    //  json[r'color'] = null;
     }
       json[r'id'] = this.id;
-    if (this.isFavorite.isPresent) {
-      final value = this.isFavorite.value;
-      json[r'isFavorite'] = value;
+    if (this.isFavorite != null) {
+      json[r'isFavorite'] = this.isFavorite;
+    } else {
+    //  json[r'isFavorite'] = null;
     }
       json[r'isHidden'] = this.isHidden;
       json[r'name'] = this.name;
+    if (this.species != null) {
+      json[r'species'] = this.species;
+    } else {
+    //  json[r'species'] = null;
+    }
       json[r'thumbnailPath'] = this.thumbnailPath;
-    if (this.updatedAt.isPresent) {
-      final value = this.updatedAt.value;
-      json[r'updatedAt'] = value == null ? null : value.toUtc().toIso8601String();
+      json[r'type'] = this.type;
+    if (this.updatedAt != null) {
+      json[r'updatedAt'] = this.updatedAt!.toUtc().toIso8601String();
+    } else {
+    //  json[r'updatedAt'] = null;
     }
     return json;
   }
@@ -127,13 +148,15 @@ class PersonResponseDto {
 
       return PersonResponseDto(
         birthDate: mapDateTime(json, r'birthDate', r''),
-        color: json.containsKey(r'color') ? Optional.present(mapValueOfType<String>(json, r'color')) : const Optional.absent(),
+        color: mapValueOfType<String>(json, r'color'),
         id: mapValueOfType<String>(json, r'id')!,
-        isFavorite: json.containsKey(r'isFavorite') ? Optional.present(mapValueOfType<bool>(json, r'isFavorite')) : const Optional.absent(),
+        isFavorite: mapValueOfType<bool>(json, r'isFavorite'),
         isHidden: mapValueOfType<bool>(json, r'isHidden')!,
         name: mapValueOfType<String>(json, r'name')!,
+        species: mapValueOfType<String>(json, r'species'),
         thumbnailPath: mapValueOfType<String>(json, r'thumbnailPath')!,
-        updatedAt: json.containsKey(r'updatedAt') ? Optional.present(mapDateTime(json, r'updatedAt', r'')) : const Optional.absent(),
+        type: mapValueOfType<String>(json, r'type')!,
+        updatedAt: mapDateTime(json, r'updatedAt', r''),
       );
     }
     return null;
@@ -186,6 +209,7 @@ class PersonResponseDto {
     'isHidden',
     'name',
     'thumbnailPath',
+    'type',
   };
 }
 
