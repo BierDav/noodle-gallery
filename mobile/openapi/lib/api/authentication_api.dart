@@ -25,7 +25,7 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [ChangePasswordDto] changePasswordDto (required):
-  Future<Response> changePasswordWithHttpInfo(ChangePasswordDto changePasswordDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> changePasswordWithHttpInfo(ChangePasswordDto changePasswordDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/change-password';
 
@@ -47,7 +47,6 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -58,8 +57,8 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [ChangePasswordDto] changePasswordDto (required):
-  Future<UserAdminResponseDto?> changePassword(ChangePasswordDto changePasswordDto, { Future<void>? abortTrigger, }) async {
-    final response = await changePasswordWithHttpInfo(changePasswordDto, abortTrigger: abortTrigger,);
+  Future<UserAdminResponseDto?> changePassword(ChangePasswordDto changePasswordDto,) async {
+    final response = await changePasswordWithHttpInfo(changePasswordDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -82,7 +81,7 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [PinCodeChangeDto] pinCodeChangeDto (required):
-  Future<Response> changePinCodeWithHttpInfo(PinCodeChangeDto pinCodeChangeDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> changePinCodeWithHttpInfo(PinCodeChangeDto pinCodeChangeDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/pin-code';
 
@@ -104,7 +103,6 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -115,11 +113,59 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [PinCodeChangeDto] pinCodeChangeDto (required):
-  Future<void> changePinCode(PinCodeChangeDto pinCodeChangeDto, { Future<void>? abortTrigger, }) async {
-    final response = await changePinCodeWithHttpInfo(pinCodeChangeDto, abortTrigger: abortTrigger,);
+  Future<void> changePinCode(PinCodeChangeDto pinCodeChangeDto,) async {
+    final response = await changePinCodeWithHttpInfo(pinCodeChangeDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Demo login
+  ///
+  /// Login as the demo user. Only available when demo mode is enabled.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> demoLoginWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final apiPath = r'/auth/demo-login';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      apiPath,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Demo login
+  ///
+  /// Login as the demo user. Only available when demo mode is enabled.
+  Future<LoginResponseDto?> demoLogin() async {
+    final response = await demoLoginWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginResponseDto',) as LoginResponseDto;
+    
+    }
+    return null;
   }
 
   /// Finish OAuth
@@ -131,7 +177,7 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [OAuthCallbackDto] oAuthCallbackDto (required):
-  Future<Response> finishOAuthWithHttpInfo(OAuthCallbackDto oAuthCallbackDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> finishOAuthWithHttpInfo(OAuthCallbackDto oAuthCallbackDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/oauth/callback';
 
@@ -153,7 +199,6 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -164,8 +209,8 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [OAuthCallbackDto] oAuthCallbackDto (required):
-  Future<LoginResponseDto?> finishOAuth(OAuthCallbackDto oAuthCallbackDto, { Future<void>? abortTrigger, }) async {
-    final response = await finishOAuthWithHttpInfo(oAuthCallbackDto, abortTrigger: abortTrigger,);
+  Future<LoginResponseDto?> finishOAuth(OAuthCallbackDto oAuthCallbackDto,) async {
+    final response = await finishOAuthWithHttpInfo(oAuthCallbackDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -184,7 +229,7 @@ class AuthenticationApi {
   /// Get information about the current session, including whether the user has a password, and if the session can access locked assets.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAuthStatusWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getAuthStatusWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/status';
 
@@ -206,15 +251,14 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve auth status
   ///
   /// Get information about the current session, including whether the user has a password, and if the session can access locked assets.
-  Future<AuthStatusResponseDto?> getAuthStatus({ Future<void>? abortTrigger, }) async {
-    final response = await getAuthStatusWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<AuthStatusResponseDto?> getAuthStatus() async {
+    final response = await getAuthStatusWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -237,7 +281,7 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [OAuthCallbackDto] oAuthCallbackDto (required):
-  Future<Response> linkOAuthAccountWithHttpInfo(OAuthCallbackDto oAuthCallbackDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> linkOAuthAccountWithHttpInfo(OAuthCallbackDto oAuthCallbackDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/oauth/link';
 
@@ -259,7 +303,6 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -270,8 +313,8 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [OAuthCallbackDto] oAuthCallbackDto (required):
-  Future<UserAdminResponseDto?> linkOAuthAccount(OAuthCallbackDto oAuthCallbackDto, { Future<void>? abortTrigger, }) async {
-    final response = await linkOAuthAccountWithHttpInfo(oAuthCallbackDto, abortTrigger: abortTrigger,);
+  Future<UserAdminResponseDto?> linkOAuthAccount(OAuthCallbackDto oAuthCallbackDto,) async {
+    final response = await linkOAuthAccountWithHttpInfo(oAuthCallbackDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -290,7 +333,7 @@ class AuthenticationApi {
   /// Remove elevated access to locked assets from the current session.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> lockAuthSessionWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> lockAuthSessionWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/session/lock';
 
@@ -312,15 +355,14 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Lock auth session
   ///
   /// Remove elevated access to locked assets from the current session.
-  Future<void> lockAuthSession({ Future<void>? abortTrigger, }) async {
-    final response = await lockAuthSessionWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<void> lockAuthSession() async {
+    final response = await lockAuthSessionWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -335,7 +377,7 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [LoginCredentialDto] loginCredentialDto (required):
-  Future<Response> loginWithHttpInfo(LoginCredentialDto loginCredentialDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> loginWithHttpInfo(LoginCredentialDto loginCredentialDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/login';
 
@@ -357,7 +399,6 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -368,8 +409,8 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [LoginCredentialDto] loginCredentialDto (required):
-  Future<LoginResponseDto?> login(LoginCredentialDto loginCredentialDto, { Future<void>? abortTrigger, }) async {
-    final response = await loginWithHttpInfo(loginCredentialDto, abortTrigger: abortTrigger,);
+  Future<LoginResponseDto?> login(LoginCredentialDto loginCredentialDto,) async {
+    final response = await loginWithHttpInfo(loginCredentialDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -388,7 +429,7 @@ class AuthenticationApi {
   /// Logout the current user and invalidate the session token.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> logoutWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> logoutWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/logout';
 
@@ -410,15 +451,14 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Logout
   ///
   /// Logout the current user and invalidate the session token.
-  Future<LogoutResponseDto?> logout({ Future<void>? abortTrigger, }) async {
-    final response = await logoutWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<LogoutResponseDto?> logout() async {
+    final response = await logoutWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -432,66 +472,12 @@ class AuthenticationApi {
     return null;
   }
 
-  /// Backchannel OAuth logout
-  ///
-  /// Logout the OAuth account and invalidate the session specified by the sid claim or all sessions if the sid claim is not present.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] logoutToken (required):
-  ///   OAuth logout token
-  Future<Response> logoutOAuthWithHttpInfo(String logoutToken, { Future<void>? abortTrigger, }) async {
-    // ignore: prefer_const_declarations
-    final apiPath = r'/oauth/backchannel-logout';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/x-www-form-urlencoded'];
-
-    if (logoutToken != null) {
-      formParams[r'logout_token'] = parameterToString(logoutToken);
-    }
-
-    return apiClient.invokeAPI(
-      apiPath,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
-    );
-  }
-
-  /// Backchannel OAuth logout
-  ///
-  /// Logout the OAuth account and invalidate the session specified by the sid claim or all sessions if the sid claim is not present.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] logoutToken (required):
-  ///   OAuth logout token
-  Future<void> logoutOAuth(String logoutToken, { Future<void>? abortTrigger, }) async {
-    final response = await logoutOAuthWithHttpInfo(logoutToken, abortTrigger: abortTrigger,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
   /// Redirect OAuth to mobile
   ///
   /// Requests to this URL are automatically forwarded to the mobile app, and is used in some cases for OAuth redirecting.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> redirectOAuthToMobileWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> redirectOAuthToMobileWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/oauth/mobile-redirect';
 
@@ -513,15 +499,14 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Redirect OAuth to mobile
   ///
   /// Requests to this URL are automatically forwarded to the mobile app, and is used in some cases for OAuth redirecting.
-  Future<void> redirectOAuthToMobile({ Future<void>? abortTrigger, }) async {
-    final response = await redirectOAuthToMobileWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<void> redirectOAuthToMobile() async {
+    final response = await redirectOAuthToMobileWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -536,7 +521,7 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [PinCodeResetDto] pinCodeResetDto (required):
-  Future<Response> resetPinCodeWithHttpInfo(PinCodeResetDto pinCodeResetDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> resetPinCodeWithHttpInfo(PinCodeResetDto pinCodeResetDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/pin-code';
 
@@ -558,7 +543,6 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -569,8 +553,8 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [PinCodeResetDto] pinCodeResetDto (required):
-  Future<void> resetPinCode(PinCodeResetDto pinCodeResetDto, { Future<void>? abortTrigger, }) async {
-    final response = await resetPinCodeWithHttpInfo(pinCodeResetDto, abortTrigger: abortTrigger,);
+  Future<void> resetPinCode(PinCodeResetDto pinCodeResetDto,) async {
+    final response = await resetPinCodeWithHttpInfo(pinCodeResetDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -585,7 +569,7 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [PinCodeSetupDto] pinCodeSetupDto (required):
-  Future<Response> setupPinCodeWithHttpInfo(PinCodeSetupDto pinCodeSetupDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> setupPinCodeWithHttpInfo(PinCodeSetupDto pinCodeSetupDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/pin-code';
 
@@ -607,7 +591,6 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -618,8 +601,8 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [PinCodeSetupDto] pinCodeSetupDto (required):
-  Future<void> setupPinCode(PinCodeSetupDto pinCodeSetupDto, { Future<void>? abortTrigger, }) async {
-    final response = await setupPinCodeWithHttpInfo(pinCodeSetupDto, abortTrigger: abortTrigger,);
+  Future<void> setupPinCode(PinCodeSetupDto pinCodeSetupDto,) async {
+    final response = await setupPinCodeWithHttpInfo(pinCodeSetupDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -634,7 +617,7 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [SignUpDto] signUpDto (required):
-  Future<Response> signUpAdminWithHttpInfo(SignUpDto signUpDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> signUpAdminWithHttpInfo(SignUpDto signUpDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/admin-sign-up';
 
@@ -656,7 +639,6 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -667,8 +649,8 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [SignUpDto] signUpDto (required):
-  Future<UserAdminResponseDto?> signUpAdmin(SignUpDto signUpDto, { Future<void>? abortTrigger, }) async {
-    final response = await signUpAdminWithHttpInfo(signUpDto, abortTrigger: abortTrigger,);
+  Future<UserAdminResponseDto?> signUpAdmin(SignUpDto signUpDto,) async {
+    final response = await signUpAdminWithHttpInfo(signUpDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -691,7 +673,7 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [OAuthConfigDto] oAuthConfigDto (required):
-  Future<Response> startOAuthWithHttpInfo(OAuthConfigDto oAuthConfigDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> startOAuthWithHttpInfo(OAuthConfigDto oAuthConfigDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/oauth/authorize';
 
@@ -713,7 +695,6 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -724,8 +705,8 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [OAuthConfigDto] oAuthConfigDto (required):
-  Future<OAuthAuthorizeResponseDto?> startOAuth(OAuthConfigDto oAuthConfigDto, { Future<void>? abortTrigger, }) async {
-    final response = await startOAuthWithHttpInfo(oAuthConfigDto, abortTrigger: abortTrigger,);
+  Future<OAuthAuthorizeResponseDto?> startOAuth(OAuthConfigDto oAuthConfigDto,) async {
+    final response = await startOAuthWithHttpInfo(oAuthConfigDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -744,7 +725,7 @@ class AuthenticationApi {
   /// Unlink the OAuth account from the authenticated user.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> unlinkOAuthAccountWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> unlinkOAuthAccountWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/oauth/unlink';
 
@@ -766,15 +747,14 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Unlink OAuth account
   ///
   /// Unlink the OAuth account from the authenticated user.
-  Future<UserAdminResponseDto?> unlinkOAuthAccount({ Future<void>? abortTrigger, }) async {
-    final response = await unlinkOAuthAccountWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<UserAdminResponseDto?> unlinkOAuthAccount() async {
+    final response = await unlinkOAuthAccountWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -797,7 +777,7 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [SessionUnlockDto] sessionUnlockDto (required):
-  Future<Response> unlockAuthSessionWithHttpInfo(SessionUnlockDto sessionUnlockDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> unlockAuthSessionWithHttpInfo(SessionUnlockDto sessionUnlockDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/session/unlock';
 
@@ -819,7 +799,6 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -830,8 +809,8 @@ class AuthenticationApi {
   /// Parameters:
   ///
   /// * [SessionUnlockDto] sessionUnlockDto (required):
-  Future<void> unlockAuthSession(SessionUnlockDto sessionUnlockDto, { Future<void>? abortTrigger, }) async {
-    final response = await unlockAuthSessionWithHttpInfo(sessionUnlockDto, abortTrigger: abortTrigger,);
+  Future<void> unlockAuthSession(SessionUnlockDto sessionUnlockDto,) async {
+    final response = await unlockAuthSessionWithHttpInfo(sessionUnlockDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -842,7 +821,7 @@ class AuthenticationApi {
   /// Validate the current authorization method is still valid.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> validateAccessTokenWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> validateAccessTokenWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/auth/validateToken';
 
@@ -864,15 +843,14 @@ class AuthenticationApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Validate access token
   ///
   /// Validate the current authorization method is still valid.
-  Future<ValidateAccessTokenResponseDto?> validateAccessToken({ Future<void>? abortTrigger, }) async {
-    final response = await validateAccessTokenWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ValidateAccessTokenResponseDto?> validateAccessToken() async {
+    final response = await validateAccessTokenWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
