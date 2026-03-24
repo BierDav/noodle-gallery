@@ -285,6 +285,7 @@ export type SharedSpace = {
   color: string | null;
   thumbnailCropY: number | null;
   faceRecognitionEnabled: boolean;
+  petsEnabled: boolean;
   lastActivityAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -324,6 +325,7 @@ export type SharedSpacePerson = {
   representativeFaceId: string | null;
   thumbnailPath: string;
   isHidden: boolean;
+  type: string;
   birthDate: string | null;
   createdAt: Date;
   updatedAt: Date;
