@@ -13,10 +13,11 @@ part of openapi.api;
 class DownloadInfoDto {
   /// Returns a new [DownloadInfoDto] instance.
   DownloadInfoDto({
-    this.albumId = const Optional.absent(),
-    this.archiveSize = const Optional.absent(),
-    this.assetIds = const Optional.present(const []),
-    this.userId = const Optional.absent(),
+    this.albumId,
+    this.archiveSize,
+    this.assetIds = const [],
+    this.spaceId,
+    this.userId,
   });
 
   /// Album ID to download
@@ -26,22 +27,30 @@ class DownloadInfoDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<String?> albumId;
+  String? albumId;
 
   /// Archive size limit in bytes
   ///
   /// Minimum value: 1
-  /// Maximum value: 9007199254740991
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
   /// does not include a default value (using the "default:" property), however, the generated
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<int?> archiveSize;
+  int? archiveSize;
 
   /// Asset IDs to download
-  Optional<List<String>?> assetIds;
+  List<String> assetIds;
+
+  /// Shared space ID to download all assets from
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? spaceId;
 
   /// User ID to download assets from
   ///
@@ -50,13 +59,14 @@ class DownloadInfoDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  Optional<String?> userId;
+  String? userId;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is DownloadInfoDto &&
     other.albumId == albumId &&
     other.archiveSize == archiveSize &&
     _deepEquality.equals(other.assetIds, assetIds) &&
+    other.spaceId == spaceId &&
     other.userId == userId;
 
   @override
@@ -65,28 +75,34 @@ class DownloadInfoDto {
     (albumId == null ? 0 : albumId!.hashCode) +
     (archiveSize == null ? 0 : archiveSize!.hashCode) +
     (assetIds.hashCode) +
+    (spaceId == null ? 0 : spaceId!.hashCode) +
     (userId == null ? 0 : userId!.hashCode);
 
   @override
-  String toString() => 'DownloadInfoDto[albumId=$albumId, archiveSize=$archiveSize, assetIds=$assetIds, userId=$userId]';
+  String toString() => 'DownloadInfoDto[albumId=$albumId, archiveSize=$archiveSize, assetIds=$assetIds, spaceId=$spaceId, userId=$userId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.albumId.isPresent) {
-      final value = this.albumId.value;
-      json[r'albumId'] = value;
+    if (this.albumId != null) {
+      json[r'albumId'] = this.albumId;
+    } else {
+    //  json[r'albumId'] = null;
     }
-    if (this.archiveSize.isPresent) {
-      final value = this.archiveSize.value;
-      json[r'archiveSize'] = value;
+    if (this.archiveSize != null) {
+      json[r'archiveSize'] = this.archiveSize;
+    } else {
+    //  json[r'archiveSize'] = null;
     }
-    if (this.assetIds.isPresent) {
-      final value = this.assetIds.value;
-      json[r'assetIds'] = value;
+      json[r'assetIds'] = this.assetIds;
+    if (this.spaceId != null) {
+      json[r'spaceId'] = this.spaceId;
+    } else {
+    //  json[r'spaceId'] = null;
     }
-    if (this.userId.isPresent) {
-      final value = this.userId.value;
-      json[r'userId'] = value;
+    if (this.userId != null) {
+      json[r'userId'] = this.userId;
+    } else {
+    //  json[r'userId'] = null;
     }
     return json;
   }
@@ -100,12 +116,13 @@ class DownloadInfoDto {
       final json = value.cast<String, dynamic>();
 
       return DownloadInfoDto(
-        albumId: json.containsKey(r'albumId') ? Optional.present(mapValueOfType<String>(json, r'albumId')) : const Optional.absent(),
-        archiveSize: json.containsKey(r'archiveSize') ? Optional.present(json[r'archiveSize'] == null ? null : int.parse('${json[r'archiveSize']}')) : const Optional.absent(),
-        assetIds: json.containsKey(r'assetIds') ? Optional.present(json[r'assetIds'] is Iterable
+        albumId: mapValueOfType<String>(json, r'albumId'),
+        archiveSize: mapValueOfType<int>(json, r'archiveSize'),
+        assetIds: json[r'assetIds'] is Iterable
             ? (json[r'assetIds'] as Iterable).cast<String>().toList(growable: false)
-            : const []) : const Optional.absent(),
-        userId: json.containsKey(r'userId') ? Optional.present(mapValueOfType<String>(json, r'userId')) : const Optional.absent(),
+            : const [],
+        spaceId: mapValueOfType<String>(json, r'spaceId'),
+        userId: mapValueOfType<String>(json, r'userId'),
       );
     }
     return null;
