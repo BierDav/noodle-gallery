@@ -110,6 +110,7 @@ export interface SearchAlbumOptions {
 
 export interface SearchSpaceOptions {
   spaceId?: string;
+  spacePersonIds?: string[];
 }
 
 export interface SearchOrderOptions {
@@ -315,6 +316,7 @@ export class SearchRepository {
         withStacked: true,
         isFavorite: true,
         userIds: [DummyValue.UUID],
+        spacePersonIds: [DummyValue.UUID],
       },
     ],
   })
