@@ -11,30 +11,33 @@
 part of openapi.api;
 
 /// Type of edit action to perform
-enum AssetEditAction {
-  crop._(r'crop'),
-  rotate._(r'rotate'),
-  mirror._(r'mirror'),
-  ;
-
-  /// Instantiate a new enum with the provided value.
-  const AssetEditAction._(this._value);
+class AssetEditAction {
+  /// Instantiate a new enum with the provided [value].
+  const AssetEditAction._(this.value);
 
   /// The underlying value of this enum member.
-  final String _value;
+  final String value;
 
   @override
-  String toString() => _value;
+  String toString() => value;
 
-  /// Encodes this enum as a value suitable for JSON.
-  String toJson() => _value;
+  String toJson() => value;
 
-  /// Returns the instance of [AssetEditAction] that was successfully decoded
-  /// from the passed [value] on success, null otherwise.
+  static const crop = AssetEditAction._(r'crop');
+  static const rotate = AssetEditAction._(r'rotate');
+  static const mirror = AssetEditAction._(r'mirror');
+  static const trim = AssetEditAction._(r'trim');
+
+  /// List of all possible values in this [enum][AssetEditAction].
+  static const values = <AssetEditAction>[
+    crop,
+    rotate,
+    mirror,
+    trim,
+  ];
+
   static AssetEditAction? fromJson(dynamic value) => AssetEditActionTypeTransformer().decode(value);
 
-  /// Returns a [List] containing instances of [AssetEditAction]
-  /// that were successfully decoded from the passed [JSON][json].
   static List<AssetEditAction> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <AssetEditAction>[];
     if (json is List && json.isNotEmpty) {
@@ -56,11 +59,9 @@ class AssetEditActionTypeTransformer {
 
   const AssetEditActionTypeTransformer._();
 
-  /// Encodes this enum as a value suitable for JSON.
-  String encode(AssetEditAction data) => data._value;
+  String encode(AssetEditAction data) => data.value;
 
-  /// Returns the instance of [AssetEditAction] that was successfully decoded
-  /// from the passed [data] value on success, null otherwise.
+  /// Decodes a [dynamic value][data] to a AssetEditAction.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -69,14 +70,12 @@ class AssetEditActionTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   AssetEditAction? decode(dynamic data, {bool allowNull = true}) {
-    if (data is AssetEditAction) {
-      return data;
-    }
     if (data != null) {
       switch (data) {
         case r'crop': return AssetEditAction.crop;
         case r'rotate': return AssetEditAction.rotate;
         case r'mirror': return AssetEditAction.mirror;
+        case r'trim': return AssetEditAction.trim;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');
@@ -86,7 +85,7 @@ class AssetEditActionTypeTransformer {
     return null;
   }
 
-  /// The singleton instance of this transformer.
+  /// Singleton [AssetEditActionTypeTransformer] instance.
   static AssetEditActionTypeTransformer? _instance;
 }
 
