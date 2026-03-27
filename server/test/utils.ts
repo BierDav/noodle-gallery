@@ -26,6 +26,8 @@ import { AppRepository } from 'src/repositories/app.repository';
 import { AssetEditRepository } from 'src/repositories/asset-edit.repository';
 import { AssetJobRepository } from 'src/repositories/asset-job.repository';
 import { AssetRepository } from 'src/repositories/asset.repository';
+import { AuditRepository } from 'src/repositories/audit.repository';
+import { ClassificationRepository } from 'src/repositories/classification.repository';
 import { ConfigRepository } from 'src/repositories/config.repository';
 import { CronRepository } from 'src/repositories/cron.repository';
 import { CryptoRepository } from 'src/repositories/crypto.repository';
@@ -232,6 +234,7 @@ export type ServiceOverrides = {
   asset: AssetRepository;
   assetEdit: AssetEditRepository;
   assetJob: AssetJobRepository;
+  classification: ClassificationRepository;
   config: ConfigRepository;
   cron: CronRepository;
   crypto: CryptoRepository;
@@ -319,6 +322,8 @@ export const getMocks = () => {
     assetEdit: automock(AssetEditRepository),
     assetJob: automock(AssetJobRepository),
     app: automock(AppRepository, { strict: false }),
+    // eslint-disable-next-line no-sparse-arrays
+    classification: automock(ClassificationRepository, { args: [, loggerMock], strict: false }),
     config: newConfigRepositoryMock(),
     database: databaseMock,
     downloadRepository: automock(DownloadRepository, { strict: false }),
@@ -392,6 +397,7 @@ export const newTestService = <T extends BaseService>(
     overrides.assetEdit || (mocks.assetEdit as As<AssetEditRepository>),
     overrides.assetJob || (mocks.assetJob as As<AssetJobRepository>),
     overrides.config || (mocks.config as As<ConfigRepository> as ConfigRepository),
+    overrides.classification || (mocks.classification as As<ClassificationRepository>),
     overrides.cron || (mocks.cron as As<CronRepository>),
     overrides.crypto || (mocks.crypto as As<CryptoRepository>),
     overrides.database || (mocks.database as As<DatabaseRepository>),

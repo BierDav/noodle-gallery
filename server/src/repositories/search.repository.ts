@@ -224,6 +224,16 @@ export interface GetCameraLensModelsOptions extends SpaceScopeOptions {
 export class SearchRepository {
   constructor(@InjectKysely() private db: Kysely<DB>) {}
 
+  @GenerateSql({ params: [DummyValue.UUID] })
+  getEmbedding(assetId: string) {
+    return this.db
+      .selectFrom('smart_search')
+      .select('embedding')
+      .where('assetId', '=', assetId)
+      .executeTakeFirst()
+      .then((row) => row?.embedding ?? null);
+  }
+
   @GenerateSql({
     params: [
       { page: 1, size: 100 },
@@ -339,13 +349,6 @@ export class SearchRepository {
         .execute();
       return paginationHelper(items, pagination.size);
     });
-  }
-
-  @GenerateSql({
-    params: [DummyValue.UUID],
-  })
-  async getEmbedding(assetId: string) {
-    return this.db.selectFrom('smart_search').selectAll().where('assetId', '=', assetId).executeTakeFirst();
   }
 
   @GenerateSql({
