@@ -257,6 +257,8 @@ class ApiClient {
           return AssetFaceUpdateDto.fromJson(value);
         case 'AssetFaceUpdateItem':
           return AssetFaceUpdateItem.fromJson(value);
+        case 'AssetFaceWithoutPersonResponseDto':
+          return AssetFaceWithoutPersonResponseDto.fromJson(value);
         case 'AssetIdErrorReason':
           return AssetIdErrorReasonTypeTransformer().decode(value);
         case 'AssetIdsDto':
@@ -337,6 +339,16 @@ class ApiClient {
           return CastUpdate.fromJson(value);
         case 'ChangePasswordDto':
           return ChangePasswordDto.fromJson(value);
+        case 'CheckExistingAssetsDto':
+          return CheckExistingAssetsDto.fromJson(value);
+        case 'CheckExistingAssetsResponseDto':
+          return CheckExistingAssetsResponseDto.fromJson(value);
+        case 'ClassificationCategoryCreateDto':
+          return ClassificationCategoryCreateDto.fromJson(value);
+        case 'ClassificationCategoryResponseDto':
+          return ClassificationCategoryResponseDto.fromJson(value);
+        case 'ClassificationCategoryUpdateDto':
+          return ClassificationCategoryUpdateDto.fromJson(value);
         case 'Colorspace':
           return ColorspaceTypeTransformer().decode(value);
         case 'ContributorCountResponseDto':
@@ -525,6 +537,10 @@ class ApiClient {
           return PersonStatisticsResponseDto.fromJson(value);
         case 'PersonUpdateDto':
           return PersonUpdateDto.fromJson(value);
+        case 'PersonWithFacesResponseDto':
+          return PersonWithFacesResponseDto.fromJson(value);
+        case 'PetDetectionConfig':
+          return PetDetectionConfig.fromJson(value);
         case 'PinCodeChangeDto':
           return PinCodeChangeDto.fromJson(value);
         case 'PinCodeResetDto':
@@ -657,6 +673,42 @@ class ApiClient {
           return SharedLinksResponse.fromJson(value);
         case 'SharedLinksUpdate':
           return SharedLinksUpdate.fromJson(value);
+        case 'SharedSpaceActivityResponseDto':
+          return SharedSpaceActivityResponseDto.fromJson(value);
+        case 'SharedSpaceAssetAddDto':
+          return SharedSpaceAssetAddDto.fromJson(value);
+        case 'SharedSpaceAssetRemoveDto':
+          return SharedSpaceAssetRemoveDto.fromJson(value);
+        case 'SharedSpaceCreateDto':
+          return SharedSpaceCreateDto.fromJson(value);
+        case 'SharedSpaceLibraryLinkDto':
+          return SharedSpaceLibraryLinkDto.fromJson(value);
+        case 'SharedSpaceLinkedLibraryDto':
+          return SharedSpaceLinkedLibraryDto.fromJson(value);
+        case 'SharedSpaceMemberCreateDto':
+          return SharedSpaceMemberCreateDto.fromJson(value);
+        case 'SharedSpaceMemberResponseDto':
+          return SharedSpaceMemberResponseDto.fromJson(value);
+        case 'SharedSpaceMemberTimelineDto':
+          return SharedSpaceMemberTimelineDto.fromJson(value);
+        case 'SharedSpaceMemberUpdateDto':
+          return SharedSpaceMemberUpdateDto.fromJson(value);
+        case 'SharedSpacePersonAliasDto':
+          return SharedSpacePersonAliasDto.fromJson(value);
+        case 'SharedSpacePersonMergeDto':
+          return SharedSpacePersonMergeDto.fromJson(value);
+        case 'SharedSpacePersonResponseDto':
+          return SharedSpacePersonResponseDto.fromJson(value);
+        case 'SharedSpacePersonUpdateDto':
+          return SharedSpacePersonUpdateDto.fromJson(value);
+        case 'SharedSpaceResponseDto':
+          return SharedSpaceResponseDto.fromJson(value);
+        case 'SharedSpaceResponseDtoLastContributor':
+          return SharedSpaceResponseDtoLastContributor.fromJson(value);
+        case 'SharedSpaceRole':
+          return SharedSpaceRoleTypeTransformer().decode(value);
+        case 'SharedSpaceUpdateDto':
+          return SharedSpaceUpdateDto.fromJson(value);
         case 'SignUpDto':
           return SignUpDto.fromJson(value);
         case 'SmartSearchDto':
@@ -673,6 +725,10 @@ class ApiClient {
           return StatisticsSearchDto.fromJson(value);
         case 'StorageFolder':
           return StorageFolderTypeTransformer().decode(value);
+        case 'StorageMigrationFileTypesDto':
+          return StorageMigrationFileTypesDto.fromJson(value);
+        case 'StorageMigrationStartDto':
+          return StorageMigrationStartDto.fromJson(value);
         case 'SyncAckDeleteDto':
           return SyncAckDeleteDto.fromJson(value);
         case 'SyncAckDto':
@@ -859,6 +915,8 @@ class ApiClient {
           return TranscodePolicyTypeTransformer().decode(value);
         case 'TrashResponseDto':
           return TrashResponseDto.fromJson(value);
+        case 'TrimParameters':
+          return TrimParameters.fromJson(value);
         case 'UpdateAlbumDto':
           return UpdateAlbumDto.fromJson(value);
         case 'UpdateAlbumUserDto':
@@ -879,6 +937,16 @@ class ApiClient {
           return UserAdminUpdateDto.fromJson(value);
         case 'UserAvatarColor':
           return UserAvatarColorTypeTransformer().decode(value);
+        case 'UserGroupCreateDto':
+          return UserGroupCreateDto.fromJson(value);
+        case 'UserGroupMemberResponseDto':
+          return UserGroupMemberResponseDto.fromJson(value);
+        case 'UserGroupMemberSetDto':
+          return UserGroupMemberSetDto.fromJson(value);
+        case 'UserGroupResponseDto':
+          return UserGroupResponseDto.fromJson(value);
+        case 'UserGroupUpdateDto':
+          return UserGroupUpdateDto.fromJson(value);
         case 'UserLicense':
           return UserLicense.fromJson(value);
         case 'UserMetadataKey':
