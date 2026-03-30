@@ -143,7 +143,7 @@ Class | Method | HTTP request | Description
 *ClassificationApi* | [**createCategory**](doc//ClassificationApi.md#createcategory) | **POST** /classification/categories | Create a classification category
 *ClassificationApi* | [**deleteCategory**](doc//ClassificationApi.md#deletecategory) | **DELETE** /classification/categories/{id} | Delete a classification category
 *ClassificationApi* | [**getCategories**](doc//ClassificationApi.md#getcategories) | **GET** /classification/categories | Get classification categories
-*ClassificationApi* | [**scanClassification**](doc//ClassificationApi.md#scanclassification) | **POST** /classification/categories/scan | Scan library for classification
+*ClassificationApi* | [**scanClassification**](doc//ClassificationApi.md#scanclassification) | **POST** /classification/categories/scan | Scan all libraries for classification
 *ClassificationApi* | [**updateCategory**](doc//ClassificationApi.md#updatecategory) | **PUT** /classification/categories/{id} | Update a classification category
 *DatabaseBackupsAdminApi* | [**deleteDatabaseBackup**](doc//DatabaseBackupsAdminApi.md#deletedatabasebackup) | **DELETE** /admin/database-backups | Delete database backup
 *DatabaseBackupsAdminApi* | [**downloadDatabaseBackup**](doc//DatabaseBackupsAdminApi.md#downloaddatabasebackup) | **GET** /admin/database-backups/{filename} | Download database backup
@@ -245,6 +245,7 @@ Class | Method | HTTP request | Description
 *SearchApi* | [**getAssetsByCity**](doc//SearchApi.md#getassetsbycity) | **GET** /search/cities | Retrieve assets by city
 *SearchApi* | [**getExploreData**](doc//SearchApi.md#getexploredata) | **GET** /search/explore | Retrieve explore data
 *SearchApi* | [**getSearchSuggestions**](doc//SearchApi.md#getsearchsuggestions) | **GET** /search/suggestions | Retrieve search suggestions
+*SearchApi* | [**getTagSuggestions**](doc//SearchApi.md#gettagsuggestions) | **GET** /search/suggestions/tags | Retrieve tag suggestions
 *SearchApi* | [**searchAssetStatistics**](doc//SearchApi.md#searchassetstatistics) | **POST** /search/statistics | Search asset statistics
 *SearchApi* | [**searchAssets**](doc//SearchApi.md#searchassets) | **POST** /search/metadata | Search assets by metadata
 *SearchApi* | [**searchLargeAssets**](doc//SearchApi.md#searchlargeassets) | **POST** /search/large-assets | Search large assets
@@ -744,6 +745,7 @@ Class | Method | HTTP request | Description
  - [TagBulkAssetsResponseDto](doc//TagBulkAssetsResponseDto.md)
  - [TagCreateDto](doc//TagCreateDto.md)
  - [TagResponseDto](doc//TagResponseDto.md)
+ - [TagSuggestionResponseDto](doc//TagSuggestionResponseDto.md)
  - [TagUpdateDto](doc//TagUpdateDto.md)
  - [TagUpsertDto](doc//TagUpsertDto.md)
  - [TagsResponse](doc//TagsResponse.md)
