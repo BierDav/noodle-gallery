@@ -216,6 +216,16 @@ export type SystemConfig = {
     loginPageMessage: string;
     publicUsers: boolean;
   };
+  classification: {
+    enabled: boolean;
+    categories: Array<{
+      name: string;
+      prompts: string[];
+      similarity: number;
+      action: 'tag' | 'tag_and_archive';
+      enabled: boolean;
+    }>;
+  };
   user: {
     deleteDelay: number;
   };
@@ -454,6 +464,10 @@ export const defaults = Object.freeze<SystemConfig>({
       albumInviteTemplate: '',
       albumUpdateTemplate: '',
     },
+  },
+  classification: {
+    enabled: true,
+    categories: [],
   },
   user: {
     deleteDelay: 7,

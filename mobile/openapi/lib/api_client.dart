@@ -343,12 +343,6 @@ class ApiClient {
           return CheckExistingAssetsDto.fromJson(value);
         case 'CheckExistingAssetsResponseDto':
           return CheckExistingAssetsResponseDto.fromJson(value);
-        case 'ClassificationCategoryCreateDto':
-          return ClassificationCategoryCreateDto.fromJson(value);
-        case 'ClassificationCategoryResponseDto':
-          return ClassificationCategoryResponseDto.fromJson(value);
-        case 'ClassificationCategoryUpdateDto':
-          return ClassificationCategoryUpdateDto.fromJson(value);
         case 'Colorspace':
           return ColorspaceTypeTransformer().decode(value);
         case 'ContributorCountResponseDto':
@@ -813,6 +807,10 @@ class ApiClient {
           return SyncUserV1.fromJson(value);
         case 'SystemConfigBackupsDto':
           return SystemConfigBackupsDto.fromJson(value);
+        case 'SystemConfigClassificationCategoryDto':
+          return SystemConfigClassificationCategoryDto.fromJson(value);
+        case 'SystemConfigClassificationDto':
+          return SystemConfigClassificationDto.fromJson(value);
         case 'SystemConfigDto':
           return SystemConfigDto.fromJson(value);
         case 'SystemConfigFFmpegDto':

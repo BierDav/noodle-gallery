@@ -25,7 +25,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetBulkUploadCheckDto] assetBulkUploadCheckDto (required):
-  Future<Response> checkBulkUploadWithHttpInfo(AssetBulkUploadCheckDto assetBulkUploadCheckDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> checkBulkUploadWithHttpInfo(AssetBulkUploadCheckDto assetBulkUploadCheckDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/bulk-upload-check';
 
@@ -47,7 +47,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -58,8 +57,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetBulkUploadCheckDto] assetBulkUploadCheckDto (required):
-  Future<AssetBulkUploadCheckResponseDto?> checkBulkUpload(AssetBulkUploadCheckDto assetBulkUploadCheckDto, { Future<void>? abortTrigger, }) async {
-    final response = await checkBulkUploadWithHttpInfo(assetBulkUploadCheckDto, abortTrigger: abortTrigger,);
+  Future<AssetBulkUploadCheckResponseDto?> checkBulkUpload(AssetBulkUploadCheckDto assetBulkUploadCheckDto,) async {
+    final response = await checkBulkUploadWithHttpInfo(assetBulkUploadCheckDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -82,7 +81,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetCopyDto] assetCopyDto (required):
-  Future<Response> copyAssetWithHttpInfo(AssetCopyDto assetCopyDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> copyAssetWithHttpInfo(AssetCopyDto assetCopyDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/copy';
 
@@ -104,7 +103,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -115,8 +113,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetCopyDto] assetCopyDto (required):
-  Future<void> copyAsset(AssetCopyDto assetCopyDto, { Future<void>? abortTrigger, }) async {
-    final response = await copyAssetWithHttpInfo(assetCopyDto, abortTrigger: abortTrigger,);
+  Future<void> copyAsset(AssetCopyDto assetCopyDto,) async {
+    final response = await copyAssetWithHttpInfo(assetCopyDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -135,7 +133,7 @@ class AssetsApi {
   ///
   /// * [String] key (required):
   ///   Metadata key
-  Future<Response> deleteAssetMetadataWithHttpInfo(String id, String key, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteAssetMetadataWithHttpInfo(String id, String key,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/metadata/{key}'
       .replaceAll('{id}', id)
@@ -159,7 +157,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -174,8 +171,8 @@ class AssetsApi {
   ///
   /// * [String] key (required):
   ///   Metadata key
-  Future<void> deleteAssetMetadata(String id, String key, { Future<void>? abortTrigger, }) async {
-    final response = await deleteAssetMetadataWithHttpInfo(id, key, abortTrigger: abortTrigger,);
+  Future<void> deleteAssetMetadata(String id, String key,) async {
+    final response = await deleteAssetMetadataWithHttpInfo(id, key,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -190,7 +187,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetBulkDeleteDto] assetBulkDeleteDto (required):
-  Future<Response> deleteAssetsWithHttpInfo(AssetBulkDeleteDto assetBulkDeleteDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteAssetsWithHttpInfo(AssetBulkDeleteDto assetBulkDeleteDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets';
 
@@ -212,7 +209,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -223,8 +219,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetBulkDeleteDto] assetBulkDeleteDto (required):
-  Future<void> deleteAssets(AssetBulkDeleteDto assetBulkDeleteDto, { Future<void>? abortTrigger, }) async {
-    final response = await deleteAssetsWithHttpInfo(assetBulkDeleteDto, abortTrigger: abortTrigger,);
+  Future<void> deleteAssets(AssetBulkDeleteDto assetBulkDeleteDto,) async {
+    final response = await deleteAssetsWithHttpInfo(assetBulkDeleteDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -239,7 +235,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetMetadataBulkDeleteDto] assetMetadataBulkDeleteDto (required):
-  Future<Response> deleteBulkAssetMetadataWithHttpInfo(AssetMetadataBulkDeleteDto assetMetadataBulkDeleteDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteBulkAssetMetadataWithHttpInfo(AssetMetadataBulkDeleteDto assetMetadataBulkDeleteDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/metadata';
 
@@ -261,7 +257,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -272,8 +267,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetMetadataBulkDeleteDto] assetMetadataBulkDeleteDto (required):
-  Future<void> deleteBulkAssetMetadata(AssetMetadataBulkDeleteDto assetMetadataBulkDeleteDto, { Future<void>? abortTrigger, }) async {
-    final response = await deleteBulkAssetMetadataWithHttpInfo(assetMetadataBulkDeleteDto, abortTrigger: abortTrigger,);
+  Future<void> deleteBulkAssetMetadata(AssetMetadataBulkDeleteDto assetMetadataBulkDeleteDto,) async {
+    final response = await deleteBulkAssetMetadataWithHttpInfo(assetMetadataBulkDeleteDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -295,7 +290,7 @@ class AssetsApi {
   /// * [String] key:
   ///
   /// * [String] slug:
-  Future<Response> downloadAssetWithHttpInfo(String id, { bool? edited, String? key, String? slug, Future<void>? abortTrigger, }) async {
+  Future<Response> downloadAssetWithHttpInfo(String id, { bool? edited, String? key, String? slug, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/original'
       .replaceAll('{id}', id);
@@ -328,7 +323,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -346,8 +340,8 @@ class AssetsApi {
   /// * [String] key:
   ///
   /// * [String] slug:
-  Future<MultipartFile?> downloadAsset(String id, { bool? edited, String? key, String? slug, Future<void>? abortTrigger, }) async {
-    final response = await downloadAssetWithHttpInfo(id, edited: edited, key: key, slug: slug, abortTrigger: abortTrigger,);
+  Future<MultipartFile?> downloadAsset(String id, { bool? edited, String? key, String? slug, }) async {
+    final response = await downloadAssetWithHttpInfo(id,  edited: edited, key: key, slug: slug, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -372,7 +366,7 @@ class AssetsApi {
   /// * [String] id (required):
   ///
   /// * [AssetEditsCreateDto] assetEditsCreateDto (required):
-  Future<Response> editAssetWithHttpInfo(String id, AssetEditsCreateDto assetEditsCreateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> editAssetWithHttpInfo(String id, AssetEditsCreateDto assetEditsCreateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/edits'
       .replaceAll('{id}', id);
@@ -395,7 +389,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -408,8 +401,8 @@ class AssetsApi {
   /// * [String] id (required):
   ///
   /// * [AssetEditsCreateDto] assetEditsCreateDto (required):
-  Future<AssetEditsResponseDto?> editAsset(String id, AssetEditsCreateDto assetEditsCreateDto, { Future<void>? abortTrigger, }) async {
-    final response = await editAssetWithHttpInfo(id, assetEditsCreateDto, abortTrigger: abortTrigger,);
+  Future<AssetEditsResponseDto?> editAsset(String id, AssetEditsCreateDto assetEditsCreateDto,) async {
+    final response = await editAssetWithHttpInfo(id, assetEditsCreateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -423,76 +416,6 @@ class AssetsApi {
     return null;
   }
 
-  /// End HLS streaming session
-  ///
-  /// Releases server resources for the streaming session.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] id (required):
-  ///
-  /// * [String] sessionId (required):
-  ///
-  /// * [String] key:
-  ///
-  /// * [String] slug:
-  Future<Response> endSessionWithHttpInfo(String id, String sessionId, { String? key, String? slug, Future<void>? abortTrigger, }) async {
-    // ignore: prefer_const_declarations
-    final apiPath = r'/assets/{id}/video/stream/{sessionId}'
-      .replaceAll('{id}', id)
-      .replaceAll('{sessionId}', sessionId);
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    if (key != null) {
-      queryParams.addAll(_queryParams('', 'key', key));
-    }
-    if (slug != null) {
-      queryParams.addAll(_queryParams('', 'slug', slug));
-    }
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      apiPath,
-      'DELETE',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
-    );
-  }
-
-  /// End HLS streaming session
-  ///
-  /// Releases server resources for the streaming session.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] id (required):
-  ///
-  /// * [String] sessionId (required):
-  ///
-  /// * [String] key:
-  ///
-  /// * [String] slug:
-  Future<void> endSession(String id, String sessionId, { String? key, String? slug, Future<void>? abortTrigger, }) async {
-    final response = await endSessionWithHttpInfo(id, sessionId, key: key, slug: slug, abortTrigger: abortTrigger,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
   /// Retrieve edits for an existing asset
   ///
   /// Retrieve a series of edit actions (crop, rotate, mirror) associated with the specified asset.
@@ -502,7 +425,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getAssetEditsWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getAssetEditsWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/edits'
       .replaceAll('{id}', id);
@@ -525,7 +448,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -536,8 +458,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<AssetEditsResponseDto?> getAssetEdits(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getAssetEditsWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<AssetEditsResponseDto?> getAssetEdits(String id,) async {
+    final response = await getAssetEditsWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -564,7 +486,9 @@ class AssetsApi {
   /// * [String] key:
   ///
   /// * [String] slug:
-  Future<Response> getAssetInfoWithHttpInfo(String id, { String? key, String? slug, Future<void>? abortTrigger, }) async {
+  ///
+  /// * [String] spaceId:
+  Future<Response> getAssetInfoWithHttpInfo(String id, { String? key, String? slug, String? spaceId, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}'
       .replaceAll('{id}', id);
@@ -582,6 +506,9 @@ class AssetsApi {
     if (slug != null) {
       queryParams.addAll(_queryParams('', 'slug', slug));
     }
+    if (spaceId != null) {
+      queryParams.addAll(_queryParams('', 'spaceId', spaceId));
+    }
 
     const contentTypes = <String>[];
 
@@ -594,7 +521,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -609,8 +535,10 @@ class AssetsApi {
   /// * [String] key:
   ///
   /// * [String] slug:
-  Future<AssetResponseDto?> getAssetInfo(String id, { String? key, String? slug, Future<void>? abortTrigger, }) async {
-    final response = await getAssetInfoWithHttpInfo(id, key: key, slug: slug, abortTrigger: abortTrigger,);
+  ///
+  /// * [String] spaceId:
+  Future<AssetResponseDto?> getAssetInfo(String id, { String? key, String? slug, String? spaceId, }) async {
+    final response = await getAssetInfoWithHttpInfo(id,  key: key, slug: slug, spaceId: spaceId, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -633,7 +561,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getAssetMetadataWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getAssetMetadataWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/metadata'
       .replaceAll('{id}', id);
@@ -656,7 +584,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -667,8 +594,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<List<AssetMetadataResponseDto>?> getAssetMetadata(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getAssetMetadataWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<List<AssetMetadataResponseDto>?> getAssetMetadata(String id,) async {
+    final response = await getAssetMetadataWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -698,7 +625,7 @@ class AssetsApi {
   ///
   /// * [String] key (required):
   ///   Metadata key
-  Future<Response> getAssetMetadataByKeyWithHttpInfo(String id, String key, { Future<void>? abortTrigger, }) async {
+  Future<Response> getAssetMetadataByKeyWithHttpInfo(String id, String key,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/metadata/{key}'
       .replaceAll('{id}', id)
@@ -722,7 +649,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -737,8 +663,8 @@ class AssetsApi {
   ///
   /// * [String] key (required):
   ///   Metadata key
-  Future<AssetMetadataResponseDto?> getAssetMetadataByKey(String id, String key, { Future<void>? abortTrigger, }) async {
-    final response = await getAssetMetadataByKeyWithHttpInfo(id, key, abortTrigger: abortTrigger,);
+  Future<AssetMetadataResponseDto?> getAssetMetadataByKey(String id, String key,) async {
+    final response = await getAssetMetadataByKeyWithHttpInfo(id, key,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -761,7 +687,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getAssetOcrWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getAssetOcrWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/ocr'
       .replaceAll('{id}', id);
@@ -784,7 +710,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -795,8 +720,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<List<AssetOcrResponseDto>?> getAssetOcr(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getAssetOcrWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<List<AssetOcrResponseDto>?> getAssetOcr(String id,) async {
+    final response = await getAssetOcrWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -828,7 +753,7 @@ class AssetsApi {
   ///   Filter by trash status
   ///
   /// * [AssetVisibility] visibility:
-  Future<Response> getAssetStatisticsWithHttpInfo({ bool? isFavorite, bool? isTrashed, AssetVisibility? visibility, Future<void>? abortTrigger, }) async {
+  Future<Response> getAssetStatisticsWithHttpInfo({ bool? isFavorite, bool? isTrashed, AssetVisibility? visibility, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/statistics';
 
@@ -860,7 +785,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -877,8 +801,8 @@ class AssetsApi {
   ///   Filter by trash status
   ///
   /// * [AssetVisibility] visibility:
-  Future<AssetStatsResponseDto?> getAssetStatistics({ bool? isFavorite, bool? isTrashed, AssetVisibility? visibility, Future<void>? abortTrigger, }) async {
-    final response = await getAssetStatisticsWithHttpInfo(isFavorite: isFavorite, isTrashed: isTrashed, visibility: visibility, abortTrigger: abortTrigger,);
+  Future<AssetStatsResponseDto?> getAssetStatistics({ bool? isFavorite, bool? isTrashed, AssetVisibility? visibility, }) async {
+    final response = await getAssetStatisticsWithHttpInfo( isFavorite: isFavorite, isTrashed: isTrashed, visibility: visibility, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -887,266 +811,6 @@ class AssetsApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AssetStatsResponseDto',) as AssetStatsResponseDto;
-    
-    }
-    return null;
-  }
-
-  /// Get HLS main playlist
-  ///
-  /// Returns an HLS main playlist with all available variants for the asset.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] id (required):
-  ///
-  /// * [String] key:
-  ///
-  /// * [String] slug:
-  Future<Response> getMainPlaylistWithHttpInfo(String id, { String? key, String? slug, Future<void>? abortTrigger, }) async {
-    // ignore: prefer_const_declarations
-    final apiPath = r'/assets/{id}/video/stream/main.m3u8'
-      .replaceAll('{id}', id);
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    if (key != null) {
-      queryParams.addAll(_queryParams('', 'key', key));
-    }
-    if (slug != null) {
-      queryParams.addAll(_queryParams('', 'slug', slug));
-    }
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      apiPath,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
-    );
-  }
-
-  /// Get HLS main playlist
-  ///
-  /// Returns an HLS main playlist with all available variants for the asset.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] id (required):
-  ///
-  /// * [String] key:
-  ///
-  /// * [String] slug:
-  Future<String?> getMainPlaylist(String id, { String? key, String? slug, Future<void>? abortTrigger, }) async {
-    final response = await getMainPlaylistWithHttpInfo(id, key: key, slug: slug, abortTrigger: abortTrigger,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'String',) as String;
-    
-    }
-    return null;
-  }
-
-  /// Get HLS media playlist
-  ///
-  /// Returns an HLS media playlist for one variant of the streaming session.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] id (required):
-  ///
-  /// * [String] sessionId (required):
-  ///
-  /// * [int] variantIndex (required):
-  ///
-  /// * [String] key:
-  ///
-  /// * [String] slug:
-  ///
-  /// * [num] xImmichHlsPos:
-  Future<Response> getMediaPlaylistWithHttpInfo(String id, String sessionId, int variantIndex, { String? key, String? slug, num? xImmichHlsPos, Future<void>? abortTrigger, }) async {
-    // ignore: prefer_const_declarations
-    final apiPath = r'/assets/{id}/video/stream/{sessionId}/{variantIndex}/playlist.m3u8'
-      .replaceAll('{id}', id)
-      .replaceAll('{sessionId}', sessionId)
-      .replaceAll('{variantIndex}', variantIndex.toString());
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    if (key != null) {
-      queryParams.addAll(_queryParams('', 'key', key));
-    }
-    if (slug != null) {
-      queryParams.addAll(_queryParams('', 'slug', slug));
-    }
-
-    if (xImmichHlsPos != null) {
-      headerParams[r'x-immich-hls-pos'] = parameterToString(xImmichHlsPos);
-    }
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      apiPath,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
-    );
-  }
-
-  /// Get HLS media playlist
-  ///
-  /// Returns an HLS media playlist for one variant of the streaming session.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] id (required):
-  ///
-  /// * [String] sessionId (required):
-  ///
-  /// * [int] variantIndex (required):
-  ///
-  /// * [String] key:
-  ///
-  /// * [String] slug:
-  ///
-  /// * [num] xImmichHlsPos:
-  Future<String?> getMediaPlaylist(String id, String sessionId, int variantIndex, { String? key, String? slug, num? xImmichHlsPos, Future<void>? abortTrigger, }) async {
-    final response = await getMediaPlaylistWithHttpInfo(id, sessionId, variantIndex, key: key, slug: slug, xImmichHlsPos: xImmichHlsPos, abortTrigger: abortTrigger,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'String',) as String;
-    
-    }
-    return null;
-  }
-
-  /// Get HLS segment or init file
-  ///
-  /// Streams an HLS init segment (init.mp4) or media segment (seg_N.m4s).
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] filename (required):
-  ///
-  /// * [String] id (required):
-  ///
-  /// * [String] sessionId (required):
-  ///
-  /// * [int] variantIndex (required):
-  ///
-  /// * [String] key:
-  ///
-  /// * [String] slug:
-  ///
-  /// * [int] xImmichHlsMsn:
-  Future<Response> getSegmentWithHttpInfo(String filename, String id, String sessionId, int variantIndex, { String? key, String? slug, int? xImmichHlsMsn, Future<void>? abortTrigger, }) async {
-    // ignore: prefer_const_declarations
-    final apiPath = r'/assets/{id}/video/stream/{sessionId}/{variantIndex}/{filename}'
-      .replaceAll('{filename}', filename)
-      .replaceAll('{id}', id)
-      .replaceAll('{sessionId}', sessionId)
-      .replaceAll('{variantIndex}', variantIndex.toString());
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    if (key != null) {
-      queryParams.addAll(_queryParams('', 'key', key));
-    }
-    if (slug != null) {
-      queryParams.addAll(_queryParams('', 'slug', slug));
-    }
-
-    if (xImmichHlsMsn != null) {
-      headerParams[r'x-immich-hls-msn'] = parameterToString(xImmichHlsMsn);
-    }
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      apiPath,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
-    );
-  }
-
-  /// Get HLS segment or init file
-  ///
-  /// Streams an HLS init segment (init.mp4) or media segment (seg_N.m4s).
-  ///
-  /// Parameters:
-  ///
-  /// * [String] filename (required):
-  ///
-  /// * [String] id (required):
-  ///
-  /// * [String] sessionId (required):
-  ///
-  /// * [int] variantIndex (required):
-  ///
-  /// * [String] key:
-  ///
-  /// * [String] slug:
-  ///
-  /// * [int] xImmichHlsMsn:
-  Future<MultipartFile?> getSegment(String filename, String id, String sessionId, int variantIndex, { String? key, String? slug, int? xImmichHlsMsn, Future<void>? abortTrigger, }) async {
-    final response = await getSegmentWithHttpInfo(filename, id, sessionId, variantIndex, key: key, slug: slug, xImmichHlsMsn: xImmichHlsMsn, abortTrigger: abortTrigger,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
     
     }
     return null;
@@ -1165,7 +829,7 @@ class AssetsApi {
   /// * [String] key:
   ///
   /// * [String] slug:
-  Future<Response> playAssetVideoWithHttpInfo(String id, { String? key, String? slug, Future<void>? abortTrigger, }) async {
+  Future<Response> playAssetVideoWithHttpInfo(String id, { String? key, String? slug, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/video/playback'
       .replaceAll('{id}', id);
@@ -1195,7 +859,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -1210,8 +873,8 @@ class AssetsApi {
   /// * [String] key:
   ///
   /// * [String] slug:
-  Future<MultipartFile?> playAssetVideo(String id, { String? key, String? slug, Future<void>? abortTrigger, }) async {
-    final response = await playAssetVideoWithHttpInfo(id, key: key, slug: slug, abortTrigger: abortTrigger,);
+  Future<MultipartFile?> playAssetVideo(String id, { String? key, String? slug, }) async {
+    final response = await playAssetVideoWithHttpInfo(id,  key: key, slug: slug, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1234,7 +897,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> removeAssetEditsWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> removeAssetEditsWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/edits'
       .replaceAll('{id}', id);
@@ -1257,7 +920,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -1268,8 +930,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> removeAssetEdits(String id, { Future<void>? abortTrigger, }) async {
-    final response = await removeAssetEditsWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<void> removeAssetEdits(String id,) async {
+    final response = await removeAssetEditsWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1284,7 +946,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetJobsDto] assetJobsDto (required):
-  Future<Response> runAssetJobsWithHttpInfo(AssetJobsDto assetJobsDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> runAssetJobsWithHttpInfo(AssetJobsDto assetJobsDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/jobs';
 
@@ -1306,7 +968,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -1317,8 +978,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetJobsDto] assetJobsDto (required):
-  Future<void> runAssetJobs(AssetJobsDto assetJobsDto, { Future<void>? abortTrigger, }) async {
-    final response = await runAssetJobsWithHttpInfo(assetJobsDto, abortTrigger: abortTrigger,);
+  Future<void> runAssetJobs(AssetJobsDto assetJobsDto,) async {
+    final response = await runAssetJobsWithHttpInfo(assetJobsDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1335,7 +996,7 @@ class AssetsApi {
   /// * [String] id (required):
   ///
   /// * [UpdateAssetDto] updateAssetDto (required):
-  Future<Response> updateAssetWithHttpInfo(String id, UpdateAssetDto updateAssetDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateAssetWithHttpInfo(String id, UpdateAssetDto updateAssetDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}'
       .replaceAll('{id}', id);
@@ -1358,7 +1019,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -1371,8 +1031,8 @@ class AssetsApi {
   /// * [String] id (required):
   ///
   /// * [UpdateAssetDto] updateAssetDto (required):
-  Future<AssetResponseDto?> updateAsset(String id, UpdateAssetDto updateAssetDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateAssetWithHttpInfo(id, updateAssetDto, abortTrigger: abortTrigger,);
+  Future<AssetResponseDto?> updateAsset(String id, UpdateAssetDto updateAssetDto,) async {
+    final response = await updateAssetWithHttpInfo(id, updateAssetDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1397,7 +1057,7 @@ class AssetsApi {
   /// * [String] id (required):
   ///
   /// * [AssetMetadataUpsertDto] assetMetadataUpsertDto (required):
-  Future<Response> updateAssetMetadataWithHttpInfo(String id, AssetMetadataUpsertDto assetMetadataUpsertDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateAssetMetadataWithHttpInfo(String id, AssetMetadataUpsertDto assetMetadataUpsertDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/metadata'
       .replaceAll('{id}', id);
@@ -1420,7 +1080,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -1433,8 +1092,8 @@ class AssetsApi {
   /// * [String] id (required):
   ///
   /// * [AssetMetadataUpsertDto] assetMetadataUpsertDto (required):
-  Future<List<AssetMetadataResponseDto>?> updateAssetMetadata(String id, AssetMetadataUpsertDto assetMetadataUpsertDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateAssetMetadataWithHttpInfo(id, assetMetadataUpsertDto, abortTrigger: abortTrigger,);
+  Future<List<AssetMetadataResponseDto>?> updateAssetMetadata(String id, AssetMetadataUpsertDto assetMetadataUpsertDto,) async {
+    final response = await updateAssetMetadataWithHttpInfo(id, assetMetadataUpsertDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1460,7 +1119,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetBulkUpdateDto] assetBulkUpdateDto (required):
-  Future<Response> updateAssetsWithHttpInfo(AssetBulkUpdateDto assetBulkUpdateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateAssetsWithHttpInfo(AssetBulkUpdateDto assetBulkUpdateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets';
 
@@ -1482,7 +1141,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -1493,8 +1151,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetBulkUpdateDto] assetBulkUpdateDto (required):
-  Future<void> updateAssets(AssetBulkUpdateDto assetBulkUpdateDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateAssetsWithHttpInfo(assetBulkUpdateDto, abortTrigger: abortTrigger,);
+  Future<void> updateAssets(AssetBulkUpdateDto assetBulkUpdateDto,) async {
+    final response = await updateAssetsWithHttpInfo(assetBulkUpdateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1509,7 +1167,7 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetMetadataBulkUpsertDto] assetMetadataBulkUpsertDto (required):
-  Future<Response> updateBulkAssetMetadataWithHttpInfo(AssetMetadataBulkUpsertDto assetMetadataBulkUpsertDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateBulkAssetMetadataWithHttpInfo(AssetMetadataBulkUpsertDto assetMetadataBulkUpsertDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/metadata';
 
@@ -1531,7 +1189,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -1542,8 +1199,8 @@ class AssetsApi {
   /// Parameters:
   ///
   /// * [AssetMetadataBulkUpsertDto] assetMetadataBulkUpsertDto (required):
-  Future<List<AssetMetadataBulkResponseDto>?> updateBulkAssetMetadata(AssetMetadataBulkUpsertDto assetMetadataBulkUpsertDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateBulkAssetMetadataWithHttpInfo(assetMetadataBulkUpsertDto, abortTrigger: abortTrigger,);
+  Future<List<AssetMetadataBulkResponseDto>?> updateBulkAssetMetadata(AssetMetadataBulkUpsertDto assetMetadataBulkUpsertDto,) async {
+    final response = await updateBulkAssetMetadataWithHttpInfo(assetMetadataBulkUpsertDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1603,7 +1260,7 @@ class AssetsApi {
   ///   Sidecar file data
   ///
   /// * [AssetVisibility] visibility:
-  Future<Response> uploadAssetWithHttpInfo(MultipartFile assetData, DateTime fileCreatedAt, DateTime fileModifiedAt, { String? key, String? slug, String? xImmichChecksum, int? duration, String? filename, bool? isFavorite, String? livePhotoVideoId, List<AssetMetadataUpsertItemDto>? metadata, MultipartFile? sidecarData, AssetVisibility? visibility, Future<void>? abortTrigger, }) async {
+  Future<Response> uploadAssetWithHttpInfo(MultipartFile assetData, DateTime fileCreatedAt, DateTime fileModifiedAt, { String? key, String? slug, String? xImmichChecksum, int? duration, String? filename, bool? isFavorite, String? livePhotoVideoId, List<AssetMetadataUpsertItemDto>? metadata, MultipartFile? sidecarData, AssetVisibility? visibility, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets';
 
@@ -1683,7 +1340,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -1728,8 +1384,8 @@ class AssetsApi {
   ///   Sidecar file data
   ///
   /// * [AssetVisibility] visibility:
-  Future<AssetMediaResponseDto?> uploadAsset(MultipartFile assetData, DateTime fileCreatedAt, DateTime fileModifiedAt, { String? key, String? slug, String? xImmichChecksum, int? duration, String? filename, bool? isFavorite, String? livePhotoVideoId, List<AssetMetadataUpsertItemDto>? metadata, MultipartFile? sidecarData, AssetVisibility? visibility, Future<void>? abortTrigger, }) async {
-    final response = await uploadAssetWithHttpInfo(assetData, fileCreatedAt, fileModifiedAt, key: key, slug: slug, xImmichChecksum: xImmichChecksum, duration: duration, filename: filename, isFavorite: isFavorite, livePhotoVideoId: livePhotoVideoId, metadata: metadata, sidecarData: sidecarData, visibility: visibility, abortTrigger: abortTrigger,);
+  Future<AssetMediaResponseDto?> uploadAsset(MultipartFile assetData, DateTime fileCreatedAt, DateTime fileModifiedAt, { String? key, String? slug, String? xImmichChecksum, int? duration, String? filename, bool? isFavorite, String? livePhotoVideoId, List<AssetMetadataUpsertItemDto>? metadata, MultipartFile? sidecarData, AssetVisibility? visibility, }) async {
+    final response = await uploadAssetWithHttpInfo(assetData, fileCreatedAt, fileModifiedAt,  key: key, slug: slug, xImmichChecksum: xImmichChecksum, duration: duration, filename: filename, isFavorite: isFavorite, livePhotoVideoId: livePhotoVideoId, metadata: metadata, sidecarData: sidecarData, visibility: visibility, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1761,7 +1417,7 @@ class AssetsApi {
   /// * [AssetMediaSize] size:
   ///
   /// * [String] slug:
-  Future<Response> viewAssetWithHttpInfo(String id, { bool? edited, String? key, AssetMediaSize? size, String? slug, Future<void>? abortTrigger, }) async {
+  Future<Response> viewAssetWithHttpInfo(String id, { bool? edited, String? key, AssetMediaSize? size, String? slug, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/assets/{id}/thumbnail'
       .replaceAll('{id}', id);
@@ -1797,7 +1453,6 @@ class AssetsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -1817,8 +1472,8 @@ class AssetsApi {
   /// * [AssetMediaSize] size:
   ///
   /// * [String] slug:
-  Future<MultipartFile?> viewAsset(String id, { bool? edited, String? key, AssetMediaSize? size, String? slug, Future<void>? abortTrigger, }) async {
-    final response = await viewAssetWithHttpInfo(id, edited: edited, key: key, size: size, slug: slug, abortTrigger: abortTrigger,);
+  Future<MultipartFile?> viewAsset(String id, { bool? edited, String? key, AssetMediaSize? size, String? slug, }) async {
+    final response = await viewAssetWithHttpInfo(id,  edited: edited, key: key, size: size, slug: slug, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
