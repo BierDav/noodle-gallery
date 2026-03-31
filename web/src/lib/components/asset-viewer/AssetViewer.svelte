@@ -76,6 +76,7 @@
     onClose?: (assetId: string) => void;
     onRemoveFromAlbum?: (assetIds: string[]) => void;
     onRandom?: () => Promise<{ id: string } | undefined>;
+    spaceId?: string;
   }
 
   let {
@@ -92,6 +93,7 @@
     onClose,
     onRemoveFromAlbum,
     onRandom,
+    spaceId,
   }: Props = $props();
 
   const {
@@ -253,7 +255,7 @@
       }
 
       if ($slideshowRepeat && slideshowStartAssetId) {
-        await assetViewerManager.setAssetId(slideshowStartAssetId);
+        await assetViewerManager.setAssetId(slideshowStartAssetId, spaceId);
         $restartSlideshowProgress = true;
         return;
       }
@@ -285,7 +287,7 @@
   let assetViewerHtmlElement = $state<HTMLElement>();
 
   const slideshowHistory = new SlideshowHistory((asset) => {
-    handlePromiseError(assetViewerManager.setAssetId(asset.id).then(() => ($restartSlideshowProgress = true)));
+    handlePromiseError(assetViewerManager.setAssetId(asset.id, spaceId).then(() => ($restartSlideshowProgress = true)));
   });
 
   const handleVideoStarted = () => {
@@ -634,7 +636,7 @@
       translate="yes"
     >
       {#if showDetailPanel}
-        <DetailPanel {asset} currentAlbum={album} />
+        <DetailPanel {asset} currentAlbum={album} {spaceId} />
       {:else if assetViewerManager.isShowEditor}
         <EditorPanel {asset} onClose={closeEditor} />
       {/if}
