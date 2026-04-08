@@ -386,6 +386,7 @@ export enum SystemMetadataKey {
   VersionCheckState = 'version-check-state',
   License = 'license',
   IntegrityChecksumCheckpoint = 'integrity-checksum-checkpoint',
+  ClassificationConfigState = 'classification-config-state',
 }
 
 export enum UserMetadataKey {
