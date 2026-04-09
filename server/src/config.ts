@@ -413,10 +413,9 @@ export const defaults = Object.freeze<SystemConfig>({
     },
   },
   newVersionCheck: {
-    // Disabled in Gallery: the upstream default would poll version.immich.cloud,
-    // which is Immich-owned infrastructure and reports fork traffic as immich-server.
-    // Re-enable once Gallery has its own release-info endpoint.
-    enabled: false,
+    // Gallery polls its own release endpoint at version.opennoodle.de/gallery
+    // (see config.repository.ts versionCheck.url).
+    enabled: true,
     channel: ReleaseChannel.Stable,
   },
   nightlyTasks: {
