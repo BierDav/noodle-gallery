@@ -115,6 +115,7 @@ export interface SearchAlbumOptions {
 export interface SearchSpaceOptions {
   spaceId?: string;
   spacePersonIds?: string[];
+  timelineSpaceIds?: string[];
 }
 
 export interface SearchOrderOptions {
@@ -360,6 +361,7 @@ export class SearchRepository {
         isFavorite: true,
         userIds: [DummyValue.UUID],
         spacePersonIds: [DummyValue.UUID],
+        timelineSpaceIds: [DummyValue.UUID, DummyValue.UUID],
         orderDirection: 'desc',
         maxDistance: 0.75,
       },
@@ -391,6 +393,8 @@ export class SearchRepository {
           .selectAll()
           // sql.raw is safe here — orderDirection is validated to 'asc'|'desc' by the AssetOrder enum
           .orderBy(sql`"candidates"."fileCreatedAt" ${sql.raw(orderDirection)} nulls last`)
+          // Stable tiebreaker (same rationale as the base query)
+          .orderBy('candidates.id')
           .limit(pagination.size + 1)
           .offset((pagination.page - 1) * pagination.size)
           .execute();
@@ -808,6 +812,8 @@ export class SearchRepository {
               .selectFrom('shared_space_person_face')
               .innerJoin('asset_face', 'asset_face.id', 'shared_space_person_face.assetFaceId')
               .whereRef('asset_face.assetId', '=', 'asset.id')
+              .where('asset_face.deletedAt', 'is', null)
+              .where('asset_face.isVisible', 'is', true)
               .where('shared_space_person_face.personId', '=', anyUuid(options.personIds!)),
           ),
         ),
