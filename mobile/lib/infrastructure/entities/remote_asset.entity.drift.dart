@@ -74,7 +74,16 @@ final class $$RemoteAssetEntityTableReferences
   static i5.$UserEntityTable _ownerIdTable(i0.GeneratedDatabase db) =>
       i6.ReadDatabaseContainer(db)
           .resultSet<i5.$UserEntityTable>('user_entity')
-          .createAlias('remote_asset_entity__owner_id__user_entity__id');
+          .createAlias(
+            i0.$_aliasNameGenerator(
+              i6.ReadDatabaseContainer(db)
+                  .resultSet<i1.$RemoteAssetEntityTable>('remote_asset_entity')
+                  .ownerId,
+              i6.ReadDatabaseContainer(
+                db,
+              ).resultSet<i5.$UserEntityTable>('user_entity').id,
+            ),
+          );
 
   i5.$$UserEntityTableProcessedTableManager get ownerId {
     final $_column = $_itemColumn<String>('owner_id')!;
@@ -657,9 +666,9 @@ typedef $$RemoteAssetEntityTableProcessedTableManager =
       i1.RemoteAssetEntityData,
       i0.PrefetchHooks Function({bool ownerId})
     >;
-i0.Index get uQRemoteAssetsOwnerChecksum => i0.Index(
-  'UQ_remote_assets_owner_checksum',
-  'CREATE UNIQUE INDEX IF NOT EXISTS UQ_remote_assets_owner_checksum ON remote_asset_entity (owner_id, checksum) WHERE(library_id IS NULL)',
+i0.Index get idxRemoteAssetOwnerChecksum => i0.Index(
+  'idx_remote_asset_owner_checksum',
+  'CREATE INDEX IF NOT EXISTS idx_remote_asset_owner_checksum ON remote_asset_entity (owner_id, checksum)',
 );
 
 class $RemoteAssetEntityTable extends i3.RemoteAssetEntity
@@ -1754,6 +1763,10 @@ class RemoteAssetEntityCompanion
   }
 }
 
+i0.Index get uQRemoteAssetsOwnerChecksum => i0.Index(
+  'UQ_remote_assets_owner_checksum',
+  'CREATE UNIQUE INDEX IF NOT EXISTS UQ_remote_assets_owner_checksum ON remote_asset_entity (owner_id, checksum) WHERE(library_id IS NULL)',
+);
 i0.Index get uQRemoteAssetsOwnerLibraryChecksum => i0.Index(
   'UQ_remote_assets_owner_library_checksum',
   'CREATE UNIQUE INDEX IF NOT EXISTS UQ_remote_assets_owner_library_checksum ON remote_asset_entity (owner_id, library_id, checksum) WHERE(library_id IS NOT NULL)',
@@ -1766,11 +1779,15 @@ i0.Index get idxRemoteAssetStackId => i0.Index(
   'idx_remote_asset_stack_id',
   'CREATE INDEX IF NOT EXISTS idx_remote_asset_stack_id ON remote_asset_entity (stack_id)',
 );
-i0.Index get idxRemoteAssetOwnerVisibilityDeletedCreated => i0.Index(
-  'idx_remote_asset_owner_visibility_deleted_created',
-  'CREATE INDEX IF NOT EXISTS idx_remote_asset_owner_visibility_deleted_created ON remote_asset_entity (owner_id, visibility, deleted_at, created_at DESC)',
+i0.Index get idxRemoteAssetLocalDateTimeDay => i0.Index(
+  'idx_remote_asset_local_date_time_day',
+  'CREATE INDEX IF NOT EXISTS idx_remote_asset_local_date_time_day ON remote_asset_entity (STRFTIME(\'%Y-%m-%d\', local_date_time))',
 );
-i0.Index get idxRemoteAssetUploaded => i0.Index(
-  'idx_remote_asset_uploaded',
-  'CREATE INDEX IF NOT EXISTS idx_remote_asset_uploaded ON remote_asset_entity (uploaded_at)',
+i0.Index get idxRemoteAssetLocalDateTimeMonth => i0.Index(
+  'idx_remote_asset_local_date_time_month',
+  'CREATE INDEX IF NOT EXISTS idx_remote_asset_local_date_time_month ON remote_asset_entity (STRFTIME(\'%Y-%m\', local_date_time))',
+);
+i0.Index get idxRemoteAssetLibraryCreated => i0.Index(
+  'idx_remote_asset_library_created',
+  'CREATE INDEX IF NOT EXISTS idx_remote_asset_library_created ON remote_asset_entity (library_id, created_at DESC)',
 );
