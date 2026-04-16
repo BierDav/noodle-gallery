@@ -21,7 +21,7 @@ class ServerApi {
   /// Delete the currently set server product key.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> deleteServerLicenseWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> deleteServerLicenseWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/license';
 
@@ -43,15 +43,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Delete server product key
   ///
   /// Delete the currently set server product key.
-  Future<void> deleteServerLicense({ Future<void>? abortTrigger, }) async {
-    final response = await deleteServerLicenseWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<void> deleteServerLicense() async {
+    final response = await deleteServerLicenseWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -62,7 +61,7 @@ class ServerApi {
   /// Retrieve a list of information about the server.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAboutInfoWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getAboutInfoWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/about';
 
@@ -84,15 +83,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get server information
   ///
   /// Retrieve a list of information about the server.
-  Future<ServerAboutResponseDto?> getAboutInfo({ Future<void>? abortTrigger, }) async {
-    final response = await getAboutInfoWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ServerAboutResponseDto?> getAboutInfo() async {
+    final response = await getAboutInfoWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -111,7 +109,7 @@ class ServerApi {
   /// Retrieve links to the APKs for the current server version.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getApkLinksWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getApkLinksWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/apk-links';
 
@@ -133,15 +131,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get APK links
   ///
   /// Retrieve links to the APKs for the current server version.
-  Future<ServerApkLinksDto?> getApkLinks({ Future<void>? abortTrigger, }) async {
-    final response = await getApkLinksWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ServerApkLinksDto?> getApkLinks() async {
+    final response = await getApkLinksWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -155,12 +152,60 @@ class ServerApi {
     return null;
   }
 
+  /// Smart search health
+  ///
+  /// Reports whether the ML server is currently reachable and healthy for smart search.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getMlHealthWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final apiPath = r'/server/ml-health';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      apiPath,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Smart search health
+  ///
+  /// Reports whether the ML server is currently reachable and healthy for smart search.
+  Future<ServerMlHealthResponseDto?> getMlHealth() async {
+    final response = await getMlHealthWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ServerMlHealthResponseDto',) as ServerMlHealthResponseDto;
+    
+    }
+    return null;
+  }
+
   /// Get config
   ///
   /// Retrieve the current server configuration.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getServerConfigWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getServerConfigWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/config';
 
@@ -182,15 +227,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get config
   ///
   /// Retrieve the current server configuration.
-  Future<ServerConfigDto?> getServerConfig({ Future<void>? abortTrigger, }) async {
-    final response = await getServerConfigWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ServerConfigDto?> getServerConfig() async {
+    final response = await getServerConfigWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -209,7 +253,7 @@ class ServerApi {
   /// Retrieve available features supported by this server.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getServerFeaturesWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getServerFeaturesWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/features';
 
@@ -231,15 +275,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get features
   ///
   /// Retrieve available features supported by this server.
-  Future<ServerFeaturesDto?> getServerFeatures({ Future<void>? abortTrigger, }) async {
-    final response = await getServerFeaturesWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ServerFeaturesDto?> getServerFeatures() async {
+    final response = await getServerFeaturesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -258,7 +301,7 @@ class ServerApi {
   /// Retrieve information about whether the server currently has a product key registered.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getServerLicenseWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getServerLicenseWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/license';
 
@@ -280,15 +323,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get product key
   ///
   /// Retrieve information about whether the server currently has a product key registered.
-  Future<UserLicense?> getServerLicense({ Future<void>? abortTrigger, }) async {
-    final response = await getServerLicenseWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<UserLicense?> getServerLicense() async {
+    final response = await getServerLicenseWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -307,7 +349,7 @@ class ServerApi {
   /// Retrieve statistics about the entire Immich instance such as asset counts.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getServerStatisticsWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getServerStatisticsWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/statistics';
 
@@ -329,15 +371,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get statistics
   ///
   /// Retrieve statistics about the entire Immich instance such as asset counts.
-  Future<ServerStatsResponseDto?> getServerStatistics({ Future<void>? abortTrigger, }) async {
-    final response = await getServerStatisticsWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ServerStatsResponseDto?> getServerStatistics() async {
+    final response = await getServerStatisticsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -356,7 +397,7 @@ class ServerApi {
   /// Retrieve the current server version in semantic versioning (semver) format.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getServerVersionWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getServerVersionWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/version';
 
@@ -378,15 +419,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get server version
   ///
   /// Retrieve the current server version in semantic versioning (semver) format.
-  Future<ServerVersionResponseDto?> getServerVersion({ Future<void>? abortTrigger, }) async {
-    final response = await getServerVersionWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ServerVersionResponseDto?> getServerVersion() async {
+    final response = await getServerVersionWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -405,7 +445,7 @@ class ServerApi {
   /// Retrieve the current storage utilization information of the server.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getStorageWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getStorageWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/storage';
 
@@ -427,15 +467,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get storage
   ///
   /// Retrieve the current storage utilization information of the server.
-  Future<ServerStorageResponseDto?> getStorage({ Future<void>? abortTrigger, }) async {
-    final response = await getStorageWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ServerStorageResponseDto?> getStorage() async {
+    final response = await getStorageWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -454,7 +493,7 @@ class ServerApi {
   /// Retrieve all media types supported by the server.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getSupportedMediaTypesWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getSupportedMediaTypesWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/media-types';
 
@@ -476,15 +515,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get supported media types
   ///
   /// Retrieve all media types supported by the server.
-  Future<ServerMediaTypesResponseDto?> getSupportedMediaTypes({ Future<void>? abortTrigger, }) async {
-    final response = await getSupportedMediaTypesWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ServerMediaTypesResponseDto?> getSupportedMediaTypes() async {
+    final response = await getSupportedMediaTypesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -503,7 +541,7 @@ class ServerApi {
   /// Retrieve information about the last time the version check ran.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getVersionCheckWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getVersionCheckWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/version-check';
 
@@ -525,15 +563,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get version check status
   ///
   /// Retrieve information about the last time the version check ran.
-  Future<VersionCheckStateResponseDto?> getVersionCheck({ Future<void>? abortTrigger, }) async {
-    final response = await getVersionCheckWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<VersionCheckStateResponseDto?> getVersionCheck() async {
+    final response = await getVersionCheckWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -552,7 +589,7 @@ class ServerApi {
   /// Retrieve a list of past versions the server has been on.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getVersionHistoryWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getVersionHistoryWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/version-history';
 
@@ -574,15 +611,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get version history
   ///
   /// Retrieve a list of past versions the server has been on.
-  Future<List<ServerVersionHistoryResponseDto>?> getVersionHistory({ Future<void>? abortTrigger, }) async {
-    final response = await getVersionHistoryWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<List<ServerVersionHistoryResponseDto>?> getVersionHistory() async {
+    final response = await getVersionHistoryWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -604,7 +640,7 @@ class ServerApi {
   /// Pong
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> pingServerWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> pingServerWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/ping';
 
@@ -626,15 +662,14 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Ping
   ///
   /// Pong
-  Future<ServerPingResponse?> pingServer({ Future<void>? abortTrigger, }) async {
-    final response = await pingServerWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ServerPingResponse?> pingServer() async {
+    final response = await pingServerWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -657,7 +692,7 @@ class ServerApi {
   /// Parameters:
   ///
   /// * [LicenseKeyDto] licenseKeyDto (required):
-  Future<Response> setServerLicenseWithHttpInfo(LicenseKeyDto licenseKeyDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> setServerLicenseWithHttpInfo(LicenseKeyDto licenseKeyDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/server/license';
 
@@ -679,7 +714,6 @@ class ServerApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -690,8 +724,8 @@ class ServerApi {
   /// Parameters:
   ///
   /// * [LicenseKeyDto] licenseKeyDto (required):
-  Future<UserLicense?> setServerLicense(LicenseKeyDto licenseKeyDto, { Future<void>? abortTrigger, }) async {
-    final response = await setServerLicenseWithHttpInfo(licenseKeyDto, abortTrigger: abortTrigger,);
+  Future<UserLicense?> setServerLicense(LicenseKeyDto licenseKeyDto,) async {
+    final response = await setServerLicenseWithHttpInfo(licenseKeyDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
