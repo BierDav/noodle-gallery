@@ -41,7 +41,10 @@ class MapApi {
   ///
   /// * [bool] withSharedAlbums:
   ///   Include shared album assets
-  Future<Response> getMapMarkersWithHttpInfo({ DateTime? fileCreatedAfter, DateTime? fileCreatedBefore, bool? isArchived, bool? isFavorite, bool? withPartners, bool? withSharedAlbums, Future<void>? abortTrigger, }) async {
+  ///
+  /// * [bool] withSharedSpaces:
+  ///   Include shared space assets
+  Future<Response> getMapMarkersWithHttpInfo({ DateTime? fileCreatedAfter, DateTime? fileCreatedBefore, bool? isArchived, bool? isFavorite, bool? withPartners, bool? withSharedAlbums, bool? withSharedSpaces, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/map/markers';
 
@@ -70,6 +73,9 @@ class MapApi {
     if (withSharedAlbums != null) {
       queryParams.addAll(_queryParams('', 'withSharedAlbums', withSharedAlbums));
     }
+    if (withSharedSpaces != null) {
+      queryParams.addAll(_queryParams('', 'withSharedSpaces', withSharedSpaces));
+    }
 
     const contentTypes = <String>[];
 
@@ -82,7 +88,6 @@ class MapApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -109,8 +114,11 @@ class MapApi {
   ///
   /// * [bool] withSharedAlbums:
   ///   Include shared album assets
-  Future<List<MapMarkerResponseDto>?> getMapMarkers({ DateTime? fileCreatedAfter, DateTime? fileCreatedBefore, bool? isArchived, bool? isFavorite, bool? withPartners, bool? withSharedAlbums, Future<void>? abortTrigger, }) async {
-    final response = await getMapMarkersWithHttpInfo(fileCreatedAfter: fileCreatedAfter, fileCreatedBefore: fileCreatedBefore, isArchived: isArchived, isFavorite: isFavorite, withPartners: withPartners, withSharedAlbums: withSharedAlbums, abortTrigger: abortTrigger,);
+  ///
+  /// * [bool] withSharedSpaces:
+  ///   Include shared space assets
+  Future<List<MapMarkerResponseDto>?> getMapMarkers({ DateTime? fileCreatedAfter, DateTime? fileCreatedBefore, bool? isArchived, bool? isFavorite, bool? withPartners, bool? withSharedAlbums, bool? withSharedSpaces, }) async {
+    final response = await getMapMarkersWithHttpInfo( fileCreatedAfter: fileCreatedAfter, fileCreatedBefore: fileCreatedBefore, isArchived: isArchived, isFavorite: isFavorite, withPartners: withPartners, withSharedAlbums: withSharedAlbums, withSharedSpaces: withSharedSpaces, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -140,7 +148,7 @@ class MapApi {
   ///
   /// * [double] lon (required):
   ///   Longitude (-180 to 180)
-  Future<Response> reverseGeocodeWithHttpInfo(double lat, double lon, { Future<void>? abortTrigger, }) async {
+  Future<Response> reverseGeocodeWithHttpInfo(double lat, double lon,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/map/reverse-geocode';
 
@@ -165,7 +173,6 @@ class MapApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -180,8 +187,8 @@ class MapApi {
   ///
   /// * [double] lon (required):
   ///   Longitude (-180 to 180)
-  Future<List<MapReverseGeocodeResponseDto>?> reverseGeocode(double lat, double lon, { Future<void>? abortTrigger, }) async {
-    final response = await reverseGeocodeWithHttpInfo(lat, lon, abortTrigger: abortTrigger,);
+  Future<List<MapReverseGeocodeResponseDto>?> reverseGeocode(double lat, double lon,) async {
+    final response = await reverseGeocodeWithHttpInfo(lat, lon,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
