@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { StorageAsset } from 'src/database';
 import {
   AssetFileType,
@@ -147,6 +147,9 @@ export class StorageCore {
   }
 
   static isImmichPath(path: string) {
+    if (!isAbsolute(path)) {
+      return false;
+    }
     const resolvedPath = resolve(path);
     const resolvedAppMediaLocation = StorageCore.getMediaLocation();
     const normalizedPath = resolvedPath.endsWith('/') ? resolvedPath : resolvedPath + '/';
@@ -194,6 +197,10 @@ export class StorageCore {
   async moveFile(request: MoveRequest) {
     const { entityId, pathType, oldPath, newPath, assetInfo } = request;
     if (!oldPath || oldPath === newPath) {
+      return;
+    }
+
+    if (!isAbsolute(oldPath)) {
       return;
     }
 
@@ -307,10 +314,6 @@ export class StorageCore {
 
   ensureFolders(input: string) {
     this.storageRepository.mkdirSync(dirname(input));
-  }
-
-  removeEmptyDirs(folder: StorageFolder) {
-    return this.storageRepository.removeEmptyDirs(StorageCore.getBaseFolder(folder));
   }
 
   async getVideoInterfaces(): Promise<VideoInterfaces> {
