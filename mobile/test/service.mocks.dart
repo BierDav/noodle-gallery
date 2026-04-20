@@ -13,6 +13,7 @@ import 'package:immich_mobile/services/gcast.service.dart';
 import 'package:immich_mobile/services/network.service.dart';
 import 'package:immich_mobile/services/server_info.service.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:openapi/api.dart';
 
 class MockApiService extends Mock implements ApiService {}
 
