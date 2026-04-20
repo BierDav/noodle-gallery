@@ -235,21 +235,14 @@ class LoginForm extends HookConsumerWidget {
         if (result.shouldChangePassword && !result.isAdmin) {
           unawaited(context.pushRoute(const ChangePasswordRoute()));
         } else {
-          final isBeta = Store.isBetaTimelineEnabled;
-          if (isBeta) {
-            await ref.read(galleryPermissionNotifier.notifier).requestGalleryPermission();
-            if (isSyncRemoteDeletionsMode()) {
-              await getManageMediaPermission();
-            }
-            unawaited(handleSyncFlow());
-            ref.read(websocketProvider.notifier).connect();
-            unawaited(context.replaceRoute(const GalleryTabShellRoute()));
-            return;
+          await ref.read(galleryPermissionNotifier.notifier).requestGalleryPermission();
+          if (isSyncRemoteDeletionsMode()) {
+            await getManageMediaPermission();
           }
           unawaited(handleSyncFlow());
           ref.read(websocketProvider.notifier).connect();
           unawaited(ref.read(featureMessageServiceProvider).markSeen());
-          unawaited(context.replaceRoute(const TabShellRoute()));
+          unawaited(context.replaceRoute(const GalleryTabShellRoute()));
           return;
         }
       } catch (error) {
@@ -336,16 +329,9 @@ class LoginForm extends HookConsumerWidget {
               await getManageMediaPermission();
             }
             unawaited(ref.read(featureMessageServiceProvider).markSeen());
-            if (isBeta) {
-              await ref.read(galleryPermissionNotifier.notifier).requestGalleryPermission();
-              if (isSyncRemoteDeletionsMode()) {
-                await getManageMediaPermission();
-              }
-              unawaited(handleSyncFlow());
-              unawaited(context.replaceRoute(const GalleryTabShellRoute()));
-              return;
-            }
-            unawaited(context.replaceRoute(const TabControllerRoute()));
+            unawaited(handleSyncFlow());
+            unawaited(context.replaceRoute(const GalleryTabShellRoute()));
+            return;
           }
         } catch (error, stack) {
           log.severe('Error logging in with OAuth: $error', stack);
