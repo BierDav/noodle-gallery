@@ -146,7 +146,6 @@ const SystemConfigJobSchema = z
     petDetection: JobSettingsSchema,
     workflow: JobSettingsSchema,
     editor: JobSettingsSchema,
-    storageBackendMigration: JobSettingsSchema,
     classification: JobSettingsSchema,
   })
   .meta({ id: 'SystemConfigJobDto' });
