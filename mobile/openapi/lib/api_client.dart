@@ -341,10 +341,6 @@ class ApiClient {
           return CastUpdate.fromJson(value);
         case 'ChangePasswordDto':
           return ChangePasswordDto.fromJson(value);
-        case 'CheckExistingAssetsDto':
-          return CheckExistingAssetsDto.fromJson(value);
-        case 'CheckExistingAssetsResponseDto':
-          return CheckExistingAssetsResponseDto.fromJson(value);
         case 'Colorspace':
           return ColorspaceTypeTransformer().decode(value);
         case 'ContributorCountResponseDto':
@@ -455,6 +451,8 @@ class ApiClient {
           return ManualJobNameTypeTransformer().decode(value);
         case 'MapMarkerResponseDto':
           return MapMarkerResponseDto.fromJson(value);
+        case 'MapMediaType':
+          return MapMediaTypeTypeTransformer().decode(value);
         case 'MapReverseGeocodeResponseDto':
           return MapReverseGeocodeResponseDto.fromJson(value);
         case 'MemoriesResponse':
@@ -729,6 +727,8 @@ class ApiClient {
           return StatisticsSearchDto.fromJson(value);
         case 'StorageFolder':
           return StorageFolderTypeTransformer().decode(value);
+        case 'StorageMigrationDirection':
+          return StorageMigrationDirectionTypeTransformer().decode(value);
         case 'StorageMigrationFileTypesDto':
           return StorageMigrationFileTypesDto.fromJson(value);
         case 'StorageMigrationStartDto':

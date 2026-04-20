@@ -147,7 +147,7 @@ class SearchApi {
   /// * [List<String>] personIds:
   ///   Filter by person IDs
   ///
-  /// * [num] rating:
+  /// * [int] rating:
   ///   Filter by rating (1-5)
   ///
   /// * [String] spaceId:
@@ -164,7 +164,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<Response> getFilterSuggestionsWithHttpInfo({ String? city, String? country, bool? isFavorite, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, num? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, }) async {
+  Future<Response> getFilterSuggestionsWithHttpInfo({ String? city, String? country, bool? isFavorite, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/suggestions/filters';
 
@@ -256,7 +256,7 @@ class SearchApi {
   /// * [List<String>] personIds:
   ///   Filter by person IDs
   ///
-  /// * [num] rating:
+  /// * [int] rating:
   ///   Filter by rating (1-5)
   ///
   /// * [String] spaceId:
@@ -273,7 +273,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<FilterSuggestionsResponseDto?> getFilterSuggestions({ String? city, String? country, bool? isFavorite, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, num? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, }) async {
+  Future<FilterSuggestionsResponseDto?> getFilterSuggestions({ String? city, String? country, bool? isFavorite, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, }) async {
     final response = await getFilterSuggestionsWithHttpInfo( city: city, country: country, isFavorite: isFavorite, make: make, mediaType: mediaType, model: model, personIds: personIds, rating: rating, spaceId: spaceId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
