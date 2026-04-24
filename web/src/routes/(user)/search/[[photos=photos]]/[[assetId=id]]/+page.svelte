@@ -6,7 +6,6 @@
   import ButtonContextMenu from '$lib/components/shared-components/context-menu/ButtonContextMenu.svelte';
   import ControlAppBar from '$lib/components/shared-components/ControlAppBar.svelte';
   import GalleryViewer from '$lib/components/shared-components/gallery-viewer/GalleryViewer.svelte';
-  import SearchBar from '$lib/components/shared-components/search-bar/SearchBar.svelte';
   import ArchiveAction from '$lib/components/timeline/actions/ArchiveAction.svelte';
   import ChangeDate from '$lib/components/timeline/actions/ChangeDateAction.svelte';
   import ChangeDescription from '$lib/components/timeline/actions/ChangeDescriptionAction.svelte';
@@ -23,6 +22,7 @@
   import { assetMultiSelectManager } from '$lib/managers/asset-multi-select-manager.svelte';
   import { authManager } from '$lib/managers/auth-manager.svelte';
   import { featureFlagsManager } from '$lib/managers/feature-flags-manager.svelte';
+  import { globalSearchManager } from '$lib/managers/global-search-manager.svelte';
   import type { Viewport } from '$lib/managers/timeline-manager/types';
   import { Route } from '$lib/route';
   import { getAssetBulkActions } from '$lib/services/asset.service';
@@ -391,14 +391,25 @@
           {/if}
         </AssetSelectControlBar>
       </div>
-    {:else}
-      <div class="fixed inset-s-0 top-0 z-2 w-full">
-        <ControlAppBar onClose={() => goto(previousRoute)} backIcon={mdiArrowLeft}>
-          <div class="mx-auto w-full max-w-2xl pe-2">
-            <SearchBar grayTheme={false} value={terms?.query ?? ''} searchQuery={terms} />
-          </div>
-        </ControlAppBar>
-      </div>
+      {:else}
+        <div class="fixed inset-s-0 top-0 z-2 w-full">
+          <ControlAppBar onClose={() => goto(previousRoute)} backIcon={mdiArrowLeft}>
+            <div class="mx-auto w-full max-w-2xl pe-2">
+              <div
+                class="flex flex-wrap items-center gap-2 rounded-xl border border-gray-200/80 bg-white/90 px-4 py-2 text-sm text-gray-700 shadow-sm dark:border-gray-700 dark:bg-immich-dark-gray/90 dark:text-gray-200"
+              >
+                <span>{$t('search_legacy_notice')}</span>
+                <button
+                  type="button"
+                  class="font-medium text-primary hover:text-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                  onclick={() => globalSearchManager.open()}
+                >
+                  {$t('search_open_palette')}
+                </button>
+              </div>
+            </div>
+          </ControlAppBar>
+        </div>
     {/if}
   </section>
 </section>
