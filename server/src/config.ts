@@ -17,6 +17,8 @@ import {
 } from 'src/enum';
 import { ConcurrentQueueName, FullsizeImageOptions, ImageOptions } from 'src/types';
 
+export type ClassificationFaceExclusion = 'off' | 'any_assigned_face' | 'named_people' | 'named_visible_people';
+
 export type SystemConfig = {
   backup: {
     database: {
@@ -225,6 +227,7 @@ export type SystemConfig = {
       similarity: number;
       action: 'tag' | 'tag_and_archive';
       enabled: boolean;
+      faceExclusion: ClassificationFaceExclusion;
     }>;
   };
   user: {

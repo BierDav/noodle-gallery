@@ -153,6 +153,7 @@ part 'model/calendar_heatmap_type.dart';
 part 'model/cast_response.dart';
 part 'model/cast_update.dart';
 part 'model/change_password_dto.dart';
+part 'model/classification_face_exclusion.dart';
 part 'model/colorspace.dart';
 part 'model/contributor_count_response_dto.dart';
 part 'model/create_album_dto.dart';
