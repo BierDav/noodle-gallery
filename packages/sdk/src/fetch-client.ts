@@ -4649,7 +4649,8 @@ export function getAssetOcr({ id }: {
 /**
  * Download original asset
  */
-export function downloadAsset({ edited, id, key, slug }: {
+export function downloadAsset({ download, edited, id, key, slug }: {
+    download?: boolean;
     edited?: boolean;
     id: string;
     key?: string;
@@ -4659,6 +4660,7 @@ export function downloadAsset({ edited, id, key, slug }: {
         status: 200;
         data: Blob;
     }>(`/assets/${encodeURIComponent(id)}/original${QS.query(QS.explode({
+        download,
         edited,
         key,
         slug
