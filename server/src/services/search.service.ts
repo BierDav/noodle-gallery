@@ -51,11 +51,33 @@ type ResolvedSmartSearch = {
   timelineSpaceCount: number;
 };
 
+type ScopedPersonFilterOptions = {
+  personIds?: string[];
+  identityIds?: string[];
+  spacePersonIds?: string[];
+  forceEmptyResult?: boolean;
+  withSharedSpaces?: boolean;
+  spaceId?: string;
+  albumId?: string;
+  albumIds?: string[];
+  timelineSpaceIds?: string[];
+};
+
 @Injectable()
 export class SearchService extends BaseService {
   private embeddingCache = new LRUMap<string, string>(100);
 
   async searchPerson(auth: AuthDto, dto: SearchPeopleDto): Promise<PersonResponseDto[]> {
+    if (dto.withSharedSpaces) {
+      const { machineLearning } = await this.getConfig({ withCache: false });
+      return this.faceIdentityRepository.searchAccessiblePeople(auth.user.id, {
+        name: dto.name,
+        withHidden: dto.withHidden,
+        limit: 50,
+        minimumFaceCount: machineLearning.facialRecognition.minFaces,
+      });
+    }
+
     const people = await this.personRepository.getByName(auth.user.id, dto.name, { withHidden: dto.withHidden });
     return people.map((person) => mapPerson(person));
   }
@@ -94,6 +116,14 @@ export class SearchService extends BaseService {
       requireElevatedPermission(auth);
     }
 
+    if (dto.spaceId && dto.withSharedSpaces) {
+      throw new BadRequestException('Cannot use both spaceId and withSharedSpaces');
+    }
+
+    if (dto.spacePersonIds?.length && !dto.spaceId) {
+      throw new BadRequestException('spacePersonIds requires spaceId');
+    }
+
     if (dto.spaceId) {
       await this.requireAccess({ auth, permission: Permission.SharedSpaceRead, ids: [dto.spaceId] });
     }
@@ -116,10 +146,12 @@ export class SearchService extends BaseService {
 
     const page = dto.page ?? 1;
     const size = dto.size || 250;
+    const timelineSpaceIds = await this.getTimelineSpaceIds(auth, dto.withSharedSpaces || !!dto.albumIds?.length);
+    const resolvedDto = await this.resolveScopedPersonFilters(auth, { ...dto, timelineSpaceIds });
     const { hasNextPage, items } = await this.searchRepository.searchMetadata(
       { page, size },
       {
-        ...dto,
+        ...resolvedDto,
         checksum,
         visibility: dto.visibility ?? (auth.session?.hasElevatedPermission ? undefined : 'not-locked'),
         userIds,
@@ -131,13 +163,27 @@ export class SearchService extends BaseService {
   }
 
   async searchStatistics(auth: AuthDto, dto: StatisticsSearchDto): Promise<SearchStatisticsResponseDto> {
+    if (dto.spaceId && dto.withSharedSpaces) {
+      throw new BadRequestException('Cannot use both spaceId and withSharedSpaces');
+    }
+
+    if (dto.spacePersonIds?.length && !dto.spaceId) {
+      throw new BadRequestException('spacePersonIds requires spaceId');
+    }
+
+    if (dto.spaceId) {
+      await this.requireAccess({ auth, permission: Permission.SharedSpaceRead, ids: [dto.spaceId] });
+    }
+
     const userIds = await this.getUserIdsToSearch(auth, dto.visibility);
     if (dto.visibility === AssetVisibility.Locked) {
       requireElevatedPermission(auth);
     }
+    const timelineSpaceIds = await this.getTimelineSpaceIds(auth, dto.withSharedSpaces || !!dto.albumIds?.length);
+    const resolvedDto = await this.resolveScopedPersonFilters(auth, { ...dto, timelineSpaceIds });
 
     return await this.searchRepository.searchStatistics({
-      ...dto,
+      ...resolvedDto,
       visibility: dto.visibility ?? (auth.session?.hasElevatedPermission ? undefined : 'not-locked'),
       userIds,
     });
@@ -148,15 +194,25 @@ export class SearchService extends BaseService {
       requireElevatedPermission(auth);
     }
 
+    if (dto.spaceId && dto.withSharedSpaces) {
+      throw new BadRequestException('Cannot use both spaceId and withSharedSpaces');
+    }
+
+    if (dto.spacePersonIds?.length && !dto.spaceId) {
+      throw new BadRequestException('spacePersonIds requires spaceId');
+    }
+
     if (dto.spaceId) {
       await this.requireAccess({ auth, permission: Permission.SharedSpaceRead, ids: [dto.spaceId] });
     }
 
     const userIds = await this.getUserIdsToSearch(auth, dto.visibility);
+    const timelineSpaceIds = await this.getTimelineSpaceIds(auth, dto.withSharedSpaces || !!dto.albumIds?.length);
+    const resolvedDto = await this.resolveScopedPersonFilters(auth, { ...dto, timelineSpaceIds });
     const items = await this.searchRepository.searchRandom(dto.size || 250, {
-      ...dto,
-      visibility: dto.visibility ?? (auth.session?.hasElevatedPermission ? undefined : 'not-locked'),
+      ...resolvedDto,
       userIds,
+      visibility: dto.visibility ?? (auth.session?.hasElevatedPermission ? undefined : 'not-locked'),
     });
     return items.map((item) => mapAsset(item, { auth }));
   }
@@ -166,13 +222,23 @@ export class SearchService extends BaseService {
       requireElevatedPermission(auth);
     }
 
+    if (dto.spaceId && dto.withSharedSpaces) {
+      throw new BadRequestException('Cannot use both spaceId and withSharedSpaces');
+    }
+
+    if (dto.spacePersonIds?.length && !dto.spaceId) {
+      throw new BadRequestException('spacePersonIds requires spaceId');
+    }
+
     if (dto.spaceId) {
       await this.requireAccess({ auth, permission: Permission.SharedSpaceRead, ids: [dto.spaceId] });
     }
 
     const userIds = await this.getUserIdsToSearch(auth, dto.visibility);
+    const timelineSpaceIds = await this.getTimelineSpaceIds(auth, dto.withSharedSpaces || !!dto.albumIds?.length);
+    const resolvedDto = await this.resolveScopedPersonFilters(auth, { ...dto, timelineSpaceIds });
     const items = await this.searchRepository.searchLargeAssets(dto.size || 250, {
-      ...dto,
+      ...resolvedDto,
       visibility: dto.visibility ?? (auth.session?.hasElevatedPermission ? undefined : 'not-locked'),
       userIds,
     });
@@ -258,14 +324,15 @@ export class SearchService extends BaseService {
     const userIds = await this.getUserIdsToSearch(auth);
 
     let timelineSpaceIds: string[] | undefined;
-    if (!dto.albumId && dto.withSharedSpaces) {
+    if (dto.withSharedSpaces || dto.albumId) {
       const spaceRows = await this.sharedSpaceRepository.getSpaceIdsForTimeline(auth.user.id);
       if (spaceRows.length > 0) {
         timelineSpaceIds = spaceRows.map((row) => row.spaceId);
       }
     }
 
-    const suggestions = await this.getSuggestions(userIds, { ...dto, timelineSpaceIds });
+    const resolvedDto = await this.resolveScopedPersonFilters(auth, { ...dto, timelineSpaceIds });
+    const suggestions = await this.getSuggestions(userIds, resolvedDto);
     if (dto.includeNull) {
       suggestions.push(null);
     }
@@ -316,19 +383,20 @@ export class SearchService extends BaseService {
     const userIds = await this.getUserIdsToSearch(auth);
 
     let timelineSpaceIds: string[] | undefined;
-    if (!dto.albumId && dto.withSharedSpaces) {
+    if (dto.withSharedSpaces || dto.albumId) {
       const spaceRows = await this.sharedSpaceRepository.getSpaceIdsForTimeline(auth.user.id);
       if (spaceRows.length > 0) {
         timelineSpaceIds = spaceRows.map((row) => row.spaceId);
       }
     }
 
-    return await this.searchRepository.getFilterSuggestions(userIds, { ...dto, timelineSpaceIds });
+    const resolvedDto = await this.resolveScopedPersonFilters(auth, { ...dto, timelineSpaceIds });
+    return await this.searchRepository.getFilterSuggestions(userIds, resolvedDto);
   }
 
   private getSuggestions(
     userIds: string[],
-    dto: SearchSuggestionRequestDto & { timelineSpaceIds?: string[] },
+    dto: SearchSuggestionRequestDto & ScopedPersonFilterOptions,
   ): Promise<Array<string | null>> {
     switch (dto.type) {
       case SearchSuggestionType.COUNTRY: {
@@ -413,7 +481,7 @@ export class SearchService extends BaseService {
     }
 
     let timelineSpaceIds: string[] | undefined;
-    if (dto.withSharedSpaces) {
+    if (dto.withSharedSpaces || !!('albumIds' in dto && dto.albumIds?.length)) {
       const spaceRows = await this.sharedSpaceRepository.getSpaceIdsForTimeline(auth.user.id);
       if (spaceRows.length > 0) {
         timelineSpaceIds = spaceRows.map((row) => row.spaceId);
@@ -421,14 +489,14 @@ export class SearchService extends BaseService {
     }
 
     const visibility = 'visibility' in dto ? dto.visibility : undefined;
-    const resolvedOptions = {
+    const resolvedOptions = await this.resolveScopedPersonFilters(auth, {
       ...dto,
       timelineSpaceIds,
       userIds: await this.getUserIdsToSearch(auth, visibility),
       embedding,
       maxDistance: machineLearning.clip.maxDistance,
       visibility: visibility ?? (auth.session?.hasElevatedPermission ? undefined : 'not-locked'),
-    };
+    });
 
     if (options.includeOrder) {
       Object.assign(resolvedOptions, { orderDirection: 'order' in dto ? dto.order : undefined });
@@ -453,6 +521,47 @@ export class SearchService extends BaseService {
       timelineEnabled: true,
     });
     return [auth.user.id, ...partnerIds];
+  }
+
+  private async getTimelineSpaceIds(auth: AuthDto, withSharedSpaces?: boolean): Promise<string[] | undefined> {
+    if (!withSharedSpaces) {
+      return;
+    }
+
+    const spaceRows = await this.sharedSpaceRepository.getSpaceIdsForTimeline(auth.user.id);
+    return spaceRows.length > 0 ? spaceRows.map((row) => row.spaceId) : undefined;
+  }
+
+  private async resolveScopedPersonFilters<T extends ScopedPersonFilterOptions>(
+    auth: AuthDto,
+    dto: T,
+  ): Promise<T & ScopedPersonFilterOptions> {
+    const tokens = dto.personIds?.filter(Boolean) ?? [];
+    const hasScopedTokens = tokens.some((token) => token.includes(':'));
+    const isGlobalSharedScope = dto.withSharedSpaces || !!dto.albumId || !!dto.albumIds?.length;
+    const shouldResolve = tokens.length > 0 && (isGlobalSharedScope || hasScopedTokens);
+
+    if (!shouldResolve) {
+      return dto;
+    }
+
+    const resolution = await this.faceIdentityRepository.resolveScopedPersonTokens({
+      userId: auth.user.id,
+      tokens,
+      scope: {
+        withSharedSpaces: isGlobalSharedScope,
+        timelineSpaceIds: dto.timelineSpaceIds,
+        spaceId: dto.spaceId,
+      },
+    });
+
+    return {
+      ...dto,
+      personIds: resolution.legacyPersonIds,
+      identityIds: resolution.identityIds,
+      spacePersonIds: [...new Set([...(dto.spacePersonIds ?? []), ...resolution.legacySpacePersonIds])],
+      forceEmptyResult: dto.forceEmptyResult || resolution.hasInaccessibleToken,
+    };
   }
 
   private mapResponse(assets: MapAsset[], nextPage: string | null, options: AssetMapOptions): SearchResponseDto {
