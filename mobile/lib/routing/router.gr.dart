@@ -1363,22 +1363,6 @@ class HeaderSettingsRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [LibraryPage]
-class LibraryRoute extends PageRouteInfo<void> {
-  const LibraryRoute({List<PageRouteInfo>? children})
-    : super(LibraryRoute.name, initialChildren: children);
-
-  static const String name = 'LibraryRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const LibraryPage();
-    },
-  );
-}
-
-/// generated route for
 /// [LocalMediaSummaryPage]
 class LocalMediaSummaryRoute extends PageRouteInfo<void> {
   const LocalMediaSummaryRoute({List<PageRouteInfo>? children})
