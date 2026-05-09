@@ -123,6 +123,7 @@ describe('/server', () => {
         sidecar: true,
         trash: true,
         email: false,
+        peopleStatistics: false,
       });
     });
   });
