@@ -25,7 +25,7 @@ class TagsApi {
   /// Parameters:
   ///
   /// * [TagBulkAssetsDto] tagBulkAssetsDto (required):
-  Future<Response> bulkTagAssetsWithHttpInfo(TagBulkAssetsDto tagBulkAssetsDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> bulkTagAssetsWithHttpInfo(TagBulkAssetsDto tagBulkAssetsDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/tags/assets';
 
@@ -47,7 +47,6 @@ class TagsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -58,8 +57,8 @@ class TagsApi {
   /// Parameters:
   ///
   /// * [TagBulkAssetsDto] tagBulkAssetsDto (required):
-  Future<TagBulkAssetsResponseDto?> bulkTagAssets(TagBulkAssetsDto tagBulkAssetsDto, { Future<void>? abortTrigger, }) async {
-    final response = await bulkTagAssetsWithHttpInfo(tagBulkAssetsDto, abortTrigger: abortTrigger,);
+  Future<TagBulkAssetsResponseDto?> bulkTagAssets(TagBulkAssetsDto tagBulkAssetsDto,) async {
+    final response = await bulkTagAssetsWithHttpInfo(tagBulkAssetsDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -82,7 +81,7 @@ class TagsApi {
   /// Parameters:
   ///
   /// * [TagCreateDto] tagCreateDto (required):
-  Future<Response> createTagWithHttpInfo(TagCreateDto tagCreateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> createTagWithHttpInfo(TagCreateDto tagCreateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/tags';
 
@@ -104,7 +103,6 @@ class TagsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -115,8 +113,8 @@ class TagsApi {
   /// Parameters:
   ///
   /// * [TagCreateDto] tagCreateDto (required):
-  Future<TagResponseDto?> createTag(TagCreateDto tagCreateDto, { Future<void>? abortTrigger, }) async {
-    final response = await createTagWithHttpInfo(tagCreateDto, abortTrigger: abortTrigger,);
+  Future<TagResponseDto?> createTag(TagCreateDto tagCreateDto,) async {
+    final response = await createTagWithHttpInfo(tagCreateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -139,7 +137,7 @@ class TagsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> deleteTagWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteTagWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/tags/{id}'
       .replaceAll('{id}', id);
@@ -162,7 +160,6 @@ class TagsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -173,11 +170,19 @@ class TagsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> deleteTag(String id, { Future<void>? abortTrigger, }) async {
-    final response = await deleteTagWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<bool?> deleteTag(String id,) async {
+    final response = await deleteTagWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Retrieve tags
@@ -185,7 +190,7 @@ class TagsApi {
   /// Retrieve a list of all tags.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAllTagsWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getAllTagsWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/tags';
 
@@ -207,15 +212,14 @@ class TagsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve tags
   ///
   /// Retrieve a list of all tags.
-  Future<List<TagResponseDto>?> getAllTags({ Future<void>? abortTrigger, }) async {
-    final response = await getAllTagsWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<List<TagResponseDto>?> getAllTags() async {
+    final response = await getAllTagsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -241,7 +245,7 @@ class TagsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getTagByIdWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getTagByIdWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/tags/{id}'
       .replaceAll('{id}', id);
@@ -264,7 +268,6 @@ class TagsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -275,8 +278,8 @@ class TagsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<TagResponseDto?> getTagById(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getTagByIdWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<TagResponseDto?> getTagById(String id,) async {
+    final response = await getTagByIdWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -301,7 +304,7 @@ class TagsApi {
   /// * [String] id (required):
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<Response> tagAssetsWithHttpInfo(String id, BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> tagAssetsWithHttpInfo(String id, BulkIdsDto bulkIdsDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/tags/{id}/assets'
       .replaceAll('{id}', id);
@@ -324,7 +327,6 @@ class TagsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -337,8 +339,8 @@ class TagsApi {
   /// * [String] id (required):
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<List<BulkIdResponseDto>?> tagAssets(String id, BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
-    final response = await tagAssetsWithHttpInfo(id, bulkIdsDto, abortTrigger: abortTrigger,);
+  Future<List<BulkIdResponseDto>?> tagAssets(String id, BulkIdsDto bulkIdsDto,) async {
+    final response = await tagAssetsWithHttpInfo(id, bulkIdsDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -366,7 +368,7 @@ class TagsApi {
   /// * [String] id (required):
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<Response> untagAssetsWithHttpInfo(String id, BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> untagAssetsWithHttpInfo(String id, BulkIdsDto bulkIdsDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/tags/{id}/assets'
       .replaceAll('{id}', id);
@@ -389,7 +391,6 @@ class TagsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -402,8 +403,8 @@ class TagsApi {
   /// * [String] id (required):
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<List<BulkIdResponseDto>?> untagAssets(String id, BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
-    final response = await untagAssetsWithHttpInfo(id, bulkIdsDto, abortTrigger: abortTrigger,);
+  Future<List<BulkIdResponseDto>?> untagAssets(String id, BulkIdsDto bulkIdsDto,) async {
+    final response = await untagAssetsWithHttpInfo(id, bulkIdsDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -431,7 +432,7 @@ class TagsApi {
   /// * [String] id (required):
   ///
   /// * [TagUpdateDto] tagUpdateDto (required):
-  Future<Response> updateTagWithHttpInfo(String id, TagUpdateDto tagUpdateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateTagWithHttpInfo(String id, TagUpdateDto tagUpdateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/tags/{id}'
       .replaceAll('{id}', id);
@@ -454,7 +455,6 @@ class TagsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -467,8 +467,8 @@ class TagsApi {
   /// * [String] id (required):
   ///
   /// * [TagUpdateDto] tagUpdateDto (required):
-  Future<TagResponseDto?> updateTag(String id, TagUpdateDto tagUpdateDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateTagWithHttpInfo(id, tagUpdateDto, abortTrigger: abortTrigger,);
+  Future<TagResponseDto?> updateTag(String id, TagUpdateDto tagUpdateDto,) async {
+    final response = await updateTagWithHttpInfo(id, tagUpdateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -491,7 +491,7 @@ class TagsApi {
   /// Parameters:
   ///
   /// * [TagUpsertDto] tagUpsertDto (required):
-  Future<Response> upsertTagsWithHttpInfo(TagUpsertDto tagUpsertDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> upsertTagsWithHttpInfo(TagUpsertDto tagUpsertDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/tags';
 
@@ -513,7 +513,6 @@ class TagsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -524,8 +523,8 @@ class TagsApi {
   /// Parameters:
   ///
   /// * [TagUpsertDto] tagUpsertDto (required):
-  Future<List<TagResponseDto>?> upsertTags(TagUpsertDto tagUpsertDto, { Future<void>? abortTrigger, }) async {
-    final response = await upsertTagsWithHttpInfo(tagUpsertDto, abortTrigger: abortTrigger,);
+  Future<List<TagResponseDto>?> upsertTags(TagUpsertDto tagUpsertDto,) async {
+    final response = await upsertTagsWithHttpInfo(tagUpsertDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

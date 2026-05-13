@@ -25,7 +25,7 @@ class ViewsApi {
   /// Parameters:
   ///
   /// * [String] path (required):
-  Future<Response> getAssetsByOriginalPathWithHttpInfo(String path, { Future<void>? abortTrigger, }) async {
+  Future<Response> getAssetsByOriginalPathWithHttpInfo(String path,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/view/folder';
 
@@ -49,7 +49,6 @@ class ViewsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -60,8 +59,8 @@ class ViewsApi {
   /// Parameters:
   ///
   /// * [String] path (required):
-  Future<List<AssetResponseDto>?> getAssetsByOriginalPath(String path, { Future<void>? abortTrigger, }) async {
-    final response = await getAssetsByOriginalPathWithHttpInfo(path, abortTrigger: abortTrigger,);
+  Future<List<AssetResponseDto>?> getAssetsByOriginalPath(String path,) async {
+    final response = await getAssetsByOriginalPathWithHttpInfo(path,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -83,7 +82,7 @@ class ViewsApi {
   /// Retrieve a list of unique folder paths from asset original paths.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getUniqueOriginalPathsWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getUniqueOriginalPathsWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/view/folder/unique-paths';
 
@@ -105,28 +104,16 @@ class ViewsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve unique paths
   ///
   /// Retrieve a list of unique folder paths from asset original paths.
-  Future<List<String>?> getUniqueOriginalPaths({ Future<void>? abortTrigger, }) async {
-    final response = await getUniqueOriginalPathsWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<void> getUniqueOriginalPaths() async {
+    final response = await getUniqueOriginalPathsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      final responseBody = await _decodeBodyBytes(response);
-      return (await apiClient.deserializeAsync(responseBody, 'List<String>') as List)
-        .cast<String>()
-        .toList(growable: false);
-
-    }
-    return null;
   }
 }

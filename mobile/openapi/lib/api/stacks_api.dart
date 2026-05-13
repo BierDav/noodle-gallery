@@ -25,7 +25,7 @@ class StacksApi {
   /// Parameters:
   ///
   /// * [StackCreateDto] stackCreateDto (required):
-  Future<Response> createStackWithHttpInfo(StackCreateDto stackCreateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> createStackWithHttpInfo(StackCreateDto stackCreateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/stacks';
 
@@ -47,7 +47,6 @@ class StacksApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -58,8 +57,8 @@ class StacksApi {
   /// Parameters:
   ///
   /// * [StackCreateDto] stackCreateDto (required):
-  Future<StackResponseDto?> createStack(StackCreateDto stackCreateDto, { Future<void>? abortTrigger, }) async {
-    final response = await createStackWithHttpInfo(stackCreateDto, abortTrigger: abortTrigger,);
+  Future<StackResponseDto?> createStack(StackCreateDto stackCreateDto,) async {
+    final response = await createStackWithHttpInfo(stackCreateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -82,7 +81,7 @@ class StacksApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> deleteStackWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteStackWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/stacks/{id}'
       .replaceAll('{id}', id);
@@ -105,7 +104,6 @@ class StacksApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -116,11 +114,19 @@ class StacksApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> deleteStack(String id, { Future<void>? abortTrigger, }) async {
-    final response = await deleteStackWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<bool?> deleteStack(String id,) async {
+    final response = await deleteStackWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Delete stacks
@@ -132,7 +138,7 @@ class StacksApi {
   /// Parameters:
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<Response> deleteStacksWithHttpInfo(BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteStacksWithHttpInfo(BulkIdsDto bulkIdsDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/stacks';
 
@@ -154,7 +160,6 @@ class StacksApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -165,11 +170,19 @@ class StacksApi {
   /// Parameters:
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<void> deleteStacks(BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
-    final response = await deleteStacksWithHttpInfo(bulkIdsDto, abortTrigger: abortTrigger,);
+  Future<bool?> deleteStacks(BulkIdsDto bulkIdsDto,) async {
+    final response = await deleteStacksWithHttpInfo(bulkIdsDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Retrieve a stack
@@ -181,7 +194,7 @@ class StacksApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getStackWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getStackWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/stacks/{id}'
       .replaceAll('{id}', id);
@@ -204,7 +217,6 @@ class StacksApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -215,8 +227,8 @@ class StacksApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<StackResponseDto?> getStack(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getStackWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<StackResponseDto?> getStack(String id,) async {
+    final response = await getStackWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -241,7 +253,7 @@ class StacksApi {
   /// * [String] assetId (required):
   ///
   /// * [String] id (required):
-  Future<Response> removeAssetFromStackWithHttpInfo(String assetId, String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> removeAssetFromStackWithHttpInfo(String assetId, String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/stacks/{id}/assets/{assetId}'
       .replaceAll('{assetId}', assetId)
@@ -265,7 +277,6 @@ class StacksApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -278,11 +289,19 @@ class StacksApi {
   /// * [String] assetId (required):
   ///
   /// * [String] id (required):
-  Future<void> removeAssetFromStack(String assetId, String id, { Future<void>? abortTrigger, }) async {
-    final response = await removeAssetFromStackWithHttpInfo(assetId, id, abortTrigger: abortTrigger,);
+  Future<bool?> removeAssetFromStack(String assetId, String id,) async {
+    final response = await removeAssetFromStackWithHttpInfo(assetId, id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Retrieve stacks
@@ -295,7 +314,7 @@ class StacksApi {
   ///
   /// * [String] primaryAssetId:
   ///   Filter by primary asset ID
-  Future<Response> searchStacksWithHttpInfo({ String? primaryAssetId, Future<void>? abortTrigger, }) async {
+  Future<Response> searchStacksWithHttpInfo({ String? primaryAssetId, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/stacks';
 
@@ -321,7 +340,6 @@ class StacksApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -333,8 +351,8 @@ class StacksApi {
   ///
   /// * [String] primaryAssetId:
   ///   Filter by primary asset ID
-  Future<List<StackResponseDto>?> searchStacks({ String? primaryAssetId, Future<void>? abortTrigger, }) async {
-    final response = await searchStacksWithHttpInfo(primaryAssetId: primaryAssetId, abortTrigger: abortTrigger,);
+  Future<List<StackResponseDto>?> searchStacks({ String? primaryAssetId, }) async {
+    final response = await searchStacksWithHttpInfo( primaryAssetId: primaryAssetId, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -362,7 +380,7 @@ class StacksApi {
   /// * [String] id (required):
   ///
   /// * [StackUpdateDto] stackUpdateDto (required):
-  Future<Response> updateStackWithHttpInfo(String id, StackUpdateDto stackUpdateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateStackWithHttpInfo(String id, StackUpdateDto stackUpdateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/stacks/{id}'
       .replaceAll('{id}', id);
@@ -385,7 +403,6 @@ class StacksApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -398,8 +415,8 @@ class StacksApi {
   /// * [String] id (required):
   ///
   /// * [StackUpdateDto] stackUpdateDto (required):
-  Future<StackResponseDto?> updateStack(String id, StackUpdateDto stackUpdateDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateStackWithHttpInfo(id, stackUpdateDto, abortTrigger: abortTrigger,);
+  Future<StackResponseDto?> updateStack(String id, StackUpdateDto stackUpdateDto,) async {
+    final response = await updateStackWithHttpInfo(id, stackUpdateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

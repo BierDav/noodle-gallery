@@ -26,7 +26,7 @@ class UsersApi {
   ///
   /// * [MultipartFile] file (required):
   ///   Profile image file
-  Future<Response> createProfileImageWithHttpInfo(MultipartFile file, { Future<void>? abortTrigger, }) async {
+  Future<Response> createProfileImageWithHttpInfo(MultipartFile file,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/profile-image';
 
@@ -58,7 +58,6 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -70,8 +69,8 @@ class UsersApi {
   ///
   /// * [MultipartFile] file (required):
   ///   Profile image file
-  Future<CreateProfileImageResponseDto?> createProfileImage(MultipartFile file, { Future<void>? abortTrigger, }) async {
-    final response = await createProfileImageWithHttpInfo(file, abortTrigger: abortTrigger,);
+  Future<CreateProfileImageResponseDto?> createProfileImage(MultipartFile file,) async {
+    final response = await createProfileImageWithHttpInfo(file,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -90,7 +89,7 @@ class UsersApi {
   /// Delete the profile image of the current user.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> deleteProfileImageWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> deleteProfileImageWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/profile-image';
 
@@ -112,18 +111,25 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Delete user profile image
   ///
   /// Delete the profile image of the current user.
-  Future<void> deleteProfileImage({ Future<void>? abortTrigger, }) async {
-    final response = await deleteProfileImageWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<bool?> deleteProfileImage() async {
+    final response = await deleteProfileImageWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Delete user product key
@@ -131,7 +137,7 @@ class UsersApi {
   /// Delete the registered product key for the current user.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> deleteUserLicenseWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> deleteUserLicenseWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/me/license';
 
@@ -153,18 +159,25 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Delete user product key
   ///
   /// Delete the registered product key for the current user.
-  Future<void> deleteUserLicense({ Future<void>? abortTrigger, }) async {
-    final response = await deleteUserLicenseWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<bool?> deleteUserLicense() async {
+    final response = await deleteUserLicenseWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Delete user onboarding
@@ -172,7 +185,7 @@ class UsersApi {
   /// Delete the onboarding status of the current user.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> deleteUserOnboardingWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> deleteUserOnboardingWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/me/onboarding';
 
@@ -194,86 +207,14 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Delete user onboarding
   ///
   /// Delete the onboarding status of the current user.
-  Future<void> deleteUserOnboarding({ Future<void>? abortTrigger, }) async {
-    final response = await deleteUserOnboardingWithHttpInfo(abortTrigger: abortTrigger,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
-  /// Retrieve calendar heatmap activity
-  ///
-  /// Retrieve activity counts for a specified period, in a calendar heatmap format.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [DateTime] from:
-  ///   Start date in UTC
-  ///
-  /// * [DateTime] to:
-  ///   End date in UTC
-  ///
-  /// * [CalendarHeatmapType] type:
-  Future<Response> getMyCalendarHeatmapWithHttpInfo({ DateTime? from, DateTime? to, CalendarHeatmapType? type, Future<void>? abortTrigger, }) async {
-    // ignore: prefer_const_declarations
-    final apiPath = r'/users/me/calendar-heatmap';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    if (from != null) {
-      queryParams.addAll(_queryParams('', 'from', from));
-    }
-    if (to != null) {
-      queryParams.addAll(_queryParams('', 'to', to));
-    }
-    if (type != null) {
-      queryParams.addAll(_queryParams('', 'type', type));
-    }
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      apiPath,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
-    );
-  }
-
-  /// Retrieve calendar heatmap activity
-  ///
-  /// Retrieve activity counts for a specified period, in a calendar heatmap format.
-  ///
-  /// Parameters:
-  ///
-  /// * [DateTime] from:
-  ///   Start date in UTC
-  ///
-  /// * [DateTime] to:
-  ///   End date in UTC
-  ///
-  /// * [CalendarHeatmapType] type:
-  Future<CalendarHeatmapResponseDto?> getMyCalendarHeatmap({ DateTime? from, DateTime? to, CalendarHeatmapType? type, Future<void>? abortTrigger, }) async {
-    final response = await getMyCalendarHeatmapWithHttpInfo(from: from, to: to, type: type, abortTrigger: abortTrigger,);
+  Future<bool?> deleteUserOnboarding() async {
+    final response = await deleteUserOnboardingWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -281,7 +222,7 @@ class UsersApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'CalendarHeatmapResponseDto',) as CalendarHeatmapResponseDto;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
     
     }
     return null;
@@ -292,7 +233,7 @@ class UsersApi {
   /// Retrieve the preferences for the current user.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getMyPreferencesWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getMyPreferencesWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/me/preferences';
 
@@ -314,15 +255,14 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get my preferences
   ///
   /// Retrieve the preferences for the current user.
-  Future<UserPreferencesResponseDto?> getMyPreferences({ Future<void>? abortTrigger, }) async {
-    final response = await getMyPreferencesWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<UserPreferencesResponseDto?> getMyPreferences() async {
+    final response = await getMyPreferencesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -341,7 +281,7 @@ class UsersApi {
   /// Retrieve information about the user making the API request.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getMyUserWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getMyUserWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/me';
 
@@ -363,15 +303,14 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get current user
   ///
   /// Retrieve information about the user making the API request.
-  Future<UserAdminResponseDto?> getMyUser({ Future<void>? abortTrigger, }) async {
-    final response = await getMyUserWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<UserAdminResponseDto?> getMyUser() async {
+    final response = await getMyUserWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -394,7 +333,7 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getProfileImageWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getProfileImageWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/{id}/profile-image'
       .replaceAll('{id}', id);
@@ -417,7 +356,6 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -428,8 +366,8 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<MultipartFile?> getProfileImage(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getProfileImageWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<MultipartFile?> getProfileImage(String id,) async {
+    final response = await getProfileImageWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -452,7 +390,7 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getUserWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getUserWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/{id}'
       .replaceAll('{id}', id);
@@ -475,7 +413,6 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -486,8 +423,8 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<UserResponseDto?> getUser(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getUserWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<UserResponseDto?> getUser(String id,) async {
+    final response = await getUserWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -506,7 +443,7 @@ class UsersApi {
   /// Retrieve information about whether the current user has a registered product key.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getUserLicenseWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getUserLicenseWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/me/license';
 
@@ -528,15 +465,14 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve user product key
   ///
   /// Retrieve information about whether the current user has a registered product key.
-  Future<UserLicense?> getUserLicense({ Future<void>? abortTrigger, }) async {
-    final response = await getUserLicenseWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<UserLicense?> getUserLicense() async {
+    final response = await getUserLicenseWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -555,7 +491,7 @@ class UsersApi {
   /// Retrieve the onboarding status of the current user.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getUserOnboardingWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getUserOnboardingWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/me/onboarding';
 
@@ -577,15 +513,14 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve user onboarding
   ///
   /// Retrieve the onboarding status of the current user.
-  Future<OnboardingResponseDto?> getUserOnboarding({ Future<void>? abortTrigger, }) async {
-    final response = await getUserOnboardingWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<OnboardingResponseDto?> getUserOnboarding() async {
+    final response = await getUserOnboardingWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -604,7 +539,7 @@ class UsersApi {
   /// Retrieve a list of all users on the server.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> searchUsersWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> searchUsersWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users';
 
@@ -626,15 +561,14 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Get all users
   ///
   /// Retrieve a list of all users on the server.
-  Future<List<UserResponseDto>?> searchUsers({ Future<void>? abortTrigger, }) async {
-    final response = await searchUsersWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<List<UserResponseDto>?> searchUsers() async {
+    final response = await searchUsersWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -660,7 +594,7 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [LicenseKeyDto] licenseKeyDto (required):
-  Future<Response> setUserLicenseWithHttpInfo(LicenseKeyDto licenseKeyDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> setUserLicenseWithHttpInfo(LicenseKeyDto licenseKeyDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/me/license';
 
@@ -682,7 +616,6 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -693,8 +626,8 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [LicenseKeyDto] licenseKeyDto (required):
-  Future<UserLicense?> setUserLicense(LicenseKeyDto licenseKeyDto, { Future<void>? abortTrigger, }) async {
-    final response = await setUserLicenseWithHttpInfo(licenseKeyDto, abortTrigger: abortTrigger,);
+  Future<UserLicense?> setUserLicense(LicenseKeyDto licenseKeyDto,) async {
+    final response = await setUserLicenseWithHttpInfo(licenseKeyDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -717,7 +650,7 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [OnboardingDto] onboardingDto (required):
-  Future<Response> setUserOnboardingWithHttpInfo(OnboardingDto onboardingDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> setUserOnboardingWithHttpInfo(OnboardingDto onboardingDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/me/onboarding';
 
@@ -739,7 +672,6 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -750,8 +682,8 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [OnboardingDto] onboardingDto (required):
-  Future<OnboardingResponseDto?> setUserOnboarding(OnboardingDto onboardingDto, { Future<void>? abortTrigger, }) async {
-    final response = await setUserOnboardingWithHttpInfo(onboardingDto, abortTrigger: abortTrigger,);
+  Future<OnboardingResponseDto?> setUserOnboarding(OnboardingDto onboardingDto,) async {
+    final response = await setUserOnboardingWithHttpInfo(onboardingDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -774,7 +706,7 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [UserPreferencesUpdateDto] userPreferencesUpdateDto (required):
-  Future<Response> updateMyPreferencesWithHttpInfo(UserPreferencesUpdateDto userPreferencesUpdateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateMyPreferencesWithHttpInfo(UserPreferencesUpdateDto userPreferencesUpdateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/me/preferences';
 
@@ -796,7 +728,6 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -807,8 +738,8 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [UserPreferencesUpdateDto] userPreferencesUpdateDto (required):
-  Future<UserPreferencesResponseDto?> updateMyPreferences(UserPreferencesUpdateDto userPreferencesUpdateDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateMyPreferencesWithHttpInfo(userPreferencesUpdateDto, abortTrigger: abortTrigger,);
+  Future<UserPreferencesResponseDto?> updateMyPreferences(UserPreferencesUpdateDto userPreferencesUpdateDto,) async {
+    final response = await updateMyPreferencesWithHttpInfo(userPreferencesUpdateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -831,7 +762,7 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [UserUpdateMeDto] userUpdateMeDto (required):
-  Future<Response> updateMyUserWithHttpInfo(UserUpdateMeDto userUpdateMeDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateMyUserWithHttpInfo(UserUpdateMeDto userUpdateMeDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/users/me';
 
@@ -853,7 +784,6 @@ class UsersApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -864,8 +794,8 @@ class UsersApi {
   /// Parameters:
   ///
   /// * [UserUpdateMeDto] userUpdateMeDto (required):
-  Future<UserAdminResponseDto?> updateMyUser(UserUpdateMeDto userUpdateMeDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateMyUserWithHttpInfo(userUpdateMeDto, abortTrigger: abortTrigger,);
+  Future<UserAdminResponseDto?> updateMyUser(UserUpdateMeDto userUpdateMeDto,) async {
+    final response = await updateMyUserWithHttpInfo(userUpdateMeDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

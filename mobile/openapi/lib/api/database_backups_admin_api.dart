@@ -25,7 +25,7 @@ class DatabaseBackupsAdminApi {
   /// Parameters:
   ///
   /// * [DatabaseBackupDeleteDto] databaseBackupDeleteDto (required):
-  Future<Response> deleteDatabaseBackupWithHttpInfo(DatabaseBackupDeleteDto databaseBackupDeleteDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteDatabaseBackupWithHttpInfo(DatabaseBackupDeleteDto databaseBackupDeleteDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/admin/database-backups';
 
@@ -47,7 +47,6 @@ class DatabaseBackupsAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -58,11 +57,19 @@ class DatabaseBackupsAdminApi {
   /// Parameters:
   ///
   /// * [DatabaseBackupDeleteDto] databaseBackupDeleteDto (required):
-  Future<void> deleteDatabaseBackup(DatabaseBackupDeleteDto databaseBackupDeleteDto, { Future<void>? abortTrigger, }) async {
-    final response = await deleteDatabaseBackupWithHttpInfo(databaseBackupDeleteDto, abortTrigger: abortTrigger,);
+  Future<bool?> deleteDatabaseBackup(DatabaseBackupDeleteDto databaseBackupDeleteDto,) async {
+    final response = await deleteDatabaseBackupWithHttpInfo(databaseBackupDeleteDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Download database backup
@@ -74,7 +81,7 @@ class DatabaseBackupsAdminApi {
   /// Parameters:
   ///
   /// * [String] filename (required):
-  Future<Response> downloadDatabaseBackupWithHttpInfo(String filename, { Future<void>? abortTrigger, }) async {
+  Future<Response> downloadDatabaseBackupWithHttpInfo(String filename,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/admin/database-backups/{filename}'
       .replaceAll('{filename}', filename);
@@ -97,7 +104,6 @@ class DatabaseBackupsAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -108,8 +114,8 @@ class DatabaseBackupsAdminApi {
   /// Parameters:
   ///
   /// * [String] filename (required):
-  Future<MultipartFile?> downloadDatabaseBackup(String filename, { Future<void>? abortTrigger, }) async {
-    final response = await downloadDatabaseBackupWithHttpInfo(filename, abortTrigger: abortTrigger,);
+  Future<MultipartFile?> downloadDatabaseBackup(String filename,) async {
+    final response = await downloadDatabaseBackupWithHttpInfo(filename,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -128,7 +134,7 @@ class DatabaseBackupsAdminApi {
   /// Get the list of the successful and failed backups
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> listDatabaseBackupsWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> listDatabaseBackupsWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/admin/database-backups';
 
@@ -150,15 +156,14 @@ class DatabaseBackupsAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// List database backups
   ///
   /// Get the list of the successful and failed backups
-  Future<DatabaseBackupListResponseDto?> listDatabaseBackups({ Future<void>? abortTrigger, }) async {
-    final response = await listDatabaseBackupsWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<DatabaseBackupListResponseDto?> listDatabaseBackups() async {
+    final response = await listDatabaseBackupsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -177,7 +182,7 @@ class DatabaseBackupsAdminApi {
   /// Put Immich into maintenance mode to restore a backup (Immich must not be configured)
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> startDatabaseRestoreFlowWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> startDatabaseRestoreFlowWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/admin/database-backups/start-restore';
 
@@ -199,18 +204,25 @@ class DatabaseBackupsAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Start database backup restore flow
   ///
   /// Put Immich into maintenance mode to restore a backup (Immich must not be configured)
-  Future<void> startDatabaseRestoreFlow({ Future<void>? abortTrigger, }) async {
-    final response = await startDatabaseRestoreFlowWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<bool?> startDatabaseRestoreFlow() async {
+    final response = await startDatabaseRestoreFlowWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Upload database backup
@@ -223,7 +235,7 @@ class DatabaseBackupsAdminApi {
   ///
   /// * [MultipartFile] file:
   ///   Database backup file
-  Future<Response> uploadDatabaseBackupWithHttpInfo({ MultipartFile? file, Future<void>? abortTrigger, }) async {
+  Future<Response> uploadDatabaseBackupWithHttpInfo({ MultipartFile? file, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/admin/database-backups/upload';
 
@@ -255,7 +267,6 @@ class DatabaseBackupsAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -267,10 +278,18 @@ class DatabaseBackupsAdminApi {
   ///
   /// * [MultipartFile] file:
   ///   Database backup file
-  Future<void> uploadDatabaseBackup({ MultipartFile? file, Future<void>? abortTrigger, }) async {
-    final response = await uploadDatabaseBackupWithHttpInfo(file: file, abortTrigger: abortTrigger,);
+  Future<bool?> uploadDatabaseBackup({ MultipartFile? file, }) async {
+    final response = await uploadDatabaseBackupWithHttpInfo( file: file, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 }

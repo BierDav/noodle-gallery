@@ -25,7 +25,7 @@ class SessionsApi {
   /// Parameters:
   ///
   /// * [SessionCreateDto] sessionCreateDto (required):
-  Future<Response> createSessionWithHttpInfo(SessionCreateDto sessionCreateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> createSessionWithHttpInfo(SessionCreateDto sessionCreateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/sessions';
 
@@ -47,7 +47,6 @@ class SessionsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -58,8 +57,8 @@ class SessionsApi {
   /// Parameters:
   ///
   /// * [SessionCreateDto] sessionCreateDto (required):
-  Future<SessionCreateResponseDto?> createSession(SessionCreateDto sessionCreateDto, { Future<void>? abortTrigger, }) async {
-    final response = await createSessionWithHttpInfo(sessionCreateDto, abortTrigger: abortTrigger,);
+  Future<SessionCreateResponseDto?> createSession(SessionCreateDto sessionCreateDto,) async {
+    final response = await createSessionWithHttpInfo(sessionCreateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -78,7 +77,7 @@ class SessionsApi {
   /// Delete all sessions for the user. This will not delete the current session.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> deleteAllSessionsWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> deleteAllSessionsWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/sessions';
 
@@ -100,18 +99,25 @@ class SessionsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Delete all sessions
   ///
   /// Delete all sessions for the user. This will not delete the current session.
-  Future<void> deleteAllSessions({ Future<void>? abortTrigger, }) async {
-    final response = await deleteAllSessionsWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<bool?> deleteAllSessions() async {
+    final response = await deleteAllSessionsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Delete a session
@@ -123,7 +129,7 @@ class SessionsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> deleteSessionWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteSessionWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/sessions/{id}'
       .replaceAll('{id}', id);
@@ -146,7 +152,6 @@ class SessionsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -157,11 +162,19 @@ class SessionsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> deleteSession(String id, { Future<void>? abortTrigger, }) async {
-    final response = await deleteSessionWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<bool?> deleteSession(String id,) async {
+    final response = await deleteSessionWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Retrieve sessions
@@ -169,7 +182,7 @@ class SessionsApi {
   /// Retrieve a list of sessions for the user.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getSessionsWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getSessionsWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/sessions';
 
@@ -191,15 +204,14 @@ class SessionsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve sessions
   ///
   /// Retrieve a list of sessions for the user.
-  Future<List<SessionResponseDto>?> getSessions({ Future<void>? abortTrigger, }) async {
-    final response = await getSessionsWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<List<SessionResponseDto>?> getSessions() async {
+    final response = await getSessionsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -225,7 +237,7 @@ class SessionsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> lockSessionWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> lockSessionWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/sessions/{id}/lock'
       .replaceAll('{id}', id);
@@ -248,7 +260,6 @@ class SessionsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -259,11 +270,19 @@ class SessionsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> lockSession(String id, { Future<void>? abortTrigger, }) async {
-    final response = await lockSessionWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<bool?> lockSession(String id,) async {
+    final response = await lockSessionWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Update a session
@@ -277,7 +296,7 @@ class SessionsApi {
   /// * [String] id (required):
   ///
   /// * [SessionUpdateDto] sessionUpdateDto (required):
-  Future<Response> updateSessionWithHttpInfo(String id, SessionUpdateDto sessionUpdateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateSessionWithHttpInfo(String id, SessionUpdateDto sessionUpdateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/sessions/{id}'
       .replaceAll('{id}', id);
@@ -300,7 +319,6 @@ class SessionsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -313,8 +331,8 @@ class SessionsApi {
   /// * [String] id (required):
   ///
   /// * [SessionUpdateDto] sessionUpdateDto (required):
-  Future<SessionResponseDto?> updateSession(String id, SessionUpdateDto sessionUpdateDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateSessionWithHttpInfo(id, sessionUpdateDto, abortTrigger: abortTrigger,);
+  Future<SessionResponseDto?> updateSession(String id, SessionUpdateDto sessionUpdateDto,) async {
+    final response = await updateSessionWithHttpInfo(id, sessionUpdateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

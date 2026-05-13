@@ -25,7 +25,7 @@ class LibrariesApi {
   /// Parameters:
   ///
   /// * [CreateLibraryDto] createLibraryDto (required):
-  Future<Response> createLibraryWithHttpInfo(CreateLibraryDto createLibraryDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> createLibraryWithHttpInfo(CreateLibraryDto createLibraryDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/libraries';
 
@@ -47,7 +47,6 @@ class LibrariesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -58,8 +57,8 @@ class LibrariesApi {
   /// Parameters:
   ///
   /// * [CreateLibraryDto] createLibraryDto (required):
-  Future<LibraryResponseDto?> createLibrary(CreateLibraryDto createLibraryDto, { Future<void>? abortTrigger, }) async {
-    final response = await createLibraryWithHttpInfo(createLibraryDto, abortTrigger: abortTrigger,);
+  Future<LibraryResponseDto?> createLibrary(CreateLibraryDto createLibraryDto,) async {
+    final response = await createLibraryWithHttpInfo(createLibraryDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -82,7 +81,7 @@ class LibrariesApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> deleteLibraryWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteLibraryWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/libraries/{id}'
       .replaceAll('{id}', id);
@@ -105,7 +104,6 @@ class LibrariesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -116,11 +114,19 @@ class LibrariesApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> deleteLibrary(String id, { Future<void>? abortTrigger, }) async {
-    final response = await deleteLibraryWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<bool?> deleteLibrary(String id,) async {
+    final response = await deleteLibraryWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Retrieve libraries
@@ -128,7 +134,7 @@ class LibrariesApi {
   /// Retrieve a list of external libraries.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAllLibrariesWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getAllLibrariesWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/libraries';
 
@@ -150,15 +156,14 @@ class LibrariesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve libraries
   ///
   /// Retrieve a list of external libraries.
-  Future<List<LibraryResponseDto>?> getAllLibraries({ Future<void>? abortTrigger, }) async {
-    final response = await getAllLibrariesWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<List<LibraryResponseDto>?> getAllLibraries() async {
+    final response = await getAllLibrariesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -184,7 +189,7 @@ class LibrariesApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getLibraryWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getLibraryWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/libraries/{id}'
       .replaceAll('{id}', id);
@@ -207,7 +212,6 @@ class LibrariesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -218,8 +222,8 @@ class LibrariesApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<LibraryResponseDto?> getLibrary(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getLibraryWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<LibraryResponseDto?> getLibrary(String id,) async {
+    final response = await getLibraryWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -242,7 +246,7 @@ class LibrariesApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getLibraryStatisticsWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getLibraryStatisticsWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/libraries/{id}/statistics'
       .replaceAll('{id}', id);
@@ -265,7 +269,6 @@ class LibrariesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -276,8 +279,8 @@ class LibrariesApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<LibraryStatsResponseDto?> getLibraryStatistics(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getLibraryStatisticsWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<LibraryStatsResponseDto?> getLibraryStatistics(String id,) async {
+    final response = await getLibraryStatisticsWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -300,7 +303,7 @@ class LibrariesApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> scanLibraryWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> scanLibraryWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/libraries/{id}/scan'
       .replaceAll('{id}', id);
@@ -323,7 +326,6 @@ class LibrariesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -334,11 +336,19 @@ class LibrariesApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> scanLibrary(String id, { Future<void>? abortTrigger, }) async {
-    final response = await scanLibraryWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<bool?> scanLibrary(String id,) async {
+    final response = await scanLibraryWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Update a library
@@ -352,7 +362,7 @@ class LibrariesApi {
   /// * [String] id (required):
   ///
   /// * [UpdateLibraryDto] updateLibraryDto (required):
-  Future<Response> updateLibraryWithHttpInfo(String id, UpdateLibraryDto updateLibraryDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateLibraryWithHttpInfo(String id, UpdateLibraryDto updateLibraryDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/libraries/{id}'
       .replaceAll('{id}', id);
@@ -375,7 +385,6 @@ class LibrariesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -388,8 +397,8 @@ class LibrariesApi {
   /// * [String] id (required):
   ///
   /// * [UpdateLibraryDto] updateLibraryDto (required):
-  Future<LibraryResponseDto?> updateLibrary(String id, UpdateLibraryDto updateLibraryDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateLibraryWithHttpInfo(id, updateLibraryDto, abortTrigger: abortTrigger,);
+  Future<LibraryResponseDto?> updateLibrary(String id, UpdateLibraryDto updateLibraryDto,) async {
+    final response = await updateLibraryWithHttpInfo(id, updateLibraryDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -414,7 +423,7 @@ class LibrariesApi {
   /// * [String] id (required):
   ///
   /// * [ValidateLibraryDto] validateLibraryDto (required):
-  Future<Response> validateWithHttpInfo(String id, ValidateLibraryDto validateLibraryDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> validateWithHttpInfo(String id, ValidateLibraryDto validateLibraryDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/libraries/{id}/validate'
       .replaceAll('{id}', id);
@@ -437,7 +446,6 @@ class LibrariesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -450,8 +458,8 @@ class LibrariesApi {
   /// * [String] id (required):
   ///
   /// * [ValidateLibraryDto] validateLibraryDto (required):
-  Future<ValidateLibraryResponseDto?> validate(String id, ValidateLibraryDto validateLibraryDto, { Future<void>? abortTrigger, }) async {
-    final response = await validateWithHttpInfo(id, validateLibraryDto, abortTrigger: abortTrigger,);
+  Future<ValidateLibraryResponseDto?> validate(String id, ValidateLibraryDto validateLibraryDto,) async {
+    final response = await validateWithHttpInfo(id, validateLibraryDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

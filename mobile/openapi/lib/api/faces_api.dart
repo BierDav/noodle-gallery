@@ -25,7 +25,7 @@ class FacesApi {
   /// Parameters:
   ///
   /// * [AssetFaceCreateDto] assetFaceCreateDto (required):
-  Future<Response> createFaceWithHttpInfo(AssetFaceCreateDto assetFaceCreateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> createFaceWithHttpInfo(AssetFaceCreateDto assetFaceCreateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/faces';
 
@@ -47,7 +47,6 @@ class FacesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -58,11 +57,19 @@ class FacesApi {
   /// Parameters:
   ///
   /// * [AssetFaceCreateDto] assetFaceCreateDto (required):
-  Future<void> createFace(AssetFaceCreateDto assetFaceCreateDto, { Future<void>? abortTrigger, }) async {
-    final response = await createFaceWithHttpInfo(assetFaceCreateDto, abortTrigger: abortTrigger,);
+  Future<bool?> createFace(AssetFaceCreateDto assetFaceCreateDto,) async {
+    final response = await createFaceWithHttpInfo(assetFaceCreateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Delete a face
@@ -76,7 +83,7 @@ class FacesApi {
   /// * [String] id (required):
   ///
   /// * [AssetFaceDeleteDto] assetFaceDeleteDto (required):
-  Future<Response> deleteFaceWithHttpInfo(String id, AssetFaceDeleteDto assetFaceDeleteDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteFaceWithHttpInfo(String id, AssetFaceDeleteDto assetFaceDeleteDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/faces/{id}'
       .replaceAll('{id}', id);
@@ -99,7 +106,6 @@ class FacesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -112,11 +118,19 @@ class FacesApi {
   /// * [String] id (required):
   ///
   /// * [AssetFaceDeleteDto] assetFaceDeleteDto (required):
-  Future<void> deleteFace(String id, AssetFaceDeleteDto assetFaceDeleteDto, { Future<void>? abortTrigger, }) async {
-    final response = await deleteFaceWithHttpInfo(id, assetFaceDeleteDto, abortTrigger: abortTrigger,);
+  Future<bool?> deleteFace(String id, AssetFaceDeleteDto assetFaceDeleteDto,) async {
+    final response = await deleteFaceWithHttpInfo(id, assetFaceDeleteDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Retrieve faces for asset
@@ -129,7 +143,7 @@ class FacesApi {
   ///
   /// * [String] id (required):
   ///   Face ID
-  Future<Response> getFacesWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getFacesWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/faces';
 
@@ -153,7 +167,6 @@ class FacesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -165,8 +178,8 @@ class FacesApi {
   ///
   /// * [String] id (required):
   ///   Face ID
-  Future<List<AssetFaceResponseDto>?> getFaces(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getFacesWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<List<AssetFaceResponseDto>?> getFaces(String id,) async {
+    final response = await getFacesWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -194,7 +207,7 @@ class FacesApi {
   /// * [String] id (required):
   ///
   /// * [FaceDto] faceDto (required):
-  Future<Response> reassignFacesByIdWithHttpInfo(String id, FaceDto faceDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> reassignFacesByIdWithHttpInfo(String id, FaceDto faceDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/faces/{id}'
       .replaceAll('{id}', id);
@@ -217,7 +230,6 @@ class FacesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -230,8 +242,8 @@ class FacesApi {
   /// * [String] id (required):
   ///
   /// * [FaceDto] faceDto (required):
-  Future<PersonResponseDto?> reassignFacesById(String id, FaceDto faceDto, { Future<void>? abortTrigger, }) async {
-    final response = await reassignFacesByIdWithHttpInfo(id, faceDto, abortTrigger: abortTrigger,);
+  Future<PersonResponseDto?> reassignFacesById(String id, FaceDto faceDto,) async {
+    final response = await reassignFacesByIdWithHttpInfo(id, faceDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

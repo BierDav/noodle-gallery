@@ -25,7 +25,7 @@ class DuplicatesApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> deleteDuplicateWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteDuplicateWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/duplicates/{id}'
       .replaceAll('{id}', id);
@@ -48,7 +48,6 @@ class DuplicatesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -59,11 +58,19 @@ class DuplicatesApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> deleteDuplicate(String id, { Future<void>? abortTrigger, }) async {
-    final response = await deleteDuplicateWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<bool?> deleteDuplicate(String id,) async {
+    final response = await deleteDuplicateWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Delete duplicates
@@ -75,7 +82,7 @@ class DuplicatesApi {
   /// Parameters:
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<Response> deleteDuplicatesWithHttpInfo(BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteDuplicatesWithHttpInfo(BulkIdsDto bulkIdsDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/duplicates';
 
@@ -97,7 +104,6 @@ class DuplicatesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -108,11 +114,19 @@ class DuplicatesApi {
   /// Parameters:
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<void> deleteDuplicates(BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
-    final response = await deleteDuplicatesWithHttpInfo(bulkIdsDto, abortTrigger: abortTrigger,);
+  Future<bool?> deleteDuplicates(BulkIdsDto bulkIdsDto,) async {
+    final response = await deleteDuplicatesWithHttpInfo(bulkIdsDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Retrieve duplicates
@@ -120,7 +134,7 @@ class DuplicatesApi {
   /// Retrieve a list of duplicate assets available to the authenticated user.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAssetDuplicatesWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getAssetDuplicatesWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/duplicates';
 
@@ -142,15 +156,14 @@ class DuplicatesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve duplicates
   ///
   /// Retrieve a list of duplicate assets available to the authenticated user.
-  Future<List<DuplicateResponseDto>?> getAssetDuplicates({ Future<void>? abortTrigger, }) async {
-    final response = await getAssetDuplicatesWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<List<DuplicateResponseDto>?> getAssetDuplicates() async {
+    final response = await getAssetDuplicatesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -176,7 +189,7 @@ class DuplicatesApi {
   /// Parameters:
   ///
   /// * [DuplicateResolveDto] duplicateResolveDto (required):
-  Future<Response> resolveDuplicatesWithHttpInfo(DuplicateResolveDto duplicateResolveDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> resolveDuplicatesWithHttpInfo(DuplicateResolveDto duplicateResolveDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/duplicates/resolve';
 
@@ -198,7 +211,6 @@ class DuplicatesApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -209,8 +221,8 @@ class DuplicatesApi {
   /// Parameters:
   ///
   /// * [DuplicateResolveDto] duplicateResolveDto (required):
-  Future<List<BulkIdResponseDto>?> resolveDuplicates(DuplicateResolveDto duplicateResolveDto, { Future<void>? abortTrigger, }) async {
-    final response = await resolveDuplicatesWithHttpInfo(duplicateResolveDto, abortTrigger: abortTrigger,);
+  Future<List<BulkIdResponseDto>?> resolveDuplicates(DuplicateResolveDto duplicateResolveDto,) async {
+    final response = await resolveDuplicatesWithHttpInfo(duplicateResolveDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

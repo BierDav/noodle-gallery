@@ -25,7 +25,7 @@ class JobsApi {
   /// Parameters:
   ///
   /// * [JobCreateDto] jobCreateDto (required):
-  Future<Response> createJobWithHttpInfo(JobCreateDto jobCreateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> createJobWithHttpInfo(JobCreateDto jobCreateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/jobs';
 
@@ -47,7 +47,6 @@ class JobsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -58,11 +57,19 @@ class JobsApi {
   /// Parameters:
   ///
   /// * [JobCreateDto] jobCreateDto (required):
-  Future<void> createJob(JobCreateDto jobCreateDto, { Future<void>? abortTrigger, }) async {
-    final response = await createJobWithHttpInfo(jobCreateDto, abortTrigger: abortTrigger,);
+  Future<bool?> createJob(JobCreateDto jobCreateDto,) async {
+    final response = await createJobWithHttpInfo(jobCreateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Retrieve queue counts and status
@@ -70,7 +77,7 @@ class JobsApi {
   /// Retrieve the counts of the current queue, as well as the current status.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getQueuesLegacyWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getQueuesLegacyWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/jobs';
 
@@ -92,15 +99,14 @@ class JobsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve queue counts and status
   ///
   /// Retrieve the counts of the current queue, as well as the current status.
-  Future<QueuesResponseLegacyDto?> getQueuesLegacy({ Future<void>? abortTrigger, }) async {
-    final response = await getQueuesLegacyWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<QueuesResponseLegacyDto?> getQueuesLegacy() async {
+    final response = await getQueuesLegacyWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -125,7 +131,7 @@ class JobsApi {
   /// * [QueueName] name (required):
   ///
   /// * [QueueCommandDto] queueCommandDto (required):
-  Future<Response> runQueueCommandLegacyWithHttpInfo(QueueName name, QueueCommandDto queueCommandDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> runQueueCommandLegacyWithHttpInfo(QueueName name, QueueCommandDto queueCommandDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/jobs/{name}'
       .replaceAll('{name}', name.toString());
@@ -148,7 +154,6 @@ class JobsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -161,8 +166,8 @@ class JobsApi {
   /// * [QueueName] name (required):
   ///
   /// * [QueueCommandDto] queueCommandDto (required):
-  Future<QueueResponseLegacyDto?> runQueueCommandLegacy(QueueName name, QueueCommandDto queueCommandDto, { Future<void>? abortTrigger, }) async {
-    final response = await runQueueCommandLegacyWithHttpInfo(name, queueCommandDto, abortTrigger: abortTrigger,);
+  Future<QueueResponseLegacyDto?> runQueueCommandLegacy(QueueName name, QueueCommandDto queueCommandDto,) async {
+    final response = await runQueueCommandLegacyWithHttpInfo(name, queueCommandDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

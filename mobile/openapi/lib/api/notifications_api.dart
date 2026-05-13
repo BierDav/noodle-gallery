@@ -25,7 +25,7 @@ class NotificationsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> deleteNotificationWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteNotificationWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/notifications/{id}'
       .replaceAll('{id}', id);
@@ -48,7 +48,6 @@ class NotificationsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -59,11 +58,19 @@ class NotificationsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> deleteNotification(String id, { Future<void>? abortTrigger, }) async {
-    final response = await deleteNotificationWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<bool?> deleteNotification(String id,) async {
+    final response = await deleteNotificationWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Delete notifications
@@ -75,7 +82,7 @@ class NotificationsApi {
   /// Parameters:
   ///
   /// * [NotificationDeleteAllDto] notificationDeleteAllDto (required):
-  Future<Response> deleteNotificationsWithHttpInfo(NotificationDeleteAllDto notificationDeleteAllDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> deleteNotificationsWithHttpInfo(NotificationDeleteAllDto notificationDeleteAllDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/notifications';
 
@@ -97,7 +104,6 @@ class NotificationsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -108,11 +114,19 @@ class NotificationsApi {
   /// Parameters:
   ///
   /// * [NotificationDeleteAllDto] notificationDeleteAllDto (required):
-  Future<void> deleteNotifications(NotificationDeleteAllDto notificationDeleteAllDto, { Future<void>? abortTrigger, }) async {
-    final response = await deleteNotificationsWithHttpInfo(notificationDeleteAllDto, abortTrigger: abortTrigger,);
+  Future<bool?> deleteNotifications(NotificationDeleteAllDto notificationDeleteAllDto,) async {
+    final response = await deleteNotificationsWithHttpInfo(notificationDeleteAllDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 
   /// Get a notification
@@ -124,7 +138,7 @@ class NotificationsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getNotificationWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
+  Future<Response> getNotificationWithHttpInfo(String id,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/notifications/{id}'
       .replaceAll('{id}', id);
@@ -147,7 +161,6 @@ class NotificationsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -158,8 +171,8 @@ class NotificationsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<NotificationDto?> getNotification(String id, { Future<void>? abortTrigger, }) async {
-    final response = await getNotificationWithHttpInfo(id, abortTrigger: abortTrigger,);
+  Future<NotificationDto?> getNotification(String id,) async {
+    final response = await getNotificationWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -190,7 +203,7 @@ class NotificationsApi {
   ///
   /// * [bool] unread:
   ///   Filter by unread status
-  Future<Response> getNotificationsWithHttpInfo({ String? id, NotificationLevel? level, NotificationType? type, bool? unread, Future<void>? abortTrigger, }) async {
+  Future<Response> getNotificationsWithHttpInfo({ String? id, NotificationLevel? level, NotificationType? type, bool? unread, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/notifications';
 
@@ -225,7 +238,6 @@ class NotificationsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -244,8 +256,8 @@ class NotificationsApi {
   ///
   /// * [bool] unread:
   ///   Filter by unread status
-  Future<List<NotificationDto>?> getNotifications({ String? id, NotificationLevel? level, NotificationType? type, bool? unread, Future<void>? abortTrigger, }) async {
-    final response = await getNotificationsWithHttpInfo(id: id, level: level, type: type, unread: unread, abortTrigger: abortTrigger,);
+  Future<List<NotificationDto>?> getNotifications({ String? id, NotificationLevel? level, NotificationType? type, bool? unread, }) async {
+    final response = await getNotificationsWithHttpInfo( id: id, level: level, type: type, unread: unread, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -273,7 +285,7 @@ class NotificationsApi {
   /// * [String] id (required):
   ///
   /// * [NotificationUpdateDto] notificationUpdateDto (required):
-  Future<Response> updateNotificationWithHttpInfo(String id, NotificationUpdateDto notificationUpdateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateNotificationWithHttpInfo(String id, NotificationUpdateDto notificationUpdateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/notifications/{id}'
       .replaceAll('{id}', id);
@@ -296,7 +308,6 @@ class NotificationsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -309,8 +320,8 @@ class NotificationsApi {
   /// * [String] id (required):
   ///
   /// * [NotificationUpdateDto] notificationUpdateDto (required):
-  Future<NotificationDto?> updateNotification(String id, NotificationUpdateDto notificationUpdateDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateNotificationWithHttpInfo(id, notificationUpdateDto, abortTrigger: abortTrigger,);
+  Future<NotificationDto?> updateNotification(String id, NotificationUpdateDto notificationUpdateDto,) async {
+    final response = await updateNotificationWithHttpInfo(id, notificationUpdateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -333,7 +344,7 @@ class NotificationsApi {
   /// Parameters:
   ///
   /// * [NotificationUpdateAllDto] notificationUpdateAllDto (required):
-  Future<Response> updateNotificationsWithHttpInfo(NotificationUpdateAllDto notificationUpdateAllDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateNotificationsWithHttpInfo(NotificationUpdateAllDto notificationUpdateAllDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/notifications';
 
@@ -355,7 +366,6 @@ class NotificationsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -366,10 +376,18 @@ class NotificationsApi {
   /// Parameters:
   ///
   /// * [NotificationUpdateAllDto] notificationUpdateAllDto (required):
-  Future<void> updateNotifications(NotificationUpdateAllDto notificationUpdateAllDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateNotificationsWithHttpInfo(notificationUpdateAllDto, abortTrigger: abortTrigger,);
+  Future<bool?> updateNotifications(NotificationUpdateAllDto notificationUpdateAllDto,) async {
+    final response = await updateNotificationsWithHttpInfo(notificationUpdateAllDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 }

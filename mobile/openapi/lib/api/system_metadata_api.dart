@@ -21,7 +21,7 @@ class SystemMetadataApi {
   /// Retrieve the current admin onboarding status.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAdminOnboardingWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getAdminOnboardingWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/system-metadata/admin-onboarding';
 
@@ -43,15 +43,14 @@ class SystemMetadataApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve admin onboarding
   ///
   /// Retrieve the current admin onboarding status.
-  Future<AdminOnboardingUpdateDto?> getAdminOnboarding({ Future<void>? abortTrigger, }) async {
-    final response = await getAdminOnboardingWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<AdminOnboardingUpdateDto?> getAdminOnboarding() async {
+    final response = await getAdminOnboardingWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -70,7 +69,7 @@ class SystemMetadataApi {
   /// Retrieve the current state of the reverse geocoding import.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getReverseGeocodingStateWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getReverseGeocodingStateWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/system-metadata/reverse-geocoding-state';
 
@@ -92,15 +91,14 @@ class SystemMetadataApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve reverse geocoding state
   ///
   /// Retrieve the current state of the reverse geocoding import.
-  Future<ReverseGeocodingStateResponseDto?> getReverseGeocodingState({ Future<void>? abortTrigger, }) async {
-    final response = await getReverseGeocodingStateWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<ReverseGeocodingStateResponseDto?> getReverseGeocodingState() async {
+    final response = await getReverseGeocodingStateWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -119,7 +117,7 @@ class SystemMetadataApi {
   /// Retrieve the current state of the version check process.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getVersionCheckStateWithHttpInfo({ Future<void>? abortTrigger, }) async {
+  Future<Response> getVersionCheckStateWithHttpInfo() async {
     // ignore: prefer_const_declarations
     final apiPath = r'/system-metadata/version-check-state';
 
@@ -141,15 +139,14 @@ class SystemMetadataApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve version check state
   ///
   /// Retrieve the current state of the version check process.
-  Future<VersionCheckStateResponseDto?> getVersionCheckState({ Future<void>? abortTrigger, }) async {
-    final response = await getVersionCheckStateWithHttpInfo(abortTrigger: abortTrigger,);
+  Future<VersionCheckStateResponseDto?> getVersionCheckState() async {
+    final response = await getVersionCheckStateWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -172,7 +169,7 @@ class SystemMetadataApi {
   /// Parameters:
   ///
   /// * [AdminOnboardingUpdateDto] adminOnboardingUpdateDto (required):
-  Future<Response> updateAdminOnboardingWithHttpInfo(AdminOnboardingUpdateDto adminOnboardingUpdateDto, { Future<void>? abortTrigger, }) async {
+  Future<Response> updateAdminOnboardingWithHttpInfo(AdminOnboardingUpdateDto adminOnboardingUpdateDto,) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/system-metadata/admin-onboarding';
 
@@ -194,7 +191,6 @@ class SystemMetadataApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
-      abortTrigger: abortTrigger,
     );
   }
 
@@ -205,10 +201,18 @@ class SystemMetadataApi {
   /// Parameters:
   ///
   /// * [AdminOnboardingUpdateDto] adminOnboardingUpdateDto (required):
-  Future<void> updateAdminOnboarding(AdminOnboardingUpdateDto adminOnboardingUpdateDto, { Future<void>? abortTrigger, }) async {
-    final response = await updateAdminOnboardingWithHttpInfo(adminOnboardingUpdateDto, abortTrigger: abortTrigger,);
+  Future<bool?> updateAdminOnboarding(AdminOnboardingUpdateDto adminOnboardingUpdateDto,) async {
+    final response = await updateAdminOnboardingWithHttpInfo(adminOnboardingUpdateDto,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'bool',) as bool;
+    
+    }
+    return null;
   }
 }
