@@ -338,10 +338,10 @@ class PeopleApi {
   /// * [String] closestPersonId:
   ///   Closest person ID for similarity search
   ///
-  /// * [num] page:
+  /// * [int] page:
   ///   Page number for pagination
   ///
-  /// * [num] size:
+  /// * [int] size:
   ///   Number of items per page
   ///
   /// * [bool] withHidden:
@@ -349,7 +349,7 @@ class PeopleApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include identity-grouped people from timeline-enabled shared spaces
-  Future<Response> getPeopleFaceStatisticsWithHttpInfo({ String? closestAssetId, String? closestPersonId, num? page, num? size, bool? withHidden, bool? withSharedSpaces, }) async {
+  Future<Response> getPeopleFaceStatisticsWithHttpInfo({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/face-statistics';
 
@@ -405,10 +405,10 @@ class PeopleApi {
   /// * [String] closestPersonId:
   ///   Closest person ID for similarity search
   ///
-  /// * [num] page:
+  /// * [int] page:
   ///   Page number for pagination
   ///
-  /// * [num] size:
+  /// * [int] size:
   ///   Number of items per page
   ///
   /// * [bool] withHidden:
@@ -416,7 +416,7 @@ class PeopleApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include identity-grouped people from timeline-enabled shared spaces
-  Future<PeopleFaceStatisticsResponseDto?> getPeopleFaceStatistics({ String? closestAssetId, String? closestPersonId, num? page, num? size, bool? withHidden, bool? withSharedSpaces, }) async {
+  Future<PeopleFaceStatisticsResponseDto?> getPeopleFaceStatistics({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, }) async {
     final response = await getPeopleFaceStatisticsWithHttpInfo( closestAssetId: closestAssetId, closestPersonId: closestPersonId, page: page, size: size, withHidden: withHidden, withSharedSpaces: withSharedSpaces, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -445,10 +445,10 @@ class PeopleApi {
   /// * [String] closestPersonId:
   ///   Closest person ID for similarity search
   ///
-  /// * [num] page:
+  /// * [int] page:
   ///   Page number for pagination
   ///
-  /// * [num] size:
+  /// * [int] size:
   ///   Number of items per page
   ///
   /// * [bool] withHidden:
@@ -456,7 +456,7 @@ class PeopleApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include identity-grouped people from timeline-enabled shared spaces
-  Future<Response> getPeopleStatisticsWithHttpInfo({ String? closestAssetId, String? closestPersonId, num? page, num? size, bool? withHidden, bool? withSharedSpaces, }) async {
+  Future<Response> getPeopleStatisticsWithHttpInfo({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/statistics';
 
@@ -512,10 +512,10 @@ class PeopleApi {
   /// * [String] closestPersonId:
   ///   Closest person ID for similarity search
   ///
-  /// * [num] page:
+  /// * [int] page:
   ///   Page number for pagination
   ///
-  /// * [num] size:
+  /// * [int] size:
   ///   Number of items per page
   ///
   /// * [bool] withHidden:
@@ -523,7 +523,7 @@ class PeopleApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include identity-grouped people from timeline-enabled shared spaces
-  Future<PeopleStatisticsResponseDto?> getPeopleStatistics({ String? closestAssetId, String? closestPersonId, num? page, num? size, bool? withHidden, bool? withSharedSpaces, }) async {
+  Future<PeopleStatisticsResponseDto?> getPeopleStatistics({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, }) async {
     final response = await getPeopleStatisticsWithHttpInfo( closestAssetId: closestAssetId, closestPersonId: closestPersonId, page: page, size: size, withHidden: withHidden, withSharedSpaces: withSharedSpaces, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
