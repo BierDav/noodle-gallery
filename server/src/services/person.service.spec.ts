@@ -1365,7 +1365,7 @@ describe(PersonService.name, () => {
       expect(mocks.person.vacuum).not.toHaveBeenCalled();
     });
 
-    it('should queue all assets', async () => {
+    it('should queue all machine-learning faces on force reset', async () => {
       const face = AssetFaceFactory.create();
       mocks.job.getJobCounts.mockResolvedValue({
         active: 1,
@@ -1384,7 +1384,9 @@ describe(PersonService.name, () => {
 
       await sut.handleQueueRecognizeFaces({ force: true });
 
-      expect(mocks.person.getAllFaces).toHaveBeenCalledWith(undefined);
+      expect(mocks.person.getAllFaces).toHaveBeenCalledWith({
+        sourceType: SourceType.MachineLearning,
+      });
       expect(mocks.job.queueAll).toHaveBeenCalledWith([
         {
           name: JobName.FacialRecognition,
@@ -1411,6 +1413,7 @@ describe(PersonService.name, () => {
       expect(mocks.job.waitForQueueCompletion).toHaveBeenCalledWith(
         QueueName.ThumbnailGeneration,
         QueueName.FaceDetection,
+        QueueName.PeopleBackfill,
       );
       expect(mocks.job.empty).toHaveBeenCalledWith(QueueName.FacialRecognition, true);
       expect(mocks.job.waitForQueueCompletion.mock.invocationCallOrder[0]).toBeLessThan(
