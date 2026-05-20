@@ -10464,11 +10464,11 @@ class AssetEditEntityCompanion extends UpdateCompanion<AssetEditEntityData> {
   }
 }
 
-class Settings extends Table with TableInfo<Settings, SettingsData> {
+class Metadata extends Table with TableInfo<Metadata, MetadataData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Settings(this.attachedDatabase, [this._alias]);
+  Metadata(this.attachedDatabase, [this._alias]);
   late final GeneratedColumn<String> key = GeneratedColumn<String>(
     'key',
     aliasedName,
@@ -10500,13 +10500,13 @@ class Settings extends Table with TableInfo<Settings, SettingsData> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'settings';
+  static const String $name = 'metadata';
   @override
   Set<GeneratedColumn> get $primaryKey => {key};
   @override
-  SettingsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  MetadataData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SettingsData(
+    return MetadataData(
       key: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}key'],
@@ -10523,8 +10523,8 @@ class Settings extends Table with TableInfo<Settings, SettingsData> {
   }
 
   @override
-  Settings createAlias(String alias) {
-    return Settings(attachedDatabase, alias);
+  Metadata createAlias(String alias) {
+    return Metadata(attachedDatabase, alias);
   }
 
   @override
@@ -10537,11 +10537,11 @@ class Settings extends Table with TableInfo<Settings, SettingsData> {
   bool get dontWriteConstraints => true;
 }
 
-class SettingsData extends DataClass implements Insertable<SettingsData> {
+class MetadataData extends DataClass implements Insertable<MetadataData> {
   final String key;
   final String value;
   final String updatedAt;
-  const SettingsData({
+  const MetadataData({
     required this.key,
     required this.value,
     required this.updatedAt,
@@ -10555,12 +10555,12 @@ class SettingsData extends DataClass implements Insertable<SettingsData> {
     return map;
   }
 
-  factory SettingsData.fromJson(
+  factory MetadataData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SettingsData(
+    return MetadataData(
       key: serializer.fromJson<String>(json['key']),
       value: serializer.fromJson<String>(json['value']),
       updatedAt: serializer.fromJson<String>(json['updatedAt']),
@@ -10576,14 +10576,14 @@ class SettingsData extends DataClass implements Insertable<SettingsData> {
     };
   }
 
-  SettingsData copyWith({String? key, String? value, String? updatedAt}) =>
-      SettingsData(
+  MetadataData copyWith({String? key, String? value, String? updatedAt}) =>
+      MetadataData(
         key: key ?? this.key,
         value: value ?? this.value,
         updatedAt: updatedAt ?? this.updatedAt,
       );
-  SettingsData copyWithCompanion(SettingsCompanion data) {
-    return SettingsData(
+  MetadataData copyWithCompanion(MetadataCompanion data) {
+    return MetadataData(
       key: data.key.present ? data.key.value : this.key,
       value: data.value.present ? data.value.value : this.value,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -10592,7 +10592,7 @@ class SettingsData extends DataClass implements Insertable<SettingsData> {
 
   @override
   String toString() {
-    return (StringBuffer('SettingsData(')
+    return (StringBuffer('MetadataData(')
           ..write('key: $key, ')
           ..write('value: $value, ')
           ..write('updatedAt: $updatedAt')
@@ -10605,28 +10605,28 @@ class SettingsData extends DataClass implements Insertable<SettingsData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is SettingsData &&
+      (other is MetadataData &&
           other.key == this.key &&
           other.value == this.value &&
           other.updatedAt == this.updatedAt);
 }
 
-class SettingsCompanion extends UpdateCompanion<SettingsData> {
+class MetadataCompanion extends UpdateCompanion<MetadataData> {
   final Value<String> key;
   final Value<String> value;
   final Value<String> updatedAt;
-  const SettingsCompanion({
+  const MetadataCompanion({
     this.key = const Value.absent(),
     this.value = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
-  SettingsCompanion.insert({
+  MetadataCompanion.insert({
     required String key,
     required String value,
     this.updatedAt = const Value.absent(),
   }) : key = Value(key),
        value = Value(value);
-  static Insertable<SettingsData> custom({
+  static Insertable<MetadataData> custom({
     Expression<String>? key,
     Expression<String>? value,
     Expression<String>? updatedAt,
@@ -10638,12 +10638,12 @@ class SettingsCompanion extends UpdateCompanion<SettingsData> {
     });
   }
 
-  SettingsCompanion copyWith({
+  MetadataCompanion copyWith({
     Value<String>? key,
     Value<String>? value,
     Value<String>? updatedAt,
   }) {
-    return SettingsCompanion(
+    return MetadataCompanion(
       key: key ?? this.key,
       value: value ?? this.value,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -10667,7 +10667,7 @@ class SettingsCompanion extends UpdateCompanion<SettingsData> {
 
   @override
   String toString() {
-    return (StringBuffer('SettingsCompanion(')
+    return (StringBuffer('MetadataCompanion(')
           ..write('key: $key, ')
           ..write('value: $value, ')
           ..write('updatedAt: $updatedAt')
@@ -10729,10 +10729,6 @@ class DatabaseAtV30 extends GeneratedDatabase {
     'idx_stack_primary_asset_id',
     'CREATE INDEX IF NOT EXISTS idx_stack_primary_asset_id ON stack_entity (primary_asset_id)',
   );
-  late final Index idxRemoteAssetOwnerChecksum = Index(
-    'idx_remote_asset_owner_checksum',
-    'CREATE INDEX IF NOT EXISTS idx_remote_asset_owner_checksum ON remote_asset_entity (owner_id, checksum)',
-  );
   late final Index uQRemoteAssetsOwnerChecksum = Index(
     'UQ_remote_assets_owner_checksum',
     'CREATE UNIQUE INDEX IF NOT EXISTS UQ_remote_assets_owner_checksum ON remote_asset_entity (owner_id, checksum) WHERE(library_id IS NULL)',
@@ -10749,13 +10745,9 @@ class DatabaseAtV30 extends GeneratedDatabase {
     'idx_remote_asset_stack_id',
     'CREATE INDEX IF NOT EXISTS idx_remote_asset_stack_id ON remote_asset_entity (stack_id)',
   );
-  late final Index idxRemoteAssetLocalDateTimeDay = Index(
-    'idx_remote_asset_local_date_time_day',
-    'CREATE INDEX IF NOT EXISTS idx_remote_asset_local_date_time_day ON remote_asset_entity (STRFTIME(\'%Y-%m-%d\', local_date_time))',
-  );
-  late final Index idxRemoteAssetLocalDateTimeMonth = Index(
-    'idx_remote_asset_local_date_time_month',
-    'CREATE INDEX IF NOT EXISTS idx_remote_asset_local_date_time_month ON remote_asset_entity (STRFTIME(\'%Y-%m\', local_date_time))',
+  late final Index idxRemoteAssetOwnerVisibilityDeletedCreated = Index(
+    'idx_remote_asset_owner_visibility_deleted_created',
+    'CREATE INDEX IF NOT EXISTS idx_remote_asset_owner_visibility_deleted_created ON remote_asset_entity (owner_id, visibility, deleted_at, created_at DESC)',
   );
   late final Index idxRemoteAssetLibraryCreated = Index(
     'idx_remote_asset_library_created',
@@ -10780,7 +10772,7 @@ class DatabaseAtV30 extends GeneratedDatabase {
   late final TrashedLocalAssetEntity trashedLocalAssetEntity =
       TrashedLocalAssetEntity(this);
   late final AssetEditEntity assetEditEntity = AssetEditEntity(this);
-  late final Settings settings = Settings(this);
+  late final Metadata metadata = Metadata(this);
   late final Index idxPartnerSharedWithId = Index(
     'idx_partner_shared_with_id',
     'CREATE INDEX IF NOT EXISTS idx_partner_shared_with_id ON partner_entity (shared_with_id)',
@@ -10854,13 +10846,11 @@ class DatabaseAtV30 extends GeneratedDatabase {
     idxLocalAssetChecksum,
     idxLocalAssetCloudId,
     idxStackPrimaryAssetId,
-    idxRemoteAssetOwnerChecksum,
     uQRemoteAssetsOwnerChecksum,
     uQRemoteAssetsOwnerLibraryChecksum,
     idxRemoteAssetChecksum,
     idxRemoteAssetStackId,
-    idxRemoteAssetLocalDateTimeDay,
-    idxRemoteAssetLocalDateTimeMonth,
+    idxRemoteAssetOwnerVisibilityDeletedCreated,
     idxRemoteAssetLibraryCreated,
     authUserEntity,
     userMetadataEntity,
@@ -10877,7 +10867,7 @@ class DatabaseAtV30 extends GeneratedDatabase {
     storeEntity,
     trashedLocalAssetEntity,
     assetEditEntity,
-    settings,
+    metadata,
     idxPartnerSharedWithId,
     idxLatLng,
     idxRemoteExifCity,
