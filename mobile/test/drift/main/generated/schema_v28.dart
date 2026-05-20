@@ -464,14 +464,6 @@ class RemoteAssetEntity extends Table
     requiredDuringInsert: false,
     $customConstraints: 'NULL',
   );
-  late final GeneratedColumn<String> uploadedAt = GeneratedColumn<String>(
-    'uploaded_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    $customConstraints: 'NULL',
-  );
   late final GeneratedColumn<String> livePhotoVideoId = GeneratedColumn<String>(
     'live_photo_video_id',
     aliasedName,
@@ -529,7 +521,6 @@ class RemoteAssetEntity extends Table
     localDateTime,
     thumbHash,
     deletedAt,
-    uploadedAt,
     livePhotoVideoId,
     visibility,
     stackId,
@@ -603,10 +594,6 @@ class RemoteAssetEntity extends Table
         DriftSqlType.string,
         data['${effectivePrefix}deleted_at'],
       ),
-      uploadedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}uploaded_at'],
-      ),
       livePhotoVideoId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}live_photo_video_id'],
@@ -661,7 +648,6 @@ class RemoteAssetEntityData extends DataClass
   final String? localDateTime;
   final String? thumbHash;
   final String? deletedAt;
-  final String? uploadedAt;
   final String? livePhotoVideoId;
   final int visibility;
   final String? stackId;
@@ -682,7 +668,6 @@ class RemoteAssetEntityData extends DataClass
     this.localDateTime,
     this.thumbHash,
     this.deletedAt,
-    this.uploadedAt,
     this.livePhotoVideoId,
     required this.visibility,
     this.stackId,
@@ -718,9 +703,6 @@ class RemoteAssetEntityData extends DataClass
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<String>(deletedAt);
     }
-    if (!nullToAbsent || uploadedAt != null) {
-      map['uploaded_at'] = Variable<String>(uploadedAt);
-    }
     if (!nullToAbsent || livePhotoVideoId != null) {
       map['live_photo_video_id'] = Variable<String>(livePhotoVideoId);
     }
@@ -755,7 +737,6 @@ class RemoteAssetEntityData extends DataClass
       localDateTime: serializer.fromJson<String?>(json['localDateTime']),
       thumbHash: serializer.fromJson<String?>(json['thumbHash']),
       deletedAt: serializer.fromJson<String?>(json['deletedAt']),
-      uploadedAt: serializer.fromJson<String?>(json['uploadedAt']),
       livePhotoVideoId: serializer.fromJson<String?>(json['livePhotoVideoId']),
       visibility: serializer.fromJson<int>(json['visibility']),
       stackId: serializer.fromJson<String?>(json['stackId']),
@@ -781,7 +762,6 @@ class RemoteAssetEntityData extends DataClass
       'localDateTime': serializer.toJson<String?>(localDateTime),
       'thumbHash': serializer.toJson<String?>(thumbHash),
       'deletedAt': serializer.toJson<String?>(deletedAt),
-      'uploadedAt': serializer.toJson<String?>(uploadedAt),
       'livePhotoVideoId': serializer.toJson<String?>(livePhotoVideoId),
       'visibility': serializer.toJson<int>(visibility),
       'stackId': serializer.toJson<String?>(stackId),
@@ -805,7 +785,6 @@ class RemoteAssetEntityData extends DataClass
     Value<String?> localDateTime = const Value.absent(),
     Value<String?> thumbHash = const Value.absent(),
     Value<String?> deletedAt = const Value.absent(),
-    Value<String?> uploadedAt = const Value.absent(),
     Value<String?> livePhotoVideoId = const Value.absent(),
     int? visibility,
     Value<String?> stackId = const Value.absent(),
@@ -828,7 +807,6 @@ class RemoteAssetEntityData extends DataClass
         : this.localDateTime,
     thumbHash: thumbHash.present ? thumbHash.value : this.thumbHash,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    uploadedAt: uploadedAt.present ? uploadedAt.value : this.uploadedAt,
     livePhotoVideoId: livePhotoVideoId.present
         ? livePhotoVideoId.value
         : this.livePhotoVideoId,
@@ -859,9 +837,6 @@ class RemoteAssetEntityData extends DataClass
           : this.localDateTime,
       thumbHash: data.thumbHash.present ? data.thumbHash.value : this.thumbHash,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      uploadedAt: data.uploadedAt.present
-          ? data.uploadedAt.value
-          : this.uploadedAt,
       livePhotoVideoId: data.livePhotoVideoId.present
           ? data.livePhotoVideoId.value
           : this.livePhotoVideoId,
@@ -891,7 +866,6 @@ class RemoteAssetEntityData extends DataClass
           ..write('localDateTime: $localDateTime, ')
           ..write('thumbHash: $thumbHash, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('uploadedAt: $uploadedAt, ')
           ..write('livePhotoVideoId: $livePhotoVideoId, ')
           ..write('visibility: $visibility, ')
           ..write('stackId: $stackId, ')
@@ -917,7 +891,6 @@ class RemoteAssetEntityData extends DataClass
     localDateTime,
     thumbHash,
     deletedAt,
-    uploadedAt,
     livePhotoVideoId,
     visibility,
     stackId,
@@ -942,7 +915,6 @@ class RemoteAssetEntityData extends DataClass
           other.localDateTime == this.localDateTime &&
           other.thumbHash == this.thumbHash &&
           other.deletedAt == this.deletedAt &&
-          other.uploadedAt == this.uploadedAt &&
           other.livePhotoVideoId == this.livePhotoVideoId &&
           other.visibility == this.visibility &&
           other.stackId == this.stackId &&
@@ -966,7 +938,6 @@ class RemoteAssetEntityCompanion
   final Value<String?> localDateTime;
   final Value<String?> thumbHash;
   final Value<String?> deletedAt;
-  final Value<String?> uploadedAt;
   final Value<String?> livePhotoVideoId;
   final Value<int> visibility;
   final Value<String?> stackId;
@@ -987,7 +958,6 @@ class RemoteAssetEntityCompanion
     this.localDateTime = const Value.absent(),
     this.thumbHash = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    this.uploadedAt = const Value.absent(),
     this.livePhotoVideoId = const Value.absent(),
     this.visibility = const Value.absent(),
     this.stackId = const Value.absent(),
@@ -1009,7 +979,6 @@ class RemoteAssetEntityCompanion
     this.localDateTime = const Value.absent(),
     this.thumbHash = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    this.uploadedAt = const Value.absent(),
     this.livePhotoVideoId = const Value.absent(),
     required int visibility,
     this.stackId = const Value.absent(),
@@ -1036,7 +1005,6 @@ class RemoteAssetEntityCompanion
     Expression<String>? localDateTime,
     Expression<String>? thumbHash,
     Expression<String>? deletedAt,
-    Expression<String>? uploadedAt,
     Expression<String>? livePhotoVideoId,
     Expression<int>? visibility,
     Expression<String>? stackId,
@@ -1058,7 +1026,6 @@ class RemoteAssetEntityCompanion
       if (localDateTime != null) 'local_date_time': localDateTime,
       if (thumbHash != null) 'thumb_hash': thumbHash,
       if (deletedAt != null) 'deleted_at': deletedAt,
-      if (uploadedAt != null) 'uploaded_at': uploadedAt,
       if (livePhotoVideoId != null) 'live_photo_video_id': livePhotoVideoId,
       if (visibility != null) 'visibility': visibility,
       if (stackId != null) 'stack_id': stackId,
@@ -1082,7 +1049,6 @@ class RemoteAssetEntityCompanion
     Value<String?>? localDateTime,
     Value<String?>? thumbHash,
     Value<String?>? deletedAt,
-    Value<String?>? uploadedAt,
     Value<String?>? livePhotoVideoId,
     Value<int>? visibility,
     Value<String?>? stackId,
@@ -1104,7 +1070,6 @@ class RemoteAssetEntityCompanion
       localDateTime: localDateTime ?? this.localDateTime,
       thumbHash: thumbHash ?? this.thumbHash,
       deletedAt: deletedAt ?? this.deletedAt,
-      uploadedAt: uploadedAt ?? this.uploadedAt,
       livePhotoVideoId: livePhotoVideoId ?? this.livePhotoVideoId,
       visibility: visibility ?? this.visibility,
       stackId: stackId ?? this.stackId,
@@ -1158,9 +1123,6 @@ class RemoteAssetEntityCompanion
     if (deletedAt.present) {
       map['deleted_at'] = Variable<String>(deletedAt.value);
     }
-    if (uploadedAt.present) {
-      map['uploaded_at'] = Variable<String>(uploadedAt.value);
-    }
     if (livePhotoVideoId.present) {
       map['live_photo_video_id'] = Variable<String>(livePhotoVideoId.value);
     }
@@ -1196,7 +1158,6 @@ class RemoteAssetEntityCompanion
           ..write('localDateTime: $localDateTime, ')
           ..write('thumbHash: $thumbHash, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('uploadedAt: $uploadedAt, ')
           ..write('livePhotoVideoId: $livePhotoVideoId, ')
           ..write('visibility: $visibility, ')
           ..write('stackId: $stackId, ')
@@ -2207,6 +2168,1348 @@ class LocalAssetEntityCompanion extends UpdateCompanion<LocalAssetEntityData> {
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude, ')
           ..write('playbackStyle: $playbackStyle')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SharedSpaceEntity extends Table
+    with TableInfo<SharedSpaceEntity, SharedSpaceEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  SharedSpaceEntity(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> color = GeneratedColumn<String>(
+    'color',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> createdById = GeneratedColumn<String>(
+    'created_by_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES user_entity(id)ON DELETE CASCADE',
+  );
+  late final GeneratedColumn<String> thumbnailAssetId = GeneratedColumn<String>(
+    'thumbnail_asset_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<int> thumbnailCropY = GeneratedColumn<int>(
+    'thumbnail_crop_y',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<int> faceRecognitionEnabled = GeneratedColumn<int>(
+    'face_recognition_enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints:
+        'NOT NULL DEFAULT 1 CHECK (face_recognition_enabled IN (0, 1))',
+    defaultValue: const CustomExpression('1'),
+  );
+  late final GeneratedColumn<int> petsEnabled = GeneratedColumn<int>(
+    'pets_enabled',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT 0 CHECK (pets_enabled IN (0, 1))',
+    defaultValue: const CustomExpression('0'),
+  );
+  late final GeneratedColumn<String> lastActivityAt = GeneratedColumn<String>(
+    'last_activity_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    description,
+    color,
+    createdById,
+    thumbnailAssetId,
+    thumbnailCropY,
+    faceRecognitionEnabled,
+    petsEnabled,
+    lastActivityAt,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shared_space_entity';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SharedSpaceEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SharedSpaceEntityData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}color'],
+      ),
+      createdById: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by_id'],
+      )!,
+      thumbnailAssetId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}thumbnail_asset_id'],
+      ),
+      thumbnailCropY: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}thumbnail_crop_y'],
+      ),
+      faceRecognitionEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}face_recognition_enabled'],
+      )!,
+      petsEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}pets_enabled'],
+      )!,
+      lastActivityAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_activity_at'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  SharedSpaceEntity createAlias(String alias) {
+    return SharedSpaceEntity(attachedDatabase, alias);
+  }
+
+  @override
+  bool get withoutRowId => true;
+  @override
+  bool get isStrict => true;
+  @override
+  List<String> get customConstraints => const ['PRIMARY KEY(id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class SharedSpaceEntityData extends DataClass
+    implements Insertable<SharedSpaceEntityData> {
+  final String id;
+  final String name;
+  final String? description;
+  final String? color;
+  final String createdById;
+  final String? thumbnailAssetId;
+  final int? thumbnailCropY;
+  final int faceRecognitionEnabled;
+  final int petsEnabled;
+  final String? lastActivityAt;
+  final String createdAt;
+  final String updatedAt;
+  const SharedSpaceEntityData({
+    required this.id,
+    required this.name,
+    this.description,
+    this.color,
+    required this.createdById,
+    this.thumbnailAssetId,
+    this.thumbnailCropY,
+    required this.faceRecognitionEnabled,
+    required this.petsEnabled,
+    this.lastActivityAt,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || color != null) {
+      map['color'] = Variable<String>(color);
+    }
+    map['created_by_id'] = Variable<String>(createdById);
+    if (!nullToAbsent || thumbnailAssetId != null) {
+      map['thumbnail_asset_id'] = Variable<String>(thumbnailAssetId);
+    }
+    if (!nullToAbsent || thumbnailCropY != null) {
+      map['thumbnail_crop_y'] = Variable<int>(thumbnailCropY);
+    }
+    map['face_recognition_enabled'] = Variable<int>(faceRecognitionEnabled);
+    map['pets_enabled'] = Variable<int>(petsEnabled);
+    if (!nullToAbsent || lastActivityAt != null) {
+      map['last_activity_at'] = Variable<String>(lastActivityAt);
+    }
+    map['created_at'] = Variable<String>(createdAt);
+    map['updated_at'] = Variable<String>(updatedAt);
+    return map;
+  }
+
+  factory SharedSpaceEntityData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SharedSpaceEntityData(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+      color: serializer.fromJson<String?>(json['color']),
+      createdById: serializer.fromJson<String>(json['createdById']),
+      thumbnailAssetId: serializer.fromJson<String?>(json['thumbnailAssetId']),
+      thumbnailCropY: serializer.fromJson<int?>(json['thumbnailCropY']),
+      faceRecognitionEnabled: serializer.fromJson<int>(
+        json['faceRecognitionEnabled'],
+      ),
+      petsEnabled: serializer.fromJson<int>(json['petsEnabled']),
+      lastActivityAt: serializer.fromJson<String?>(json['lastActivityAt']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+      'color': serializer.toJson<String?>(color),
+      'createdById': serializer.toJson<String>(createdById),
+      'thumbnailAssetId': serializer.toJson<String?>(thumbnailAssetId),
+      'thumbnailCropY': serializer.toJson<int?>(thumbnailCropY),
+      'faceRecognitionEnabled': serializer.toJson<int>(faceRecognitionEnabled),
+      'petsEnabled': serializer.toJson<int>(petsEnabled),
+      'lastActivityAt': serializer.toJson<String?>(lastActivityAt),
+      'createdAt': serializer.toJson<String>(createdAt),
+      'updatedAt': serializer.toJson<String>(updatedAt),
+    };
+  }
+
+  SharedSpaceEntityData copyWith({
+    String? id,
+    String? name,
+    Value<String?> description = const Value.absent(),
+    Value<String?> color = const Value.absent(),
+    String? createdById,
+    Value<String?> thumbnailAssetId = const Value.absent(),
+    Value<int?> thumbnailCropY = const Value.absent(),
+    int? faceRecognitionEnabled,
+    int? petsEnabled,
+    Value<String?> lastActivityAt = const Value.absent(),
+    String? createdAt,
+    String? updatedAt,
+  }) => SharedSpaceEntityData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    description: description.present ? description.value : this.description,
+    color: color.present ? color.value : this.color,
+    createdById: createdById ?? this.createdById,
+    thumbnailAssetId: thumbnailAssetId.present
+        ? thumbnailAssetId.value
+        : this.thumbnailAssetId,
+    thumbnailCropY: thumbnailCropY.present
+        ? thumbnailCropY.value
+        : this.thumbnailCropY,
+    faceRecognitionEnabled:
+        faceRecognitionEnabled ?? this.faceRecognitionEnabled,
+    petsEnabled: petsEnabled ?? this.petsEnabled,
+    lastActivityAt: lastActivityAt.present
+        ? lastActivityAt.value
+        : this.lastActivityAt,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  SharedSpaceEntityData copyWithCompanion(SharedSpaceEntityCompanion data) {
+    return SharedSpaceEntityData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      color: data.color.present ? data.color.value : this.color,
+      createdById: data.createdById.present
+          ? data.createdById.value
+          : this.createdById,
+      thumbnailAssetId: data.thumbnailAssetId.present
+          ? data.thumbnailAssetId.value
+          : this.thumbnailAssetId,
+      thumbnailCropY: data.thumbnailCropY.present
+          ? data.thumbnailCropY.value
+          : this.thumbnailCropY,
+      faceRecognitionEnabled: data.faceRecognitionEnabled.present
+          ? data.faceRecognitionEnabled.value
+          : this.faceRecognitionEnabled,
+      petsEnabled: data.petsEnabled.present
+          ? data.petsEnabled.value
+          : this.petsEnabled,
+      lastActivityAt: data.lastActivityAt.present
+          ? data.lastActivityAt.value
+          : this.lastActivityAt,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SharedSpaceEntityData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('color: $color, ')
+          ..write('createdById: $createdById, ')
+          ..write('thumbnailAssetId: $thumbnailAssetId, ')
+          ..write('thumbnailCropY: $thumbnailCropY, ')
+          ..write('faceRecognitionEnabled: $faceRecognitionEnabled, ')
+          ..write('petsEnabled: $petsEnabled, ')
+          ..write('lastActivityAt: $lastActivityAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    description,
+    color,
+    createdById,
+    thumbnailAssetId,
+    thumbnailCropY,
+    faceRecognitionEnabled,
+    petsEnabled,
+    lastActivityAt,
+    createdAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SharedSpaceEntityData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.color == this.color &&
+          other.createdById == this.createdById &&
+          other.thumbnailAssetId == this.thumbnailAssetId &&
+          other.thumbnailCropY == this.thumbnailCropY &&
+          other.faceRecognitionEnabled == this.faceRecognitionEnabled &&
+          other.petsEnabled == this.petsEnabled &&
+          other.lastActivityAt == this.lastActivityAt &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class SharedSpaceEntityCompanion
+    extends UpdateCompanion<SharedSpaceEntityData> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<String?> color;
+  final Value<String> createdById;
+  final Value<String?> thumbnailAssetId;
+  final Value<int?> thumbnailCropY;
+  final Value<int> faceRecognitionEnabled;
+  final Value<int> petsEnabled;
+  final Value<String?> lastActivityAt;
+  final Value<String> createdAt;
+  final Value<String> updatedAt;
+  const SharedSpaceEntityCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.color = const Value.absent(),
+    this.createdById = const Value.absent(),
+    this.thumbnailAssetId = const Value.absent(),
+    this.thumbnailCropY = const Value.absent(),
+    this.faceRecognitionEnabled = const Value.absent(),
+    this.petsEnabled = const Value.absent(),
+    this.lastActivityAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  SharedSpaceEntityCompanion.insert({
+    required String id,
+    required String name,
+    this.description = const Value.absent(),
+    this.color = const Value.absent(),
+    required String createdById,
+    this.thumbnailAssetId = const Value.absent(),
+    this.thumbnailCropY = const Value.absent(),
+    this.faceRecognitionEnabled = const Value.absent(),
+    this.petsEnabled = const Value.absent(),
+    this.lastActivityAt = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       createdById = Value(createdById);
+  static Insertable<SharedSpaceEntityData> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? color,
+    Expression<String>? createdById,
+    Expression<String>? thumbnailAssetId,
+    Expression<int>? thumbnailCropY,
+    Expression<int>? faceRecognitionEnabled,
+    Expression<int>? petsEnabled,
+    Expression<String>? lastActivityAt,
+    Expression<String>? createdAt,
+    Expression<String>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (color != null) 'color': color,
+      if (createdById != null) 'created_by_id': createdById,
+      if (thumbnailAssetId != null) 'thumbnail_asset_id': thumbnailAssetId,
+      if (thumbnailCropY != null) 'thumbnail_crop_y': thumbnailCropY,
+      if (faceRecognitionEnabled != null)
+        'face_recognition_enabled': faceRecognitionEnabled,
+      if (petsEnabled != null) 'pets_enabled': petsEnabled,
+      if (lastActivityAt != null) 'last_activity_at': lastActivityAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  SharedSpaceEntityCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String?>? description,
+    Value<String?>? color,
+    Value<String>? createdById,
+    Value<String?>? thumbnailAssetId,
+    Value<int?>? thumbnailCropY,
+    Value<int>? faceRecognitionEnabled,
+    Value<int>? petsEnabled,
+    Value<String?>? lastActivityAt,
+    Value<String>? createdAt,
+    Value<String>? updatedAt,
+  }) {
+    return SharedSpaceEntityCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      color: color ?? this.color,
+      createdById: createdById ?? this.createdById,
+      thumbnailAssetId: thumbnailAssetId ?? this.thumbnailAssetId,
+      thumbnailCropY: thumbnailCropY ?? this.thumbnailCropY,
+      faceRecognitionEnabled:
+          faceRecognitionEnabled ?? this.faceRecognitionEnabled,
+      petsEnabled: petsEnabled ?? this.petsEnabled,
+      lastActivityAt: lastActivityAt ?? this.lastActivityAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (color.present) {
+      map['color'] = Variable<String>(color.value);
+    }
+    if (createdById.present) {
+      map['created_by_id'] = Variable<String>(createdById.value);
+    }
+    if (thumbnailAssetId.present) {
+      map['thumbnail_asset_id'] = Variable<String>(thumbnailAssetId.value);
+    }
+    if (thumbnailCropY.present) {
+      map['thumbnail_crop_y'] = Variable<int>(thumbnailCropY.value);
+    }
+    if (faceRecognitionEnabled.present) {
+      map['face_recognition_enabled'] = Variable<int>(
+        faceRecognitionEnabled.value,
+      );
+    }
+    if (petsEnabled.present) {
+      map['pets_enabled'] = Variable<int>(petsEnabled.value);
+    }
+    if (lastActivityAt.present) {
+      map['last_activity_at'] = Variable<String>(lastActivityAt.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<String>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SharedSpaceEntityCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('color: $color, ')
+          ..write('createdById: $createdById, ')
+          ..write('thumbnailAssetId: $thumbnailAssetId, ')
+          ..write('thumbnailCropY: $thumbnailCropY, ')
+          ..write('faceRecognitionEnabled: $faceRecognitionEnabled, ')
+          ..write('petsEnabled: $petsEnabled, ')
+          ..write('lastActivityAt: $lastActivityAt, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SharedSpaceAssetEntity extends Table
+    with TableInfo<SharedSpaceAssetEntity, SharedSpaceAssetEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  SharedSpaceAssetEntity(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> spaceId = GeneratedColumn<String>(
+    'space_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL REFERENCES shared_space_entity(id)ON DELETE CASCADE',
+  );
+  late final GeneratedColumn<String> assetId = GeneratedColumn<String>(
+    'asset_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [spaceId, assetId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shared_space_asset_entity';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {spaceId, assetId};
+  @override
+  SharedSpaceAssetEntityData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SharedSpaceAssetEntityData(
+      spaceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}space_id'],
+      )!,
+      assetId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}asset_id'],
+      )!,
+    );
+  }
+
+  @override
+  SharedSpaceAssetEntity createAlias(String alias) {
+    return SharedSpaceAssetEntity(attachedDatabase, alias);
+  }
+
+  @override
+  bool get withoutRowId => true;
+  @override
+  bool get isStrict => true;
+  @override
+  List<String> get customConstraints => const [
+    'PRIMARY KEY(space_id, asset_id)',
+  ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class SharedSpaceAssetEntityData extends DataClass
+    implements Insertable<SharedSpaceAssetEntityData> {
+  final String spaceId;
+  final String assetId;
+  const SharedSpaceAssetEntityData({
+    required this.spaceId,
+    required this.assetId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['space_id'] = Variable<String>(spaceId);
+    map['asset_id'] = Variable<String>(assetId);
+    return map;
+  }
+
+  factory SharedSpaceAssetEntityData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SharedSpaceAssetEntityData(
+      spaceId: serializer.fromJson<String>(json['spaceId']),
+      assetId: serializer.fromJson<String>(json['assetId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'spaceId': serializer.toJson<String>(spaceId),
+      'assetId': serializer.toJson<String>(assetId),
+    };
+  }
+
+  SharedSpaceAssetEntityData copyWith({String? spaceId, String? assetId}) =>
+      SharedSpaceAssetEntityData(
+        spaceId: spaceId ?? this.spaceId,
+        assetId: assetId ?? this.assetId,
+      );
+  SharedSpaceAssetEntityData copyWithCompanion(
+    SharedSpaceAssetEntityCompanion data,
+  ) {
+    return SharedSpaceAssetEntityData(
+      spaceId: data.spaceId.present ? data.spaceId.value : this.spaceId,
+      assetId: data.assetId.present ? data.assetId.value : this.assetId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SharedSpaceAssetEntityData(')
+          ..write('spaceId: $spaceId, ')
+          ..write('assetId: $assetId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(spaceId, assetId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SharedSpaceAssetEntityData &&
+          other.spaceId == this.spaceId &&
+          other.assetId == this.assetId);
+}
+
+class SharedSpaceAssetEntityCompanion
+    extends UpdateCompanion<SharedSpaceAssetEntityData> {
+  final Value<String> spaceId;
+  final Value<String> assetId;
+  const SharedSpaceAssetEntityCompanion({
+    this.spaceId = const Value.absent(),
+    this.assetId = const Value.absent(),
+  });
+  SharedSpaceAssetEntityCompanion.insert({
+    required String spaceId,
+    required String assetId,
+  }) : spaceId = Value(spaceId),
+       assetId = Value(assetId);
+  static Insertable<SharedSpaceAssetEntityData> custom({
+    Expression<String>? spaceId,
+    Expression<String>? assetId,
+  }) {
+    return RawValuesInsertable({
+      if (spaceId != null) 'space_id': spaceId,
+      if (assetId != null) 'asset_id': assetId,
+    });
+  }
+
+  SharedSpaceAssetEntityCompanion copyWith({
+    Value<String>? spaceId,
+    Value<String>? assetId,
+  }) {
+    return SharedSpaceAssetEntityCompanion(
+      spaceId: spaceId ?? this.spaceId,
+      assetId: assetId ?? this.assetId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (spaceId.present) {
+      map['space_id'] = Variable<String>(spaceId.value);
+    }
+    if (assetId.present) {
+      map['asset_id'] = Variable<String>(assetId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SharedSpaceAssetEntityCompanion(')
+          ..write('spaceId: $spaceId, ')
+          ..write('assetId: $assetId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SharedSpaceMemberEntity extends Table
+    with TableInfo<SharedSpaceMemberEntity, SharedSpaceMemberEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  SharedSpaceMemberEntity(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> spaceId = GeneratedColumn<String>(
+    'space_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL REFERENCES shared_space_entity(id)ON DELETE CASCADE',
+  );
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES user_entity(id)ON DELETE CASCADE',
+  );
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
+    'role',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> joinedAt = GeneratedColumn<String>(
+    'joined_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<int> showInTimeline = GeneratedColumn<int>(
+    'show_in_timeline',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT 1 CHECK (show_in_timeline IN (0, 1))',
+    defaultValue: const CustomExpression('1'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    spaceId,
+    userId,
+    role,
+    joinedAt,
+    showInTimeline,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shared_space_member_entity';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {spaceId, userId};
+  @override
+  SharedSpaceMemberEntityData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SharedSpaceMemberEntityData(
+      spaceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}space_id'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      role: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}role'],
+      )!,
+      joinedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}joined_at'],
+      )!,
+      showInTimeline: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}show_in_timeline'],
+      )!,
+    );
+  }
+
+  @override
+  SharedSpaceMemberEntity createAlias(String alias) {
+    return SharedSpaceMemberEntity(attachedDatabase, alias);
+  }
+
+  @override
+  bool get withoutRowId => true;
+  @override
+  bool get isStrict => true;
+  @override
+  List<String> get customConstraints => const [
+    'PRIMARY KEY(space_id, user_id)',
+  ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class SharedSpaceMemberEntityData extends DataClass
+    implements Insertable<SharedSpaceMemberEntityData> {
+  final String spaceId;
+  final String userId;
+  final String role;
+  final String joinedAt;
+  final int showInTimeline;
+  const SharedSpaceMemberEntityData({
+    required this.spaceId,
+    required this.userId,
+    required this.role,
+    required this.joinedAt,
+    required this.showInTimeline,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['space_id'] = Variable<String>(spaceId);
+    map['user_id'] = Variable<String>(userId);
+    map['role'] = Variable<String>(role);
+    map['joined_at'] = Variable<String>(joinedAt);
+    map['show_in_timeline'] = Variable<int>(showInTimeline);
+    return map;
+  }
+
+  factory SharedSpaceMemberEntityData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SharedSpaceMemberEntityData(
+      spaceId: serializer.fromJson<String>(json['spaceId']),
+      userId: serializer.fromJson<String>(json['userId']),
+      role: serializer.fromJson<String>(json['role']),
+      joinedAt: serializer.fromJson<String>(json['joinedAt']),
+      showInTimeline: serializer.fromJson<int>(json['showInTimeline']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'spaceId': serializer.toJson<String>(spaceId),
+      'userId': serializer.toJson<String>(userId),
+      'role': serializer.toJson<String>(role),
+      'joinedAt': serializer.toJson<String>(joinedAt),
+      'showInTimeline': serializer.toJson<int>(showInTimeline),
+    };
+  }
+
+  SharedSpaceMemberEntityData copyWith({
+    String? spaceId,
+    String? userId,
+    String? role,
+    String? joinedAt,
+    int? showInTimeline,
+  }) => SharedSpaceMemberEntityData(
+    spaceId: spaceId ?? this.spaceId,
+    userId: userId ?? this.userId,
+    role: role ?? this.role,
+    joinedAt: joinedAt ?? this.joinedAt,
+    showInTimeline: showInTimeline ?? this.showInTimeline,
+  );
+  SharedSpaceMemberEntityData copyWithCompanion(
+    SharedSpaceMemberEntityCompanion data,
+  ) {
+    return SharedSpaceMemberEntityData(
+      spaceId: data.spaceId.present ? data.spaceId.value : this.spaceId,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      role: data.role.present ? data.role.value : this.role,
+      joinedAt: data.joinedAt.present ? data.joinedAt.value : this.joinedAt,
+      showInTimeline: data.showInTimeline.present
+          ? data.showInTimeline.value
+          : this.showInTimeline,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SharedSpaceMemberEntityData(')
+          ..write('spaceId: $spaceId, ')
+          ..write('userId: $userId, ')
+          ..write('role: $role, ')
+          ..write('joinedAt: $joinedAt, ')
+          ..write('showInTimeline: $showInTimeline')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(spaceId, userId, role, joinedAt, showInTimeline);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SharedSpaceMemberEntityData &&
+          other.spaceId == this.spaceId &&
+          other.userId == this.userId &&
+          other.role == this.role &&
+          other.joinedAt == this.joinedAt &&
+          other.showInTimeline == this.showInTimeline);
+}
+
+class SharedSpaceMemberEntityCompanion
+    extends UpdateCompanion<SharedSpaceMemberEntityData> {
+  final Value<String> spaceId;
+  final Value<String> userId;
+  final Value<String> role;
+  final Value<String> joinedAt;
+  final Value<int> showInTimeline;
+  const SharedSpaceMemberEntityCompanion({
+    this.spaceId = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.role = const Value.absent(),
+    this.joinedAt = const Value.absent(),
+    this.showInTimeline = const Value.absent(),
+  });
+  SharedSpaceMemberEntityCompanion.insert({
+    required String spaceId,
+    required String userId,
+    required String role,
+    this.joinedAt = const Value.absent(),
+    this.showInTimeline = const Value.absent(),
+  }) : spaceId = Value(spaceId),
+       userId = Value(userId),
+       role = Value(role);
+  static Insertable<SharedSpaceMemberEntityData> custom({
+    Expression<String>? spaceId,
+    Expression<String>? userId,
+    Expression<String>? role,
+    Expression<String>? joinedAt,
+    Expression<int>? showInTimeline,
+  }) {
+    return RawValuesInsertable({
+      if (spaceId != null) 'space_id': spaceId,
+      if (userId != null) 'user_id': userId,
+      if (role != null) 'role': role,
+      if (joinedAt != null) 'joined_at': joinedAt,
+      if (showInTimeline != null) 'show_in_timeline': showInTimeline,
+    });
+  }
+
+  SharedSpaceMemberEntityCompanion copyWith({
+    Value<String>? spaceId,
+    Value<String>? userId,
+    Value<String>? role,
+    Value<String>? joinedAt,
+    Value<int>? showInTimeline,
+  }) {
+    return SharedSpaceMemberEntityCompanion(
+      spaceId: spaceId ?? this.spaceId,
+      userId: userId ?? this.userId,
+      role: role ?? this.role,
+      joinedAt: joinedAt ?? this.joinedAt,
+      showInTimeline: showInTimeline ?? this.showInTimeline,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (spaceId.present) {
+      map['space_id'] = Variable<String>(spaceId.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(role.value);
+    }
+    if (joinedAt.present) {
+      map['joined_at'] = Variable<String>(joinedAt.value);
+    }
+    if (showInTimeline.present) {
+      map['show_in_timeline'] = Variable<int>(showInTimeline.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SharedSpaceMemberEntityCompanion(')
+          ..write('spaceId: $spaceId, ')
+          ..write('userId: $userId, ')
+          ..write('role: $role, ')
+          ..write('joinedAt: $joinedAt, ')
+          ..write('showInTimeline: $showInTimeline')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SharedSpaceLibraryEntity extends Table
+    with TableInfo<SharedSpaceLibraryEntity, SharedSpaceLibraryEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  SharedSpaceLibraryEntity(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> spaceId = GeneratedColumn<String>(
+    'space_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints:
+        'NOT NULL REFERENCES shared_space_entity(id)ON DELETE CASCADE',
+  );
+  late final GeneratedColumn<String> libraryId = GeneratedColumn<String>(
+    'library_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> addedById = GeneratedColumn<String>(
+    'added_by_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    spaceId,
+    libraryId,
+    addedById,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'shared_space_library_entity';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {spaceId, libraryId};
+  @override
+  SharedSpaceLibraryEntityData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SharedSpaceLibraryEntityData(
+      spaceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}space_id'],
+      )!,
+      libraryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}library_id'],
+      )!,
+      addedById: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}added_by_id'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  SharedSpaceLibraryEntity createAlias(String alias) {
+    return SharedSpaceLibraryEntity(attachedDatabase, alias);
+  }
+
+  @override
+  bool get withoutRowId => true;
+  @override
+  bool get isStrict => true;
+  @override
+  List<String> get customConstraints => const [
+    'PRIMARY KEY(space_id, library_id)',
+  ];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class SharedSpaceLibraryEntityData extends DataClass
+    implements Insertable<SharedSpaceLibraryEntityData> {
+  final String spaceId;
+  final String libraryId;
+  final String? addedById;
+  final String createdAt;
+  const SharedSpaceLibraryEntityData({
+    required this.spaceId,
+    required this.libraryId,
+    this.addedById,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['space_id'] = Variable<String>(spaceId);
+    map['library_id'] = Variable<String>(libraryId);
+    if (!nullToAbsent || addedById != null) {
+      map['added_by_id'] = Variable<String>(addedById);
+    }
+    map['created_at'] = Variable<String>(createdAt);
+    return map;
+  }
+
+  factory SharedSpaceLibraryEntityData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SharedSpaceLibraryEntityData(
+      spaceId: serializer.fromJson<String>(json['spaceId']),
+      libraryId: serializer.fromJson<String>(json['libraryId']),
+      addedById: serializer.fromJson<String?>(json['addedById']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'spaceId': serializer.toJson<String>(spaceId),
+      'libraryId': serializer.toJson<String>(libraryId),
+      'addedById': serializer.toJson<String?>(addedById),
+      'createdAt': serializer.toJson<String>(createdAt),
+    };
+  }
+
+  SharedSpaceLibraryEntityData copyWith({
+    String? spaceId,
+    String? libraryId,
+    Value<String?> addedById = const Value.absent(),
+    String? createdAt,
+  }) => SharedSpaceLibraryEntityData(
+    spaceId: spaceId ?? this.spaceId,
+    libraryId: libraryId ?? this.libraryId,
+    addedById: addedById.present ? addedById.value : this.addedById,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  SharedSpaceLibraryEntityData copyWithCompanion(
+    SharedSpaceLibraryEntityCompanion data,
+  ) {
+    return SharedSpaceLibraryEntityData(
+      spaceId: data.spaceId.present ? data.spaceId.value : this.spaceId,
+      libraryId: data.libraryId.present ? data.libraryId.value : this.libraryId,
+      addedById: data.addedById.present ? data.addedById.value : this.addedById,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SharedSpaceLibraryEntityData(')
+          ..write('spaceId: $spaceId, ')
+          ..write('libraryId: $libraryId, ')
+          ..write('addedById: $addedById, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(spaceId, libraryId, addedById, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SharedSpaceLibraryEntityData &&
+          other.spaceId == this.spaceId &&
+          other.libraryId == this.libraryId &&
+          other.addedById == this.addedById &&
+          other.createdAt == this.createdAt);
+}
+
+class SharedSpaceLibraryEntityCompanion
+    extends UpdateCompanion<SharedSpaceLibraryEntityData> {
+  final Value<String> spaceId;
+  final Value<String> libraryId;
+  final Value<String?> addedById;
+  final Value<String> createdAt;
+  const SharedSpaceLibraryEntityCompanion({
+    this.spaceId = const Value.absent(),
+    this.libraryId = const Value.absent(),
+    this.addedById = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  SharedSpaceLibraryEntityCompanion.insert({
+    required String spaceId,
+    required String libraryId,
+    this.addedById = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  }) : spaceId = Value(spaceId),
+       libraryId = Value(libraryId);
+  static Insertable<SharedSpaceLibraryEntityData> custom({
+    Expression<String>? spaceId,
+    Expression<String>? libraryId,
+    Expression<String>? addedById,
+    Expression<String>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (spaceId != null) 'space_id': spaceId,
+      if (libraryId != null) 'library_id': libraryId,
+      if (addedById != null) 'added_by_id': addedById,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  SharedSpaceLibraryEntityCompanion copyWith({
+    Value<String>? spaceId,
+    Value<String>? libraryId,
+    Value<String?>? addedById,
+    Value<String>? createdAt,
+  }) {
+    return SharedSpaceLibraryEntityCompanion(
+      spaceId: spaceId ?? this.spaceId,
+      libraryId: libraryId ?? this.libraryId,
+      addedById: addedById ?? this.addedById,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (spaceId.present) {
+      map['space_id'] = Variable<String>(spaceId.value);
+    }
+    if (libraryId.present) {
+      map['library_id'] = Variable<String>(libraryId.value);
+    }
+    if (addedById.present) {
+      map['added_by_id'] = Variable<String>(addedById.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SharedSpaceLibraryEntityCompanion(')
+          ..write('spaceId: $spaceId, ')
+          ..write('libraryId: $libraryId, ')
+          ..write('addedById: $addedById, ')
+          ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
@@ -5890,6 +7193,297 @@ class RemoteAssetCloudIdEntityCompanion
   }
 }
 
+class LibraryEntity extends Table
+    with TableInfo<LibraryEntity, LibraryEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  LibraryEntity(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> ownerId = GeneratedColumn<String>(
+    'owner_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES user_entity(id)ON DELETE CASCADE',
+  );
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    ownerId,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'library_entity';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  LibraryEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return LibraryEntityData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      ownerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}owner_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  LibraryEntity createAlias(String alias) {
+    return LibraryEntity(attachedDatabase, alias);
+  }
+
+  @override
+  bool get withoutRowId => true;
+  @override
+  bool get isStrict => true;
+  @override
+  List<String> get customConstraints => const ['PRIMARY KEY(id)'];
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class LibraryEntityData extends DataClass
+    implements Insertable<LibraryEntityData> {
+  final String id;
+  final String name;
+  final String ownerId;
+  final String createdAt;
+  final String updatedAt;
+  const LibraryEntityData({
+    required this.id,
+    required this.name,
+    required this.ownerId,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['owner_id'] = Variable<String>(ownerId);
+    map['created_at'] = Variable<String>(createdAt);
+    map['updated_at'] = Variable<String>(updatedAt);
+    return map;
+  }
+
+  factory LibraryEntityData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return LibraryEntityData(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      ownerId: serializer.fromJson<String>(json['ownerId']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'ownerId': serializer.toJson<String>(ownerId),
+      'createdAt': serializer.toJson<String>(createdAt),
+      'updatedAt': serializer.toJson<String>(updatedAt),
+    };
+  }
+
+  LibraryEntityData copyWith({
+    String? id,
+    String? name,
+    String? ownerId,
+    String? createdAt,
+    String? updatedAt,
+  }) => LibraryEntityData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    ownerId: ownerId ?? this.ownerId,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  LibraryEntityData copyWithCompanion(LibraryEntityCompanion data) {
+    return LibraryEntityData(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      ownerId: data.ownerId.present ? data.ownerId.value : this.ownerId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LibraryEntityData(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('ownerId: $ownerId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, ownerId, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is LibraryEntityData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.ownerId == this.ownerId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class LibraryEntityCompanion extends UpdateCompanion<LibraryEntityData> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String> ownerId;
+  final Value<String> createdAt;
+  final Value<String> updatedAt;
+  const LibraryEntityCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.ownerId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  LibraryEntityCompanion.insert({
+    required String id,
+    required String name,
+    required String ownerId,
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       ownerId = Value(ownerId);
+  static Insertable<LibraryEntityData> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? ownerId,
+    Expression<String>? createdAt,
+    Expression<String>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (ownerId != null) 'owner_id': ownerId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  LibraryEntityCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String>? ownerId,
+    Value<String>? createdAt,
+    Value<String>? updatedAt,
+  }) {
+    return LibraryEntityCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      ownerId: ownerId ?? this.ownerId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (ownerId.present) {
+      map['owner_id'] = Variable<String>(ownerId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<String>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LibraryEntityCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('ownerId: $ownerId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class MemoryEntity extends Table
     with TableInfo<MemoryEntity, MemoryEntityData> {
   @override
@@ -8831,11 +10425,11 @@ class AssetEditEntityCompanion extends UpdateCompanion<AssetEditEntityData> {
   }
 }
 
-class Settings extends Table with TableInfo<Settings, SettingsData> {
+class Metadata extends Table with TableInfo<Metadata, MetadataData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  Settings(this.attachedDatabase, [this._alias]);
+  Metadata(this.attachedDatabase, [this._alias]);
   late final GeneratedColumn<String> key = GeneratedColumn<String>(
     'key',
     aliasedName,
@@ -8867,13 +10461,13 @@ class Settings extends Table with TableInfo<Settings, SettingsData> {
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'settings';
+  static const String $name = 'metadata';
   @override
   Set<GeneratedColumn> get $primaryKey => {key};
   @override
-  SettingsData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  MetadataData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SettingsData(
+    return MetadataData(
       key: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}key'],
@@ -8890,8 +10484,8 @@ class Settings extends Table with TableInfo<Settings, SettingsData> {
   }
 
   @override
-  Settings createAlias(String alias) {
-    return Settings(attachedDatabase, alias);
+  Metadata createAlias(String alias) {
+    return Metadata(attachedDatabase, alias);
   }
 
   @override
@@ -8904,11 +10498,11 @@ class Settings extends Table with TableInfo<Settings, SettingsData> {
   bool get dontWriteConstraints => true;
 }
 
-class SettingsData extends DataClass implements Insertable<SettingsData> {
+class MetadataData extends DataClass implements Insertable<MetadataData> {
   final String key;
   final String value;
   final String updatedAt;
-  const SettingsData({
+  const MetadataData({
     required this.key,
     required this.value,
     required this.updatedAt,
@@ -8922,12 +10516,12 @@ class SettingsData extends DataClass implements Insertable<SettingsData> {
     return map;
   }
 
-  factory SettingsData.fromJson(
+  factory MetadataData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SettingsData(
+    return MetadataData(
       key: serializer.fromJson<String>(json['key']),
       value: serializer.fromJson<String>(json['value']),
       updatedAt: serializer.fromJson<String>(json['updatedAt']),
@@ -8943,14 +10537,14 @@ class SettingsData extends DataClass implements Insertable<SettingsData> {
     };
   }
 
-  SettingsData copyWith({String? key, String? value, String? updatedAt}) =>
-      SettingsData(
+  MetadataData copyWith({String? key, String? value, String? updatedAt}) =>
+      MetadataData(
         key: key ?? this.key,
         value: value ?? this.value,
         updatedAt: updatedAt ?? this.updatedAt,
       );
-  SettingsData copyWithCompanion(SettingsCompanion data) {
-    return SettingsData(
+  MetadataData copyWithCompanion(MetadataCompanion data) {
+    return MetadataData(
       key: data.key.present ? data.key.value : this.key,
       value: data.value.present ? data.value.value : this.value,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -8959,7 +10553,7 @@ class SettingsData extends DataClass implements Insertable<SettingsData> {
 
   @override
   String toString() {
-    return (StringBuffer('SettingsData(')
+    return (StringBuffer('MetadataData(')
           ..write('key: $key, ')
           ..write('value: $value, ')
           ..write('updatedAt: $updatedAt')
@@ -8972,28 +10566,28 @@ class SettingsData extends DataClass implements Insertable<SettingsData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is SettingsData &&
+      (other is MetadataData &&
           other.key == this.key &&
           other.value == this.value &&
           other.updatedAt == this.updatedAt);
 }
 
-class SettingsCompanion extends UpdateCompanion<SettingsData> {
+class MetadataCompanion extends UpdateCompanion<MetadataData> {
   final Value<String> key;
   final Value<String> value;
   final Value<String> updatedAt;
-  const SettingsCompanion({
+  const MetadataCompanion({
     this.key = const Value.absent(),
     this.value = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
-  SettingsCompanion.insert({
+  MetadataCompanion.insert({
     required String key,
     required String value,
     this.updatedAt = const Value.absent(),
   }) : key = Value(key),
        value = Value(value);
-  static Insertable<SettingsData> custom({
+  static Insertable<MetadataData> custom({
     Expression<String>? key,
     Expression<String>? value,
     Expression<String>? updatedAt,
@@ -9005,12 +10599,12 @@ class SettingsCompanion extends UpdateCompanion<SettingsData> {
     });
   }
 
-  SettingsCompanion copyWith({
+  MetadataCompanion copyWith({
     Value<String>? key,
     Value<String>? value,
     Value<String>? updatedAt,
   }) {
-    return SettingsCompanion(
+    return MetadataCompanion(
       key: key ?? this.key,
       value: value ?? this.value,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -9034,7 +10628,7 @@ class SettingsCompanion extends UpdateCompanion<SettingsData> {
 
   @override
   String toString() {
-    return (StringBuffer('SettingsCompanion(')
+    return (StringBuffer('MetadataCompanion(')
           ..write('key: $key, ')
           ..write('value: $value, ')
           ..write('updatedAt: $updatedAt')
@@ -9049,10 +10643,37 @@ class DatabaseAtV28 extends GeneratedDatabase {
   late final RemoteAssetEntity remoteAssetEntity = RemoteAssetEntity(this);
   late final StackEntity stackEntity = StackEntity(this);
   late final LocalAssetEntity localAssetEntity = LocalAssetEntity(this);
+  late final SharedSpaceEntity sharedSpaceEntity = SharedSpaceEntity(this);
+  late final SharedSpaceAssetEntity sharedSpaceAssetEntity =
+      SharedSpaceAssetEntity(this);
+  late final SharedSpaceMemberEntity sharedSpaceMemberEntity =
+      SharedSpaceMemberEntity(this);
+  late final SharedSpaceLibraryEntity sharedSpaceLibraryEntity =
+      SharedSpaceLibraryEntity(this);
   late final RemoteAlbumEntity remoteAlbumEntity = RemoteAlbumEntity(this);
   late final LocalAlbumEntity localAlbumEntity = LocalAlbumEntity(this);
   late final LocalAlbumAssetEntity localAlbumAssetEntity =
       LocalAlbumAssetEntity(this);
+  late final Index idxSharedSpaceCreatedById = Index(
+    'idx_shared_space_created_by_id',
+    'CREATE INDEX IF NOT EXISTS idx_shared_space_created_by_id ON shared_space_entity (created_by_id)',
+  );
+  late final Index idxSharedSpaceLibrarySpaceId = Index(
+    'idx_shared_space_library_space_id',
+    'CREATE INDEX IF NOT EXISTS idx_shared_space_library_space_id ON shared_space_library_entity (space_id)',
+  );
+  late final Index idxSharedSpaceLibraryLibrarySpace = Index(
+    'idx_shared_space_library_library_space',
+    'CREATE INDEX IF NOT EXISTS idx_shared_space_library_library_space ON shared_space_library_entity (library_id, space_id)',
+  );
+  late final Index idxSharedSpaceAssetSpaceAsset = Index(
+    'idx_shared_space_asset_space_asset',
+    'CREATE INDEX IF NOT EXISTS idx_shared_space_asset_space_asset ON shared_space_asset_entity (space_id, asset_id)',
+  );
+  late final Index idxSharedSpaceAssetAssetSpace = Index(
+    'idx_shared_space_asset_asset_space',
+    'CREATE INDEX IF NOT EXISTS idx_shared_space_asset_asset_space ON shared_space_asset_entity (asset_id, space_id)',
+  );
   late final Index idxLocalAlbumAssetAlbumAsset = Index(
     'idx_local_album_asset_album_asset',
     'CREATE INDEX IF NOT EXISTS idx_local_album_asset_album_asset ON local_album_asset_entity (album_id, asset_id)',
@@ -9065,13 +10686,13 @@ class DatabaseAtV28 extends GeneratedDatabase {
     'idx_local_asset_cloud_id',
     'CREATE INDEX IF NOT EXISTS idx_local_asset_cloud_id ON local_asset_entity (i_cloud_id)',
   );
-  late final Index idxLocalAssetCreatedAt = Index(
-    'idx_local_asset_created_at',
-    'CREATE INDEX IF NOT EXISTS idx_local_asset_created_at ON local_asset_entity (created_at)',
-  );
   late final Index idxStackPrimaryAssetId = Index(
     'idx_stack_primary_asset_id',
     'CREATE INDEX IF NOT EXISTS idx_stack_primary_asset_id ON stack_entity (primary_asset_id)',
+  );
+  late final Index idxRemoteAssetOwnerChecksum = Index(
+    'idx_remote_asset_owner_checksum',
+    'CREATE INDEX IF NOT EXISTS idx_remote_asset_owner_checksum ON remote_asset_entity (owner_id, checksum)',
   );
   late final Index uQRemoteAssetsOwnerChecksum = Index(
     'UQ_remote_assets_owner_checksum',
@@ -9089,9 +10710,17 @@ class DatabaseAtV28 extends GeneratedDatabase {
     'idx_remote_asset_stack_id',
     'CREATE INDEX IF NOT EXISTS idx_remote_asset_stack_id ON remote_asset_entity (stack_id)',
   );
-  late final Index idxRemoteAssetOwnerVisibilityDeletedCreated = Index(
-    'idx_remote_asset_owner_visibility_deleted_created',
-    'CREATE INDEX IF NOT EXISTS idx_remote_asset_owner_visibility_deleted_created ON remote_asset_entity (owner_id, visibility, deleted_at, created_at DESC)',
+  late final Index idxRemoteAssetLocalDateTimeDay = Index(
+    'idx_remote_asset_local_date_time_day',
+    'CREATE INDEX IF NOT EXISTS idx_remote_asset_local_date_time_day ON remote_asset_entity (STRFTIME(\'%Y-%m-%d\', local_date_time))',
+  );
+  late final Index idxRemoteAssetLocalDateTimeMonth = Index(
+    'idx_remote_asset_local_date_time_month',
+    'CREATE INDEX IF NOT EXISTS idx_remote_asset_local_date_time_month ON remote_asset_entity (STRFTIME(\'%Y-%m\', local_date_time))',
+  );
+  late final Index idxRemoteAssetLibraryCreated = Index(
+    'idx_remote_asset_library_created',
+    'CREATE INDEX IF NOT EXISTS idx_remote_asset_library_created ON remote_asset_entity (library_id, created_at DESC)',
   );
   late final AuthUserEntity authUserEntity = AuthUserEntity(this);
   late final UserMetadataEntity userMetadataEntity = UserMetadataEntity(this);
@@ -9103,6 +10732,7 @@ class DatabaseAtV28 extends GeneratedDatabase {
       RemoteAlbumUserEntity(this);
   late final RemoteAssetCloudIdEntity remoteAssetCloudIdEntity =
       RemoteAssetCloudIdEntity(this);
+  late final LibraryEntity libraryEntity = LibraryEntity(this);
   late final MemoryEntity memoryEntity = MemoryEntity(this);
   late final MemoryAssetEntity memoryAssetEntity = MemoryAssetEntity(this);
   late final PersonEntity personEntity = PersonEntity(this);
@@ -9111,7 +10741,7 @@ class DatabaseAtV28 extends GeneratedDatabase {
   late final TrashedLocalAssetEntity trashedLocalAssetEntity =
       TrashedLocalAssetEntity(this);
   late final AssetEditEntity assetEditEntity = AssetEditEntity(this);
-  late final Settings settings = Settings(this);
+  late final Metadata metadata = Metadata(this);
   late final Index idxPartnerSharedWithId = Index(
     'idx_partner_shared_with_id',
     'CREATE INDEX IF NOT EXISTS idx_partner_shared_with_id ON partner_entity (shared_with_id)',
@@ -9119,10 +10749,6 @@ class DatabaseAtV28 extends GeneratedDatabase {
   late final Index idxLatLng = Index(
     'idx_lat_lng',
     'CREATE INDEX IF NOT EXISTS idx_lat_lng ON remote_exif_entity (latitude, longitude)',
-  );
-  late final Index idxRemoteExifCity = Index(
-    'idx_remote_exif_city',
-    'CREATE INDEX IF NOT EXISTS idx_remote_exif_city ON remote_exif_entity (city) WHERE city IS NOT NULL',
   );
   late final Index idxRemoteAlbumAssetAlbumAsset = Index(
     'idx_remote_album_asset_album_asset',
@@ -9143,10 +10769,6 @@ class DatabaseAtV28 extends GeneratedDatabase {
   late final Index idxAssetFaceAssetId = Index(
     'idx_asset_face_asset_id',
     'CREATE INDEX IF NOT EXISTS idx_asset_face_asset_id ON asset_face_entity (asset_id)',
-  );
-  late final Index idxAssetFaceVisiblePerson = Index(
-    'idx_asset_face_visible_person',
-    'CREATE INDEX IF NOT EXISTS idx_asset_face_visible_person ON asset_face_entity (person_id, asset_id) WHERE is_visible = 1 AND deleted_at IS NULL',
   );
   late final Index idxTrashedLocalAssetChecksum = Index(
     'idx_trashed_local_asset_checksum',
@@ -9169,19 +10791,30 @@ class DatabaseAtV28 extends GeneratedDatabase {
     remoteAssetEntity,
     stackEntity,
     localAssetEntity,
+    sharedSpaceEntity,
+    sharedSpaceAssetEntity,
+    sharedSpaceMemberEntity,
+    sharedSpaceLibraryEntity,
     remoteAlbumEntity,
     localAlbumEntity,
     localAlbumAssetEntity,
+    idxSharedSpaceCreatedById,
+    idxSharedSpaceLibrarySpaceId,
+    idxSharedSpaceLibraryLibrarySpace,
+    idxSharedSpaceAssetSpaceAsset,
+    idxSharedSpaceAssetAssetSpace,
     idxLocalAlbumAssetAlbumAsset,
     idxLocalAssetChecksum,
     idxLocalAssetCloudId,
-    idxLocalAssetCreatedAt,
     idxStackPrimaryAssetId,
+    idxRemoteAssetOwnerChecksum,
     uQRemoteAssetsOwnerChecksum,
     uQRemoteAssetsOwnerLibraryChecksum,
     idxRemoteAssetChecksum,
     idxRemoteAssetStackId,
-    idxRemoteAssetOwnerVisibilityDeletedCreated,
+    idxRemoteAssetLocalDateTimeDay,
+    idxRemoteAssetLocalDateTimeMonth,
+    idxRemoteAssetLibraryCreated,
     authUserEntity,
     userMetadataEntity,
     partnerEntity,
@@ -9189,6 +10822,7 @@ class DatabaseAtV28 extends GeneratedDatabase {
     remoteAlbumAssetEntity,
     remoteAlbumUserEntity,
     remoteAssetCloudIdEntity,
+    libraryEntity,
     memoryEntity,
     memoryAssetEntity,
     personEntity,
@@ -9196,16 +10830,14 @@ class DatabaseAtV28 extends GeneratedDatabase {
     storeEntity,
     trashedLocalAssetEntity,
     assetEditEntity,
-    settings,
+    metadata,
     idxPartnerSharedWithId,
     idxLatLng,
-    idxRemoteExifCity,
     idxRemoteAlbumAssetAlbumAsset,
     idxRemoteAssetCloudId,
     idxPersonOwnerId,
     idxAssetFacePersonId,
     idxAssetFaceAssetId,
-    idxAssetFaceVisiblePerson,
     idxTrashedLocalAssetChecksum,
     idxTrashedLocalAssetAlbum,
     idxAssetEditAssetId,
@@ -9225,6 +10857,49 @@ class DatabaseAtV28 extends GeneratedDatabase {
         limitUpdateKind: UpdateKind.delete,
       ),
       result: [TableUpdate('stack_entity', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'user_entity',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('shared_space_entity', kind: UpdateKind.delete)],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'shared_space_entity',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('shared_space_asset_entity', kind: UpdateKind.delete),
+      ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'shared_space_entity',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('shared_space_member_entity', kind: UpdateKind.delete),
+      ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'user_entity',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('shared_space_member_entity', kind: UpdateKind.delete),
+      ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'shared_space_entity',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [
+        TableUpdate('shared_space_library_entity', kind: UpdateKind.delete),
+      ],
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName(
@@ -9330,6 +11005,13 @@ class DatabaseAtV28 extends GeneratedDatabase {
       result: [
         TableUpdate('remote_asset_cloud_id_entity', kind: UpdateKind.delete),
       ],
+    ),
+    WritePropagation(
+      on: TableUpdateQuery.onTableName(
+        'user_entity',
+        limitUpdateKind: UpdateKind.delete,
+      ),
+      result: [TableUpdate('library_entity', kind: UpdateKind.delete)],
     ),
     WritePropagation(
       on: TableUpdateQuery.onTableName(
