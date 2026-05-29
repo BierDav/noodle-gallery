@@ -158,10 +158,7 @@ class AppLifeCycleNotifier extends StateNotifier<AppLifeCycleEnum> {
     if (isEnableBackup) {
       final currentUser = Store.tryGet(StoreKey.currentUser);
       if (currentUser != null) {
-        await _safeRun(
-          _ref.read(driftBackupProvider.notifier).startForegroundBackup(currentUser.id),
-          "handleBackupResume",
-        );
+        await _safeRun(_ref.read(driftBackupProvider.notifier).startBackup(currentUser.id), "handleBackupResume");
       }
     }
   }
@@ -209,7 +206,9 @@ class AppLifeCycleNotifier extends StateNotifier<AppLifeCycleEnum> {
 
   Future<void> _performPause() {
     if (_ref.read(authProvider).isAuthenticated) {
-      _ref.read(driftBackupProvider.notifier).stopForegroundBackup();
+      if (!CurrentPlatform.isIOS) {
+        _ref.read(driftBackupProvider.notifier).stopForegroundBackup();
+      }
 
       _ref.read(websocketProvider.notifier).disconnect();
     }

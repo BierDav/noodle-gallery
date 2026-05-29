@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:background_downloader/background_downloader.dart';
 import 'package:collection/collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -7,6 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:immich_mobile/constants/constants.dart';
 import 'package:immich_mobile/domain/models/album/local_album.model.dart';
 import 'package:immich_mobile/domain/models/asset/base_asset.model.dart';
+import 'package:immich_mobile/extensions/platform_extensions.dart';
 import 'package:immich_mobile/utils/upload_speed_calculator.dart';
 import 'package:immich_mobile/providers/infrastructure/asset.provider.dart';
 import 'package:immich_mobile/providers/user.provider.dart';
@@ -203,14 +205,93 @@ class DriftBackupNotifier extends StateNotifier<DriftBackupState> {
           uploadItems: {},
           error: BackupError.none,
         ),
-      );
+      ) {
+    _backgroundProgressSubscription = _backgroundUploadService.taskProgressStream.listen(
+      _handleBackgroundBackupProgress,
+    );
+    _backgroundStatusSubscription = _backgroundUploadService.taskStatusStream.listen(_handleBackgroundBackupStatus);
+  }
 
   final ForegroundUploadService _foregroundUploadService;
   final BackgroundUploadService _backgroundUploadService;
   final UploadSpeedManager _uploadSpeedManager;
   Completer<void>? _cancelToken;
+  late final StreamSubscription<TaskProgressUpdate> _backgroundProgressSubscription;
+  late final StreamSubscription<TaskStatusUpdate> _backgroundStatusSubscription;
 
   final _logger = Logger("DriftBackupNotifier");
+
+  @override
+  void dispose() {
+    unawaited(_backgroundProgressSubscription.cancel());
+    unawaited(_backgroundStatusSubscription.cancel());
+    super.dispose();
+  }
+
+  void _handleBackgroundBackupProgress(TaskProgressUpdate update) {
+    if (!mounted || update.task.group != kBackupGroup) {
+      return;
+    }
+
+    final taskId = update.task.taskId;
+    final filename = update.task.displayName.isNotEmpty ? update.task.displayName : update.task.filename;
+    final progress = update.progress.clamp(0.0, 1.0);
+    final fileSize = update.expectedFileSize >= 0 ? update.expectedFileSize : 0;
+    final networkSpeedAsString = update.hasNetworkSpeed ? '${update.networkSpeed.toStringAsFixed(2)} MB/s' : '';
+    final currentItem = state.uploadItems[taskId];
+
+    state = state.copyWith(
+      uploadItems: {
+        ...state.uploadItems,
+        taskId: DriftUploadStatus(
+          taskId: taskId,
+          filename: filename,
+          progress: progress,
+          fileSize: fileSize,
+          networkSpeedAsString: networkSpeedAsString,
+          isFailed: currentItem?.isFailed,
+          error: currentItem?.error,
+        ),
+      },
+    );
+  }
+
+  void _handleBackgroundBackupStatus(TaskStatusUpdate update) {
+    if (!mounted || update.task.group != kBackupGroup) {
+      return;
+    }
+
+    final taskId = update.task.taskId;
+    switch (update.status) {
+      case TaskStatus.complete:
+        state = state.copyWith(backupCount: state.backupCount + 1, remainderCount: state.remainderCount - 1);
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          _removeUploadItem(taskId);
+        });
+        break;
+      case TaskStatus.failed:
+      case TaskStatus.notFound:
+      case TaskStatus.canceled:
+        final filename = update.task.displayName.isNotEmpty ? update.task.displayName : update.task.filename;
+        state = state.copyWith(
+          uploadItems: {
+            ...state.uploadItems,
+            taskId: DriftUploadStatus(
+              taskId: taskId,
+              filename: filename,
+              progress: 0,
+              fileSize: 0,
+              networkSpeedAsString: '',
+              isFailed: true,
+              error: update.exception?.description ?? update.status.name,
+            ),
+          },
+        );
+        break;
+      default:
+        break;
+    }
+  }
 
   /// Remove upload item from state
   void _removeUploadItem(String taskId) {
@@ -276,6 +357,25 @@ class DriftBackupNotifier extends StateNotifier<DriftBackupState> {
         onICloudProgress: _handleICloudProgress,
       ),
     );
+  }
+
+  Future<void> startBackup(String userId) {
+    if (CurrentPlatform.isIOS) {
+      return startBackupWithURLSession(userId);
+    }
+
+    return startForegroundBackup(userId);
+  }
+
+  Future<void> stopBackup() async {
+    if (CurrentPlatform.isIOS) {
+      await _backgroundUploadService.cancel();
+      _uploadSpeedManager.clear();
+      state = state.copyWith(uploadItems: {}, iCloudDownloadProgress: {});
+      return;
+    }
+
+    stopForegroundBackup();
   }
 
   void stopForegroundBackup() {

@@ -182,18 +182,30 @@ class SearchDisplayFilters {
   bool isNotInAlbum = false;
   bool isArchive = false;
   bool isFavorite = false;
-  SearchDisplayFilters({required this.isNotInAlbum, required this.isArchive, required this.isFavorite});
+  bool isUntagged = false;
+  SearchDisplayFilters({
+    required this.isNotInAlbum,
+    required this.isArchive,
+    required this.isFavorite,
+    this.isUntagged = false,
+  });
 
-  SearchDisplayFilters copyWith({bool? isNotInAlbum, bool? isArchive, bool? isFavorite}) {
+  SearchDisplayFilters copyWith({bool? isNotInAlbum, bool? isArchive, bool? isFavorite, bool? isUntagged}) {
     return SearchDisplayFilters(
       isNotInAlbum: isNotInAlbum ?? this.isNotInAlbum,
       isArchive: isArchive ?? this.isArchive,
       isFavorite: isFavorite ?? this.isFavorite,
+      isUntagged: isUntagged ?? this.isUntagged,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{'isNotInAlbum': isNotInAlbum, 'isArchive': isArchive, 'isFavorite': isFavorite};
+    return <String, dynamic>{
+      'isNotInAlbum': isNotInAlbum,
+      'isArchive': isArchive,
+      'isFavorite': isFavorite,
+      'isUntagged': isUntagged,
+    };
   }
 
   factory SearchDisplayFilters.fromMap(Map<String, dynamic> map) {
@@ -201,6 +213,7 @@ class SearchDisplayFilters {
       isNotInAlbum: map['isNotInAlbum'] as bool,
       isArchive: map['isArchive'] as bool,
       isFavorite: map['isFavorite'] as bool,
+      isUntagged: map['isUntagged'] as bool? ?? false,
     );
   }
 
@@ -211,7 +224,7 @@ class SearchDisplayFilters {
 
   @override
   String toString() =>
-      'SearchDisplayFilters(isNotInAlbum: $isNotInAlbum, isArchive: $isArchive, isFavorite: $isFavorite)';
+      'SearchDisplayFilters(isNotInAlbum: $isNotInAlbum, isArchive: $isArchive, isFavorite: $isFavorite, isUntagged: $isUntagged)';
 
   @override
   bool operator ==(covariant SearchDisplayFilters other) {
@@ -219,11 +232,14 @@ class SearchDisplayFilters {
       return true;
     }
 
-    return other.isNotInAlbum == isNotInAlbum && other.isArchive == isArchive && other.isFavorite == isFavorite;
+    return other.isNotInAlbum == isNotInAlbum &&
+        other.isArchive == isArchive &&
+        other.isFavorite == isFavorite &&
+        other.isUntagged == isUntagged;
   }
 
   @override
-  int get hashCode => isNotInAlbum.hashCode ^ isArchive.hashCode ^ isFavorite.hashCode;
+  int get hashCode => isNotInAlbum.hashCode ^ isArchive.hashCode ^ isFavorite.hashCode ^ isUntagged.hashCode;
 }
 
 class SearchFilter {
@@ -292,6 +308,7 @@ class SearchFilter {
         display.isNotInAlbum == false &&
         display.isArchive == false &&
         display.isFavorite == false &&
+        display.isUntagged == false &&
         rating.rating.isNone &&
         mediaType == AssetType.other;
   }

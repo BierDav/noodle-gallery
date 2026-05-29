@@ -438,6 +438,7 @@ class DriftSearchPage extends HookConsumerWidget {
           isNotInAlbum: value[DisplayOption.notInAlbum],
           isArchive: value[DisplayOption.archive],
           isFavorite: value[DisplayOption.favorite],
+          isUntagged: value[DisplayOption.untagged],
         );
       }
 
@@ -455,11 +456,17 @@ class DriftSearchPage extends HookConsumerWidget {
           if (display.isNotInAlbum) 'search_filter_display_option_not_in_album'.t(context: context),
           if (display.isArchive) 'archive'.t(context: context),
           if (display.isFavorite) 'favorite'.t(context: context),
+          if (display.isUntagged) 'untagged'.t(context: context),
         ];
         displayOptionCurrentFilterWidget.value = filterText.isNotEmpty
             ? Text(filterText.join(', '), style: context.textTheme.labelLarge)
             : null;
-        search(filter.value.copyWith(display: display));
+        final nextFilter = filter.value.copyWith(display: display);
+        if (display.isUntagged) {
+          tagCurrentFilterWidget.value = null;
+          nextFilter.tagIds = null;
+        }
+        search(nextFilter);
       }
 
       showFilterBottomSheet(

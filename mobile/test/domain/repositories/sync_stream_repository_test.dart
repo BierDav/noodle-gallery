@@ -30,25 +30,28 @@ SyncAssetV1 _createAsset({
   String ownerId = 'user-1',
   int? width,
   int? height,
+  AssetTypeEnum type = AssetTypeEnum.IMAGE,
+  AssetVisibility visibility = AssetVisibility.timeline,
+  String? livePhotoVideoId,
 }) {
   return SyncAssetV1(
     id: id,
     checksum: checksum,
     originalFileName: fileName,
-    type: AssetTypeEnum.IMAGE,
+    type: type,
     ownerId: ownerId,
     isFavorite: false,
     fileCreatedAt: DateTime(2024, 1, 1),
     fileModifiedAt: DateTime(2024, 1, 1),
     createdAt: DateTime(2024, 1, 1),
     localDateTime: DateTime(2024, 1, 1),
-    visibility: AssetVisibility.timeline,
+    visibility: visibility,
     width: width,
     height: height,
     deletedAt: null,
     duration: null,
     libraryId: null,
-    livePhotoVideoId: null,
+    livePhotoVideoId: livePhotoVideoId,
     stackId: null,
     thumbhash: null,
     isEdited: false,
@@ -240,6 +243,35 @@ void main() {
       expect(after.linkedRemoteAlbumId, isNull);
       expect(after.name, equals('Camera'));
       expect(after.backupSelection, equals(BackupSelection.none));
+    });
+  });
+
+  group('SyncStreamRepository - Live photos', () {
+    test('hides motion asset when an uploaded still references it', () async {
+      await sut.updateUsersV1([_createUser()]);
+
+      final motion = _createAsset(
+        id: 'motion-1',
+        checksum: 'motion-checksum',
+        fileName: 'IMG_7052.MOV',
+        type: AssetTypeEnum.VIDEO,
+        visibility: AssetVisibility.timeline,
+      );
+      await sut.updateAssetsV1([motion]);
+
+      final still = _createAsset(
+        id: 'still-1',
+        checksum: 'still-checksum',
+        fileName: 'IMG_7052.HEIC',
+        livePhotoVideoId: motion.id,
+      );
+      await sut.updateAssetsV1([still], debugLabel: 'websocket-batch');
+
+      final motionRow = await (db.remoteAssetEntity.select()..where((tbl) => tbl.id.equals(motion.id))).getSingle();
+      final stillRow = await (db.remoteAssetEntity.select()..where((tbl) => tbl.id.equals(still.id))).getSingle();
+
+      expect(stillRow.livePhotoVideoId, motion.id);
+      expect(motionRow.visibility.name, 'hidden');
     });
   });
 
