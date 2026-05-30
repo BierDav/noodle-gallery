@@ -22,6 +22,7 @@ import 'package:immich_mobile/providers/sync_status.provider.dart';
 import 'package:immich_mobile/providers/user.provider.dart';
 import 'package:immich_mobile/routing/router.dart';
 import 'package:immich_mobile/widgets/backup/backup_info_card.dart';
+import 'package:immich_mobile/widgets/backup/background_backup_health_banner.dart';
 import 'package:immich_ui/immich_ui.dart';
 import 'package:logging/logging.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -146,6 +147,7 @@ class _DriftBackupPageState extends ConsumerState<DriftBackupPage> {
                       unawaited(backupNotifier.stopBackup());
                     },
                   ),
+                  const BackgroundBackupHealthBanner(),
                   switch (error) {
                     BackupError.none => const SizedBox.shrink(),
                     BackupError.syncFailed => Padding(
