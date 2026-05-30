@@ -3,13 +3,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:immich_mobile/domain/models/asset/base_asset.model.dart';
-import 'package:immich_mobile/domain/models/events.model.dart';
-import 'package:immich_mobile/domain/utils/event_stream.dart';
 import 'package:immich_mobile/extensions/build_context_extensions.dart';
 import 'package:immich_mobile/extensions/theme_extensions.dart';
 import 'package:immich_mobile/extensions/translate_extensions.dart';
 import 'package:immich_mobile/pages/common/large_leading_tile.dart';
 import 'package:immich_mobile/presentation/widgets/images/thumbnail.widget.dart';
+import 'package:immich_mobile/providers/asset_viewer/scroll_to_date_notifier.provider.dart';
 import 'package:immich_mobile/providers/backup/drift_backup.provider.dart';
 import 'package:immich_mobile/repositories/asset_media.repository.dart';
 import 'package:immich_mobile/routing/router.dart';
@@ -88,8 +87,8 @@ class DriftBackupAssetDetailPage extends ConsumerWidget {
                     ),
                     onTap: () async {
                       await context.maybePop();
-                      await context.navigateTo(const TabShellRoute(children: [MainTimelineRoute()]));
-                      EventStream.shared.emit(ScrollToDateEvent(asset.createdAt));
+                      await context.navigateTo(const MainTimelineRoute());
+                      scrollToDateNotifierProvider.scrollToDate(asset.createdAt);
                     },
                   );
                 },
