@@ -80,7 +80,8 @@ RUN --mount=type=cache,id=pnpm-packages,target=/buildcache/pnpm-store \
   --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
   --mount=type=bind,source=pnpm-workspace.yaml,target=pnpm-workspace.yaml \
   --mount=type=bind,source=patches,target=patches \
-  pnpm --filter @immich/plugin-sdk --filter @immich/plugin-core install --frozen-lockfile && \
+  pnpm --filter @immich/sdk --filter @immich/plugin-sdk --filter @immich/plugin-core install --frozen-lockfile && \
+  pnpm --filter @immich/sdk build && \
   mise exec --no-deps --jobs=1 github:extism/js-pdk@1.6.0 -- \
     pnpm --filter @immich/plugin-sdk --filter @immich/plugin-core build
 
