@@ -21,7 +21,7 @@ class SearchApi {
   /// Retrieve a list of assets with each asset belonging to a different city. This endpoint is used on the places pages to show a single thumbnail for each city the user has assets in.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAssetsByCityWithHttpInfo() async {
+  Future<Response> getAssetsByCityWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/cities';
 
@@ -43,14 +43,15 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve assets by city
   ///
   /// Retrieve a list of assets with each asset belonging to a different city. This endpoint is used on the places pages to show a single thumbnail for each city the user has assets in.
-  Future<List<AssetResponseDto>?> getAssetsByCity() async {
-    final response = await getAssetsByCityWithHttpInfo();
+  Future<List<AssetResponseDto>?> getAssetsByCity({ Future<void>? abortTrigger, }) async {
+    final response = await getAssetsByCityWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -72,7 +73,7 @@ class SearchApi {
   /// Retrieve data for the explore section, such as popular people and places.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getExploreDataWithHttpInfo() async {
+  Future<Response> getExploreDataWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/explore';
 
@@ -94,14 +95,15 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve explore data
   ///
   /// Retrieve data for the explore section, such as popular people and places.
-  Future<List<SearchExploreResponseDto>?> getExploreData() async {
-    final response = await getExploreDataWithHttpInfo();
+  Future<List<SearchExploreResponseDto>?> getExploreData({ Future<void>? abortTrigger, }) async {
+    final response = await getExploreDataWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -170,7 +172,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<Response> getFilterSuggestionsWithHttpInfo({ String? albumId, String? city, String? country, bool? isFavorite, bool? isNotInAlbum, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, }) async {
+  Future<Response> getFilterSuggestionsWithHttpInfo({ String? albumId, String? city, String? country, bool? isFavorite, bool? isNotInAlbum, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/suggestions/filters';
 
@@ -238,6 +240,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -291,8 +294,8 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<FilterSuggestionsResponseDto?> getFilterSuggestions({ String? albumId, String? city, String? country, bool? isFavorite, bool? isNotInAlbum, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, }) async {
-    final response = await getFilterSuggestionsWithHttpInfo( albumId: albumId, city: city, country: country, isFavorite: isFavorite, isNotInAlbum: isNotInAlbum, make: make, mediaType: mediaType, model: model, personIds: personIds, rating: rating, spaceId: spaceId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, );
+  Future<FilterSuggestionsResponseDto?> getFilterSuggestions({ String? albumId, String? city, String? country, bool? isFavorite, bool? isNotInAlbum, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await getFilterSuggestionsWithHttpInfo(albumId: albumId, city: city, country: country, isFavorite: isFavorite, isNotInAlbum: isNotInAlbum, make: make, mediaType: mediaType, model: model, personIds: personIds, rating: rating, spaceId: spaceId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -363,7 +366,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include suggestions from shared spaces the user is a member of
-  Future<Response> getSearchSuggestionsWithHttpInfo(SearchSuggestionType type, { String? albumId, String? country, bool? includeNull, bool? isFavorite, bool? isNotInAlbum, String? lensModel, String? make, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, }) async {
+  Future<Response> getSearchSuggestionsWithHttpInfo(SearchSuggestionType type, { String? albumId, String? country, bool? includeNull, bool? isFavorite, bool? isNotInAlbum, String? lensModel, String? make, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/suggestions';
 
@@ -435,6 +438,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -493,8 +497,8 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include suggestions from shared spaces the user is a member of
-  Future<List<String>?> getSearchSuggestions(SearchSuggestionType type, { String? albumId, String? country, bool? includeNull, bool? isFavorite, bool? isNotInAlbum, String? lensModel, String? make, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, }) async {
-    final response = await getSearchSuggestionsWithHttpInfo(type,  albumId: albumId, country: country, includeNull: includeNull, isFavorite: isFavorite, isNotInAlbum: isNotInAlbum, lensModel: lensModel, make: make, model: model, personIds: personIds, rating: rating, spaceId: spaceId, state: state, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, );
+  Future<List<String>?> getSearchSuggestions(SearchSuggestionType type, { String? albumId, String? country, bool? includeNull, bool? isFavorite, bool? isNotInAlbum, String? lensModel, String? make, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await getSearchSuggestionsWithHttpInfo(type, albumId: albumId, country: country, includeNull: includeNull, isFavorite: isFavorite, isNotInAlbum: isNotInAlbum, lensModel: lensModel, make: make, model: model, personIds: personIds, rating: rating, spaceId: spaceId, state: state, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -530,7 +534,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include suggestions from shared spaces the user is a member of
-  Future<Response> getTagSuggestionsWithHttpInfo({ String? spaceId, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, }) async {
+  Future<Response> getTagSuggestionsWithHttpInfo({ String? spaceId, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/suggestions/tags';
 
@@ -565,6 +569,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -585,8 +590,8 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include suggestions from shared spaces the user is a member of
-  Future<List<TagSuggestionResponseDto>?> getTagSuggestions({ String? spaceId, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, }) async {
-    final response = await getTagSuggestionsWithHttpInfo( spaceId: spaceId, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, );
+  Future<List<TagSuggestionResponseDto>?> getTagSuggestions({ String? spaceId, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await getTagSuggestionsWithHttpInfo(spaceId: spaceId, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -612,7 +617,7 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [StatisticsSearchDto] statisticsSearchDto (required):
-  Future<Response> searchAssetStatisticsWithHttpInfo(StatisticsSearchDto statisticsSearchDto,) async {
+  Future<Response> searchAssetStatisticsWithHttpInfo(StatisticsSearchDto statisticsSearchDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/statistics';
 
@@ -634,6 +639,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -644,8 +650,8 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [StatisticsSearchDto] statisticsSearchDto (required):
-  Future<SearchStatisticsResponseDto?> searchAssetStatistics(StatisticsSearchDto statisticsSearchDto,) async {
-    final response = await searchAssetStatisticsWithHttpInfo(statisticsSearchDto,);
+  Future<SearchStatisticsResponseDto?> searchAssetStatistics(StatisticsSearchDto statisticsSearchDto, { Future<void>? abortTrigger, }) async {
+    final response = await searchAssetStatisticsWithHttpInfo(statisticsSearchDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -668,7 +674,7 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [MetadataSearchDto] metadataSearchDto (required):
-  Future<Response> searchAssetsWithHttpInfo(MetadataSearchDto metadataSearchDto,) async {
+  Future<Response> searchAssetsWithHttpInfo(MetadataSearchDto metadataSearchDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/metadata';
 
@@ -690,6 +696,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -700,8 +707,8 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [MetadataSearchDto] metadataSearchDto (required):
-  Future<SearchResponseDto?> searchAssets(MetadataSearchDto metadataSearchDto,) async {
-    final response = await searchAssetsWithHttpInfo(metadataSearchDto,);
+  Future<SearchResponseDto?> searchAssets(MetadataSearchDto metadataSearchDto, { Future<void>? abortTrigger, }) async {
+    final response = await searchAssetsWithHttpInfo(metadataSearchDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -822,7 +829,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<Response> searchLargeAssetsWithHttpInfo({ List<String>? albumIds, String? city, String? country, DateTime? createdAfter, DateTime? createdBefore, bool? isEncoded, bool? isFavorite, bool? isMotion, bool? isNotInAlbum, bool? isOffline, String? lensModel, String? libraryId, String? make, int? minFileSize, String? model, String? ocr, List<String>? personIds, int? rating, int? size, String? spaceId, List<String>? spacePersonIds, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, DateTime? trashedAfter, DateTime? trashedBefore, AssetTypeEnum? type, DateTime? updatedAfter, DateTime? updatedBefore, AssetVisibility? visibility, bool? withDeleted, bool? withExif, bool? withSharedSpaces, }) async {
+  Future<Response> searchLargeAssetsWithHttpInfo({ List<String>? albumIds, String? city, String? country, DateTime? createdAfter, DateTime? createdBefore, bool? isEncoded, bool? isFavorite, bool? isMotion, bool? isNotInAlbum, bool? isOffline, String? lensModel, String? libraryId, String? make, int? minFileSize, String? model, String? ocr, List<String>? personIds, int? rating, int? size, String? spaceId, List<String>? spacePersonIds, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, DateTime? trashedAfter, DateTime? trashedBefore, AssetTypeEnum? type, DateTime? updatedAfter, DateTime? updatedBefore, AssetVisibility? visibility, bool? withDeleted, bool? withExif, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/large-assets';
 
@@ -947,6 +954,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1055,8 +1063,8 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<List<AssetResponseDto>?> searchLargeAssets({ List<String>? albumIds, String? city, String? country, DateTime? createdAfter, DateTime? createdBefore, bool? isEncoded, bool? isFavorite, bool? isMotion, bool? isNotInAlbum, bool? isOffline, String? lensModel, String? libraryId, String? make, int? minFileSize, String? model, String? ocr, List<String>? personIds, int? rating, int? size, String? spaceId, List<String>? spacePersonIds, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, DateTime? trashedAfter, DateTime? trashedBefore, AssetTypeEnum? type, DateTime? updatedAfter, DateTime? updatedBefore, AssetVisibility? visibility, bool? withDeleted, bool? withExif, bool? withSharedSpaces, }) async {
-    final response = await searchLargeAssetsWithHttpInfo( albumIds: albumIds, city: city, country: country, createdAfter: createdAfter, createdBefore: createdBefore, isEncoded: isEncoded, isFavorite: isFavorite, isMotion: isMotion, isNotInAlbum: isNotInAlbum, isOffline: isOffline, lensModel: lensModel, libraryId: libraryId, make: make, minFileSize: minFileSize, model: model, ocr: ocr, personIds: personIds, rating: rating, size: size, spaceId: spaceId, spacePersonIds: spacePersonIds, state: state, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, trashedAfter: trashedAfter, trashedBefore: trashedBefore, type: type, updatedAfter: updatedAfter, updatedBefore: updatedBefore, visibility: visibility, withDeleted: withDeleted, withExif: withExif, withSharedSpaces: withSharedSpaces, );
+  Future<List<AssetResponseDto>?> searchLargeAssets({ List<String>? albumIds, String? city, String? country, DateTime? createdAfter, DateTime? createdBefore, bool? isEncoded, bool? isFavorite, bool? isMotion, bool? isNotInAlbum, bool? isOffline, String? lensModel, String? libraryId, String? make, int? minFileSize, String? model, String? ocr, List<String>? personIds, int? rating, int? size, String? spaceId, List<String>? spacePersonIds, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, DateTime? trashedAfter, DateTime? trashedBefore, AssetTypeEnum? type, DateTime? updatedAfter, DateTime? updatedBefore, AssetVisibility? visibility, bool? withDeleted, bool? withExif, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await searchLargeAssetsWithHttpInfo(albumIds: albumIds, city: city, country: country, createdAfter: createdAfter, createdBefore: createdBefore, isEncoded: isEncoded, isFavorite: isFavorite, isMotion: isMotion, isNotInAlbum: isNotInAlbum, isOffline: isOffline, lensModel: lensModel, libraryId: libraryId, make: make, minFileSize: minFileSize, model: model, ocr: ocr, personIds: personIds, rating: rating, size: size, spaceId: spaceId, spacePersonIds: spacePersonIds, state: state, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, trashedAfter: trashedAfter, trashedBefore: trashedBefore, type: type, updatedAfter: updatedAfter, updatedBefore: updatedBefore, visibility: visibility, withDeleted: withDeleted, withExif: withExif, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1089,7 +1097,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<Response> searchPersonWithHttpInfo(String name, { bool? withHidden, bool? withSharedSpaces, }) async {
+  Future<Response> searchPersonWithHttpInfo(String name, { bool? withHidden, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/person';
 
@@ -1119,6 +1127,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1136,8 +1145,8 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<List<PersonResponseDto>?> searchPerson(String name, { bool? withHidden, bool? withSharedSpaces, }) async {
-    final response = await searchPersonWithHttpInfo(name,  withHidden: withHidden, withSharedSpaces: withSharedSpaces, );
+  Future<List<PersonResponseDto>?> searchPerson(String name, { bool? withHidden, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await searchPersonWithHttpInfo(name, withHidden: withHidden, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1164,7 +1173,7 @@ class SearchApi {
   ///
   /// * [String] name (required):
   ///   Place name to search for
-  Future<Response> searchPlacesWithHttpInfo(String name,) async {
+  Future<Response> searchPlacesWithHttpInfo(String name, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/places';
 
@@ -1188,6 +1197,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1199,8 +1209,8 @@ class SearchApi {
   ///
   /// * [String] name (required):
   ///   Place name to search for
-  Future<List<PlacesResponseDto>?> searchPlaces(String name,) async {
-    final response = await searchPlacesWithHttpInfo(name,);
+  Future<List<PlacesResponseDto>?> searchPlaces(String name, { Future<void>? abortTrigger, }) async {
+    final response = await searchPlacesWithHttpInfo(name, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1226,7 +1236,7 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [RandomSearchDto] randomSearchDto (required):
-  Future<Response> searchRandomWithHttpInfo(RandomSearchDto randomSearchDto,) async {
+  Future<Response> searchRandomWithHttpInfo(RandomSearchDto randomSearchDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/random';
 
@@ -1248,6 +1258,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1258,8 +1269,8 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [RandomSearchDto] randomSearchDto (required):
-  Future<List<AssetResponseDto>?> searchRandom(RandomSearchDto randomSearchDto,) async {
-    final response = await searchRandomWithHttpInfo(randomSearchDto,);
+  Future<List<AssetResponseDto>?> searchRandom(RandomSearchDto randomSearchDto, { Future<void>? abortTrigger, }) async {
+    final response = await searchRandomWithHttpInfo(randomSearchDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1285,7 +1296,7 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [SmartSearchDto] smartSearchDto (required):
-  Future<Response> searchSmartWithHttpInfo(SmartSearchDto smartSearchDto,) async {
+  Future<Response> searchSmartWithHttpInfo(SmartSearchDto smartSearchDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/smart';
 
@@ -1307,6 +1318,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1317,8 +1329,8 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [SmartSearchDto] smartSearchDto (required):
-  Future<SearchResponseDto?> searchSmart(SmartSearchDto smartSearchDto,) async {
-    final response = await searchSmartWithHttpInfo(smartSearchDto,);
+  Future<SearchResponseDto?> searchSmart(SmartSearchDto smartSearchDto, { Future<void>? abortTrigger, }) async {
+    final response = await searchSmartWithHttpInfo(smartSearchDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1341,7 +1353,7 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [SmartSearchFacetsDto] smartSearchFacetsDto (required):
-  Future<Response> searchSmartFacetsWithHttpInfo(SmartSearchFacetsDto smartSearchFacetsDto,) async {
+  Future<Response> searchSmartFacetsWithHttpInfo(SmartSearchFacetsDto smartSearchFacetsDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/smart/facets';
 
@@ -1363,6 +1375,7 @@ class SearchApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1373,8 +1386,8 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [SmartSearchFacetsDto] smartSearchFacetsDto (required):
-  Future<SmartSearchFacetsResponseDto?> searchSmartFacets(SmartSearchFacetsDto smartSearchFacetsDto,) async {
-    final response = await searchSmartFacetsWithHttpInfo(smartSearchFacetsDto,);
+  Future<SmartSearchFacetsResponseDto?> searchSmartFacets(SmartSearchFacetsDto smartSearchFacetsDto, { Future<void>? abortTrigger, }) async {
+    final response = await searchSmartFacetsWithHttpInfo(smartSearchFacetsDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

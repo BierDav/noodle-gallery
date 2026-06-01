@@ -25,7 +25,7 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [PersonCreateDto] personCreateDto (required):
-  Future<Response> createPersonWithHttpInfo(PersonCreateDto personCreateDto,) async {
+  Future<Response> createPersonWithHttpInfo(PersonCreateDto personCreateDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people';
 
@@ -47,6 +47,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -57,8 +58,8 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [PersonCreateDto] personCreateDto (required):
-  Future<PersonResponseDto?> createPerson(PersonCreateDto personCreateDto,) async {
-    final response = await createPersonWithHttpInfo(personCreateDto,);
+  Future<PersonResponseDto?> createPerson(PersonCreateDto personCreateDto, { Future<void>? abortTrigger, }) async {
+    final response = await createPersonWithHttpInfo(personCreateDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -81,7 +82,7 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<Response> deletePeopleWithHttpInfo(BulkIdsDto bulkIdsDto,) async {
+  Future<Response> deletePeopleWithHttpInfo(BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people';
 
@@ -103,6 +104,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -113,8 +115,8 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<void> deletePeople(BulkIdsDto bulkIdsDto,) async {
-    final response = await deletePeopleWithHttpInfo(bulkIdsDto,);
+  Future<void> deletePeople(BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
+    final response = await deletePeopleWithHttpInfo(bulkIdsDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -129,7 +131,7 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> deletePersonWithHttpInfo(String id,) async {
+  Future<Response> deletePersonWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/{id}'
       .replaceAll('{id}', id);
@@ -152,6 +154,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -162,8 +165,8 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> deletePerson(String id,) async {
-    final response = await deletePersonWithHttpInfo(id,);
+  Future<void> deletePerson(String id, { Future<void>? abortTrigger, }) async {
+    final response = await deletePersonWithHttpInfo(id, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -178,7 +181,7 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [DetachScopedPersonDto] detachScopedPersonDto (required):
-  Future<Response> detachScopedPersonWithHttpInfo(DetachScopedPersonDto detachScopedPersonDto,) async {
+  Future<Response> detachScopedPersonWithHttpInfo(DetachScopedPersonDto detachScopedPersonDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/detach-profile';
 
@@ -200,6 +203,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -210,8 +214,8 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [DetachScopedPersonDto] detachScopedPersonDto (required):
-  Future<void> detachScopedPerson(DetachScopedPersonDto detachScopedPersonDto,) async {
-    final response = await detachScopedPersonWithHttpInfo(detachScopedPersonDto,);
+  Future<void> detachScopedPerson(DetachScopedPersonDto detachScopedPersonDto, { Future<void>? abortTrigger, }) async {
+    final response = await detachScopedPersonWithHttpInfo(detachScopedPersonDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -242,7 +246,7 @@ class PeopleApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include identity-grouped people from timeline-enabled shared spaces
-  Future<Response> getAllPeopleWithHttpInfo({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, }) async {
+  Future<Response> getAllPeopleWithHttpInfo({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people';
 
@@ -283,6 +287,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -309,8 +314,8 @@ class PeopleApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include identity-grouped people from timeline-enabled shared spaces
-  Future<PeopleResponseDto?> getAllPeople({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, }) async {
-    final response = await getAllPeopleWithHttpInfo( closestAssetId: closestAssetId, closestPersonId: closestPersonId, page: page, size: size, withHidden: withHidden, withSharedSpaces: withSharedSpaces, );
+  Future<PeopleResponseDto?> getAllPeople({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await getAllPeopleWithHttpInfo(closestAssetId: closestAssetId, closestPersonId: closestPersonId, page: page, size: size, withHidden: withHidden, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -349,7 +354,7 @@ class PeopleApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include identity-grouped people from timeline-enabled shared spaces
-  Future<Response> getPeopleFaceStatisticsWithHttpInfo({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, }) async {
+  Future<Response> getPeopleFaceStatisticsWithHttpInfo({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/face-statistics';
 
@@ -390,6 +395,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -416,8 +422,8 @@ class PeopleApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include identity-grouped people from timeline-enabled shared spaces
-  Future<PeopleFaceStatisticsResponseDto?> getPeopleFaceStatistics({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, }) async {
-    final response = await getPeopleFaceStatisticsWithHttpInfo( closestAssetId: closestAssetId, closestPersonId: closestPersonId, page: page, size: size, withHidden: withHidden, withSharedSpaces: withSharedSpaces, );
+  Future<PeopleFaceStatisticsResponseDto?> getPeopleFaceStatistics({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await getPeopleFaceStatisticsWithHttpInfo(closestAssetId: closestAssetId, closestPersonId: closestPersonId, page: page, size: size, withHidden: withHidden, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -456,7 +462,7 @@ class PeopleApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include identity-grouped people from timeline-enabled shared spaces
-  Future<Response> getPeopleStatisticsWithHttpInfo({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, }) async {
+  Future<Response> getPeopleStatisticsWithHttpInfo({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/statistics';
 
@@ -497,6 +503,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -523,8 +530,8 @@ class PeopleApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include identity-grouped people from timeline-enabled shared spaces
-  Future<PeopleStatisticsResponseDto?> getPeopleStatistics({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, }) async {
-    final response = await getPeopleStatisticsWithHttpInfo( closestAssetId: closestAssetId, closestPersonId: closestPersonId, page: page, size: size, withHidden: withHidden, withSharedSpaces: withSharedSpaces, );
+  Future<PeopleStatisticsResponseDto?> getPeopleStatistics({ String? closestAssetId, String? closestPersonId, int? page, int? size, bool? withHidden, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await getPeopleStatisticsWithHttpInfo(closestAssetId: closestAssetId, closestPersonId: closestPersonId, page: page, size: size, withHidden: withHidden, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -547,7 +554,7 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getPersonWithHttpInfo(String id,) async {
+  Future<Response> getPersonWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/{id}'
       .replaceAll('{id}', id);
@@ -570,6 +577,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -580,8 +588,8 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<PersonResponseDto?> getPerson(String id,) async {
-    final response = await getPersonWithHttpInfo(id,);
+  Future<PersonResponseDto?> getPerson(String id, { Future<void>? abortTrigger, }) async {
+    final response = await getPersonWithHttpInfo(id, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -606,7 +614,7 @@ class PeopleApi {
   /// * [String] faceId (required):
   ///
   /// * [String] id (required):
-  Future<Response> getPersonFaceThumbnailWithHttpInfo(String faceId, String id,) async {
+  Future<Response> getPersonFaceThumbnailWithHttpInfo(String faceId, String id, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/{id}/faces/{faceId}/thumbnail'
       .replaceAll('{faceId}', faceId)
@@ -630,6 +638,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -642,8 +651,8 @@ class PeopleApi {
   /// * [String] faceId (required):
   ///
   /// * [String] id (required):
-  Future<MultipartFile?> getPersonFaceThumbnail(String faceId, String id,) async {
-    final response = await getPersonFaceThumbnailWithHttpInfo(faceId, id,);
+  Future<MultipartFile?> getPersonFaceThumbnail(String faceId, String id, { Future<void>? abortTrigger, }) async {
+    final response = await getPersonFaceThumbnailWithHttpInfo(faceId, id, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -672,7 +681,7 @@ class PeopleApi {
   ///
   /// * [int] size:
   ///   Number of faces per page
-  Future<Response> getPersonFacesWithHttpInfo(String id, { int? page, int? size, }) async {
+  Future<Response> getPersonFacesWithHttpInfo(String id, { int? page, int? size, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/{id}/faces'
       .replaceAll('{id}', id);
@@ -702,6 +711,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -718,8 +728,8 @@ class PeopleApi {
   ///
   /// * [int] size:
   ///   Number of faces per page
-  Future<PersonFacePageResponseDto?> getPersonFaces(String id, { int? page, int? size, }) async {
-    final response = await getPersonFacesWithHttpInfo(id,  page: page, size: size, );
+  Future<PersonFacePageResponseDto?> getPersonFaces(String id, { int? page, int? size, Future<void>? abortTrigger, }) async {
+    final response = await getPersonFacesWithHttpInfo(id, page: page, size: size, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -742,7 +752,7 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getPersonStatisticsWithHttpInfo(String id,) async {
+  Future<Response> getPersonStatisticsWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/{id}/statistics'
       .replaceAll('{id}', id);
@@ -765,6 +775,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -775,8 +786,8 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<PersonStatisticsResponseDto?> getPersonStatistics(String id,) async {
-    final response = await getPersonStatisticsWithHttpInfo(id,);
+  Future<PersonStatisticsResponseDto?> getPersonStatistics(String id, { Future<void>? abortTrigger, }) async {
+    final response = await getPersonStatisticsWithHttpInfo(id, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -799,7 +810,7 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> getPersonThumbnailWithHttpInfo(String id,) async {
+  Future<Response> getPersonThumbnailWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/{id}/thumbnail'
       .replaceAll('{id}', id);
@@ -822,6 +833,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -832,8 +844,8 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<MultipartFile?> getPersonThumbnail(String id,) async {
-    final response = await getPersonThumbnailWithHttpInfo(id,);
+  Future<MultipartFile?> getPersonThumbnail(String id, { Future<void>? abortTrigger, }) async {
+    final response = await getPersonThumbnailWithHttpInfo(id, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -858,7 +870,7 @@ class PeopleApi {
   /// * [String] id (required):
   ///
   /// * [MergePersonDto] mergePersonDto (required):
-  Future<Response> mergePersonWithHttpInfo(String id, MergePersonDto mergePersonDto,) async {
+  Future<Response> mergePersonWithHttpInfo(String id, MergePersonDto mergePersonDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/{id}/merge'
       .replaceAll('{id}', id);
@@ -881,6 +893,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -893,8 +906,8 @@ class PeopleApi {
   /// * [String] id (required):
   ///
   /// * [MergePersonDto] mergePersonDto (required):
-  Future<List<BulkIdResponseDto>?> mergePerson(String id, MergePersonDto mergePersonDto,) async {
-    final response = await mergePersonWithHttpInfo(id, mergePersonDto,);
+  Future<List<BulkIdResponseDto>?> mergePerson(String id, MergePersonDto mergePersonDto, { Future<void>? abortTrigger, }) async {
+    final response = await mergePersonWithHttpInfo(id, mergePersonDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -920,7 +933,7 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [MergeScopedPeopleDto] mergeScopedPeopleDto (required):
-  Future<Response> mergeScopedPeopleWithHttpInfo(MergeScopedPeopleDto mergeScopedPeopleDto,) async {
+  Future<Response> mergeScopedPeopleWithHttpInfo(MergeScopedPeopleDto mergeScopedPeopleDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/same-person';
 
@@ -942,6 +955,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -952,8 +966,8 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [MergeScopedPeopleDto] mergeScopedPeopleDto (required):
-  Future<void> mergeScopedPeople(MergeScopedPeopleDto mergeScopedPeopleDto,) async {
-    final response = await mergeScopedPeopleWithHttpInfo(mergeScopedPeopleDto,);
+  Future<void> mergeScopedPeople(MergeScopedPeopleDto mergeScopedPeopleDto, { Future<void>? abortTrigger, }) async {
+    final response = await mergeScopedPeopleWithHttpInfo(mergeScopedPeopleDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -970,7 +984,7 @@ class PeopleApi {
   /// * [String] id (required):
   ///
   /// * [AssetFaceUpdateDto] assetFaceUpdateDto (required):
-  Future<Response> reassignFacesWithHttpInfo(String id, AssetFaceUpdateDto assetFaceUpdateDto,) async {
+  Future<Response> reassignFacesWithHttpInfo(String id, AssetFaceUpdateDto assetFaceUpdateDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/{id}/reassign'
       .replaceAll('{id}', id);
@@ -993,6 +1007,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1005,8 +1020,8 @@ class PeopleApi {
   /// * [String] id (required):
   ///
   /// * [AssetFaceUpdateDto] assetFaceUpdateDto (required):
-  Future<List<PersonResponseDto>?> reassignFaces(String id, AssetFaceUpdateDto assetFaceUpdateDto,) async {
-    final response = await reassignFacesWithHttpInfo(id, assetFaceUpdateDto,);
+  Future<List<PersonResponseDto>?> reassignFaces(String id, AssetFaceUpdateDto assetFaceUpdateDto, { Future<void>? abortTrigger, }) async {
+    final response = await reassignFacesWithHttpInfo(id, assetFaceUpdateDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1032,7 +1047,7 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [PeopleUpdateDto] peopleUpdateDto (required):
-  Future<Response> updatePeopleWithHttpInfo(PeopleUpdateDto peopleUpdateDto,) async {
+  Future<Response> updatePeopleWithHttpInfo(PeopleUpdateDto peopleUpdateDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people';
 
@@ -1054,6 +1069,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1064,8 +1080,8 @@ class PeopleApi {
   /// Parameters:
   ///
   /// * [PeopleUpdateDto] peopleUpdateDto (required):
-  Future<List<BulkIdResponseDto>?> updatePeople(PeopleUpdateDto peopleUpdateDto,) async {
-    final response = await updatePeopleWithHttpInfo(peopleUpdateDto,);
+  Future<List<BulkIdResponseDto>?> updatePeople(PeopleUpdateDto peopleUpdateDto, { Future<void>? abortTrigger, }) async {
+    final response = await updatePeopleWithHttpInfo(peopleUpdateDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1093,7 +1109,7 @@ class PeopleApi {
   /// * [String] id (required):
   ///
   /// * [PersonUpdateDto] personUpdateDto (required):
-  Future<Response> updatePersonWithHttpInfo(String id, PersonUpdateDto personUpdateDto,) async {
+  Future<Response> updatePersonWithHttpInfo(String id, PersonUpdateDto personUpdateDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/{id}'
       .replaceAll('{id}', id);
@@ -1116,6 +1132,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1128,8 +1145,8 @@ class PeopleApi {
   /// * [String] id (required):
   ///
   /// * [PersonUpdateDto] personUpdateDto (required):
-  Future<PersonResponseDto?> updatePerson(String id, PersonUpdateDto personUpdateDto,) async {
-    final response = await updatePersonWithHttpInfo(id, personUpdateDto,);
+  Future<PersonResponseDto?> updatePerson(String id, PersonUpdateDto personUpdateDto, { Future<void>? abortTrigger, }) async {
+    final response = await updatePersonWithHttpInfo(id, personUpdateDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1154,7 +1171,7 @@ class PeopleApi {
   /// * [String] id (required):
   ///
   /// * [RepresentativeFaceUpdateDto] representativeFaceUpdateDto (required):
-  Future<Response> updateRepresentativeFaceWithHttpInfo(String id, RepresentativeFaceUpdateDto representativeFaceUpdateDto,) async {
+  Future<Response> updateRepresentativeFaceWithHttpInfo(String id, RepresentativeFaceUpdateDto representativeFaceUpdateDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/people/{id}/representative-face'
       .replaceAll('{id}', id);
@@ -1177,6 +1194,7 @@ class PeopleApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1189,8 +1207,8 @@ class PeopleApi {
   /// * [String] id (required):
   ///
   /// * [RepresentativeFaceUpdateDto] representativeFaceUpdateDto (required):
-  Future<PersonResponseDto?> updateRepresentativeFace(String id, RepresentativeFaceUpdateDto representativeFaceUpdateDto,) async {
-    final response = await updateRepresentativeFaceWithHttpInfo(id, representativeFaceUpdateDto,);
+  Future<PersonResponseDto?> updateRepresentativeFace(String id, RepresentativeFaceUpdateDto representativeFaceUpdateDto, { Future<void>? abortTrigger, }) async {
+    final response = await updateRepresentativeFaceWithHttpInfo(id, representativeFaceUpdateDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

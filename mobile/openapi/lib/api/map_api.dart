@@ -44,7 +44,7 @@ class MapApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared space assets
-  Future<Response> getMapMarkersWithHttpInfo({ DateTime? fileCreatedAfter, DateTime? fileCreatedBefore, bool? isArchived, bool? isFavorite, bool? withPartners, bool? withSharedAlbums, bool? withSharedSpaces, }) async {
+  Future<Response> getMapMarkersWithHttpInfo({ DateTime? fileCreatedAfter, DateTime? fileCreatedBefore, bool? isArchived, bool? isFavorite, bool? withPartners, bool? withSharedAlbums, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/map/markers';
 
@@ -88,6 +88,7 @@ class MapApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -117,8 +118,8 @@ class MapApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared space assets
-  Future<List<MapMarkerResponseDto>?> getMapMarkers({ DateTime? fileCreatedAfter, DateTime? fileCreatedBefore, bool? isArchived, bool? isFavorite, bool? withPartners, bool? withSharedAlbums, bool? withSharedSpaces, }) async {
-    final response = await getMapMarkersWithHttpInfo( fileCreatedAfter: fileCreatedAfter, fileCreatedBefore: fileCreatedBefore, isArchived: isArchived, isFavorite: isFavorite, withPartners: withPartners, withSharedAlbums: withSharedAlbums, withSharedSpaces: withSharedSpaces, );
+  Future<List<MapMarkerResponseDto>?> getMapMarkers({ DateTime? fileCreatedAfter, DateTime? fileCreatedBefore, bool? isArchived, bool? isFavorite, bool? withPartners, bool? withSharedAlbums, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await getMapMarkersWithHttpInfo(fileCreatedAfter: fileCreatedAfter, fileCreatedBefore: fileCreatedBefore, isArchived: isArchived, isFavorite: isFavorite, withPartners: withPartners, withSharedAlbums: withSharedAlbums, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -148,7 +149,7 @@ class MapApi {
   ///
   /// * [double] lon (required):
   ///   Longitude (-180 to 180)
-  Future<Response> reverseGeocodeWithHttpInfo(double lat, double lon,) async {
+  Future<Response> reverseGeocodeWithHttpInfo(double lat, double lon, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/map/reverse-geocode';
 
@@ -173,6 +174,7 @@ class MapApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -187,8 +189,8 @@ class MapApi {
   ///
   /// * [double] lon (required):
   ///   Longitude (-180 to 180)
-  Future<List<MapReverseGeocodeResponseDto>?> reverseGeocode(double lat, double lon,) async {
-    final response = await reverseGeocodeWithHttpInfo(lat, lon,);
+  Future<List<MapReverseGeocodeResponseDto>?> reverseGeocode(double lat, double lon, { Future<void>? abortTrigger, }) async {
+    final response = await reverseGeocodeWithHttpInfo(lat, lon, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

@@ -27,7 +27,7 @@ class AlbumsApi {
   /// * [String] id (required):
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<Response> addAssetsToAlbumWithHttpInfo(String id, BulkIdsDto bulkIdsDto,) async {
+  Future<Response> addAssetsToAlbumWithHttpInfo(String id, BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/{id}/assets'
       .replaceAll('{id}', id);
@@ -50,6 +50,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -62,8 +63,8 @@ class AlbumsApi {
   /// * [String] id (required):
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<List<BulkIdResponseDto>?> addAssetsToAlbum(String id, BulkIdsDto bulkIdsDto,) async {
-    final response = await addAssetsToAlbumWithHttpInfo(id, bulkIdsDto,);
+  Future<List<BulkIdResponseDto>?> addAssetsToAlbum(String id, BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
+    final response = await addAssetsToAlbumWithHttpInfo(id, bulkIdsDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -89,7 +90,7 @@ class AlbumsApi {
   /// Parameters:
   ///
   /// * [AlbumsAddAssetsDto] albumsAddAssetsDto (required):
-  Future<Response> addAssetsToAlbumsWithHttpInfo(AlbumsAddAssetsDto albumsAddAssetsDto,) async {
+  Future<Response> addAssetsToAlbumsWithHttpInfo(AlbumsAddAssetsDto albumsAddAssetsDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/assets';
 
@@ -111,6 +112,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -121,8 +123,8 @@ class AlbumsApi {
   /// Parameters:
   ///
   /// * [AlbumsAddAssetsDto] albumsAddAssetsDto (required):
-  Future<AlbumsAddAssetsResponseDto?> addAssetsToAlbums(AlbumsAddAssetsDto albumsAddAssetsDto,) async {
-    final response = await addAssetsToAlbumsWithHttpInfo(albumsAddAssetsDto,);
+  Future<AlbumsAddAssetsResponseDto?> addAssetsToAlbums(AlbumsAddAssetsDto albumsAddAssetsDto, { Future<void>? abortTrigger, }) async {
+    final response = await addAssetsToAlbumsWithHttpInfo(albumsAddAssetsDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -147,7 +149,7 @@ class AlbumsApi {
   /// * [String] id (required):
   ///
   /// * [AddUsersDto] addUsersDto (required):
-  Future<Response> addUsersToAlbumWithHttpInfo(String id, AddUsersDto addUsersDto,) async {
+  Future<Response> addUsersToAlbumWithHttpInfo(String id, AddUsersDto addUsersDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/{id}/users'
       .replaceAll('{id}', id);
@@ -170,6 +172,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -182,8 +185,8 @@ class AlbumsApi {
   /// * [String] id (required):
   ///
   /// * [AddUsersDto] addUsersDto (required):
-  Future<AlbumResponseDto?> addUsersToAlbum(String id, AddUsersDto addUsersDto,) async {
-    final response = await addUsersToAlbumWithHttpInfo(id, addUsersDto,);
+  Future<AlbumResponseDto?> addUsersToAlbum(String id, AddUsersDto addUsersDto, { Future<void>? abortTrigger, }) async {
+    final response = await addUsersToAlbumWithHttpInfo(id, addUsersDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -206,7 +209,7 @@ class AlbumsApi {
   /// Parameters:
   ///
   /// * [CreateAlbumDto] createAlbumDto (required):
-  Future<Response> createAlbumWithHttpInfo(CreateAlbumDto createAlbumDto,) async {
+  Future<Response> createAlbumWithHttpInfo(CreateAlbumDto createAlbumDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums';
 
@@ -228,6 +231,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -238,8 +242,8 @@ class AlbumsApi {
   /// Parameters:
   ///
   /// * [CreateAlbumDto] createAlbumDto (required):
-  Future<AlbumResponseDto?> createAlbum(CreateAlbumDto createAlbumDto,) async {
-    final response = await createAlbumWithHttpInfo(createAlbumDto,);
+  Future<AlbumResponseDto?> createAlbum(CreateAlbumDto createAlbumDto, { Future<void>? abortTrigger, }) async {
+    final response = await createAlbumWithHttpInfo(createAlbumDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -262,7 +266,7 @@ class AlbumsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<Response> deleteAlbumWithHttpInfo(String id,) async {
+  Future<Response> deleteAlbumWithHttpInfo(String id, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/{id}'
       .replaceAll('{id}', id);
@@ -285,6 +289,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -295,8 +300,8 @@ class AlbumsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
-  Future<void> deleteAlbum(String id,) async {
-    final response = await deleteAlbumWithHttpInfo(id,);
+  Future<void> deleteAlbum(String id, { Future<void>? abortTrigger, }) async {
+    final response = await deleteAlbumWithHttpInfo(id, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -315,7 +320,7 @@ class AlbumsApi {
   /// * [String] key:
   ///
   /// * [String] slug:
-  Future<Response> getAlbumInfoWithHttpInfo(String id, { String? key, String? slug, }) async {
+  Future<Response> getAlbumInfoWithHttpInfo(String id, { String? key, String? slug, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/{id}'
       .replaceAll('{id}', id);
@@ -345,6 +350,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -359,8 +365,8 @@ class AlbumsApi {
   /// * [String] key:
   ///
   /// * [String] slug:
-  Future<AlbumResponseDto?> getAlbumInfo(String id, { String? key, String? slug, }) async {
-    final response = await getAlbumInfoWithHttpInfo(id,  key: key, slug: slug, );
+  Future<AlbumResponseDto?> getAlbumInfo(String id, { String? key, String? slug, Future<void>? abortTrigger, }) async {
+    final response = await getAlbumInfoWithHttpInfo(id, key: key, slug: slug, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -387,7 +393,7 @@ class AlbumsApi {
   /// * [String] key:
   ///
   /// * [String] slug:
-  Future<Response> getAlbumMapMarkersWithHttpInfo(String id, { String? key, String? slug, }) async {
+  Future<Response> getAlbumMapMarkersWithHttpInfo(String id, { String? key, String? slug, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/{id}/map-markers'
       .replaceAll('{id}', id);
@@ -417,6 +423,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -431,8 +438,8 @@ class AlbumsApi {
   /// * [String] key:
   ///
   /// * [String] slug:
-  Future<List<MapMarkerResponseDto>?> getAlbumMapMarkers(String id, { String? key, String? slug, }) async {
-    final response = await getAlbumMapMarkersWithHttpInfo(id,  key: key, slug: slug, );
+  Future<List<MapMarkerResponseDto>?> getAlbumMapMarkers(String id, { String? key, String? slug, Future<void>? abortTrigger, }) async {
+    final response = await getAlbumMapMarkersWithHttpInfo(id, key: key, slug: slug, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -454,7 +461,7 @@ class AlbumsApi {
   /// Returns a lightweight list of albums available to the authenticated user for quick palette lookups.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAlbumNamesWithHttpInfo() async {
+  Future<Response> getAlbumNamesWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/names';
 
@@ -476,14 +483,15 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve album names
   ///
   /// Returns a lightweight list of albums available to the authenticated user for quick palette lookups.
-  Future<List<AlbumNameDto>?> getAlbumNames() async {
-    final response = await getAlbumNamesWithHttpInfo();
+  Future<List<AlbumNameDto>?> getAlbumNames({ Future<void>? abortTrigger, }) async {
+    final response = await getAlbumNamesWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -505,7 +513,7 @@ class AlbumsApi {
   /// Returns statistics about the albums available to the authenticated user.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAlbumStatisticsWithHttpInfo() async {
+  Future<Response> getAlbumStatisticsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/statistics';
 
@@ -527,14 +535,15 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Retrieve album statistics
   ///
   /// Returns statistics about the albums available to the authenticated user.
-  Future<AlbumStatisticsResponseDto?> getAlbumStatistics() async {
-    final response = await getAlbumStatisticsWithHttpInfo();
+  Future<AlbumStatisticsResponseDto?> getAlbumStatistics({ Future<void>? abortTrigger, }) async {
+    final response = await getAlbumStatisticsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -570,7 +579,7 @@ class AlbumsApi {
   ///
   /// * [String] name:
   ///   Album name (exact match)
-  Future<Response> getAllAlbumsWithHttpInfo({ String? assetId, String? id, bool? isOwned, bool? isShared, String? name, }) async {
+  Future<Response> getAllAlbumsWithHttpInfo({ String? assetId, String? id, bool? isOwned, bool? isShared, String? name, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums';
 
@@ -608,6 +617,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -631,8 +641,8 @@ class AlbumsApi {
   ///
   /// * [String] name:
   ///   Album name (exact match)
-  Future<List<AlbumResponseDto>?> getAllAlbums({ String? assetId, String? id, bool? isOwned, bool? isShared, String? name, }) async {
-    final response = await getAllAlbumsWithHttpInfo( assetId: assetId, id: id, isOwned: isOwned, isShared: isShared, name: name, );
+  Future<List<AlbumResponseDto>?> getAllAlbums({ String? assetId, String? id, bool? isOwned, bool? isShared, String? name, Future<void>? abortTrigger, }) async {
+    final response = await getAllAlbumsWithHttpInfo(assetId: assetId, id: id, isOwned: isOwned, isShared: isShared, name: name, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -660,7 +670,7 @@ class AlbumsApi {
   /// * [String] id (required):
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<Response> removeAssetFromAlbumWithHttpInfo(String id, BulkIdsDto bulkIdsDto,) async {
+  Future<Response> removeAssetFromAlbumWithHttpInfo(String id, BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/{id}/assets'
       .replaceAll('{id}', id);
@@ -683,6 +693,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -695,8 +706,8 @@ class AlbumsApi {
   /// * [String] id (required):
   ///
   /// * [BulkIdsDto] bulkIdsDto (required):
-  Future<List<BulkIdResponseDto>?> removeAssetFromAlbum(String id, BulkIdsDto bulkIdsDto,) async {
-    final response = await removeAssetFromAlbumWithHttpInfo(id, bulkIdsDto,);
+  Future<List<BulkIdResponseDto>?> removeAssetFromAlbum(String id, BulkIdsDto bulkIdsDto, { Future<void>? abortTrigger, }) async {
+    final response = await removeAssetFromAlbumWithHttpInfo(id, bulkIdsDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -724,7 +735,7 @@ class AlbumsApi {
   /// * [String] id (required):
   ///
   /// * [String] userId (required):
-  Future<Response> removeUserFromAlbumWithHttpInfo(String id, String userId,) async {
+  Future<Response> removeUserFromAlbumWithHttpInfo(String id, String userId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/{id}/user/{userId}'
       .replaceAll('{id}', id)
@@ -748,6 +759,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -760,8 +772,8 @@ class AlbumsApi {
   /// * [String] id (required):
   ///
   /// * [String] userId (required):
-  Future<void> removeUserFromAlbum(String id, String userId,) async {
-    final response = await removeUserFromAlbumWithHttpInfo(id, userId,);
+  Future<void> removeUserFromAlbum(String id, String userId, { Future<void>? abortTrigger, }) async {
+    final response = await removeUserFromAlbumWithHttpInfo(id, userId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -778,7 +790,7 @@ class AlbumsApi {
   /// * [String] id (required):
   ///
   /// * [UpdateAlbumDto] updateAlbumDto (required):
-  Future<Response> updateAlbumInfoWithHttpInfo(String id, UpdateAlbumDto updateAlbumDto,) async {
+  Future<Response> updateAlbumInfoWithHttpInfo(String id, UpdateAlbumDto updateAlbumDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/{id}'
       .replaceAll('{id}', id);
@@ -801,6 +813,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -813,8 +826,8 @@ class AlbumsApi {
   /// * [String] id (required):
   ///
   /// * [UpdateAlbumDto] updateAlbumDto (required):
-  Future<AlbumResponseDto?> updateAlbumInfo(String id, UpdateAlbumDto updateAlbumDto,) async {
-    final response = await updateAlbumInfoWithHttpInfo(id, updateAlbumDto,);
+  Future<AlbumResponseDto?> updateAlbumInfo(String id, UpdateAlbumDto updateAlbumDto, { Future<void>? abortTrigger, }) async {
+    final response = await updateAlbumInfoWithHttpInfo(id, updateAlbumDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -841,7 +854,7 @@ class AlbumsApi {
   /// * [String] userId (required):
   ///
   /// * [UpdateAlbumUserDto] updateAlbumUserDto (required):
-  Future<Response> updateAlbumUserWithHttpInfo(String id, String userId, UpdateAlbumUserDto updateAlbumUserDto,) async {
+  Future<Response> updateAlbumUserWithHttpInfo(String id, String userId, UpdateAlbumUserDto updateAlbumUserDto, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/{id}/user/{userId}'
       .replaceAll('{id}', id)
@@ -865,6 +878,7 @@ class AlbumsApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -879,8 +893,8 @@ class AlbumsApi {
   /// * [String] userId (required):
   ///
   /// * [UpdateAlbumUserDto] updateAlbumUserDto (required):
-  Future<void> updateAlbumUser(String id, String userId, UpdateAlbumUserDto updateAlbumUserDto,) async {
-    final response = await updateAlbumUserWithHttpInfo(id, userId, updateAlbumUserDto,);
+  Future<void> updateAlbumUser(String id, String userId, UpdateAlbumUserDto updateAlbumUserDto, { Future<void>? abortTrigger, }) async {
+    final response = await updateAlbumUserWithHttpInfo(id, userId, updateAlbumUserDto, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
