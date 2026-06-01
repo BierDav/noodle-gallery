@@ -14291,18 +14291,30 @@ final class Schema27 extends i0.VersionedSchema {
     remoteAssetEntity,
     stackEntity,
     localAssetEntity,
+    sharedSpaceEntity,
+    sharedSpaceAssetEntity,
+    sharedSpaceMemberEntity,
+    sharedSpaceLibraryEntity,
     remoteAlbumEntity,
     localAlbumEntity,
     localAlbumAssetEntity,
+    idxSharedSpaceCreatedById,
+    idxSharedSpaceLibrarySpaceId,
+    idxSharedSpaceLibraryLibrarySpace,
+    idxSharedSpaceAssetSpaceAsset,
+    idxSharedSpaceAssetAssetSpace,
     idxLocalAlbumAssetAlbumAsset,
     idxLocalAssetChecksum,
     idxLocalAssetCloudId,
     idxStackPrimaryAssetId,
+    idxRemoteAssetOwnerChecksum,
     uQRemoteAssetsOwnerChecksum,
     uQRemoteAssetsOwnerLibraryChecksum,
     idxRemoteAssetChecksum,
     idxRemoteAssetStackId,
-    idxRemoteAssetOwnerVisibilityDeletedCreated,
+    idxRemoteAssetLocalDateTimeDay,
+    idxRemoteAssetLocalDateTimeMonth,
+    idxRemoteAssetLibraryCreated,
     authUserEntity,
     userMetadataEntity,
     partnerEntity,
@@ -14310,6 +14322,7 @@ final class Schema27 extends i0.VersionedSchema {
     remoteAlbumAssetEntity,
     remoteAlbumUserEntity,
     remoteAssetCloudIdEntity,
+    libraryEntity,
     memoryEntity,
     memoryAssetEntity,
     personEntity,
@@ -14317,16 +14330,13 @@ final class Schema27 extends i0.VersionedSchema {
     storeEntity,
     trashedLocalAssetEntity,
     assetEditEntity,
-    settings,
     idxPartnerSharedWithId,
     idxLatLng,
-    idxRemoteExifCity,
     idxRemoteAlbumAssetAlbumAsset,
     idxRemoteAssetCloudId,
     idxPersonOwnerId,
     idxAssetFacePersonId,
     idxAssetFaceAssetId,
-    idxAssetFaceVisiblePerson,
     idxTrashedLocalAssetChecksum,
     idxTrashedLocalAssetAlbum,
     idxAssetEditAssetId,
@@ -14349,7 +14359,7 @@ final class Schema27 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape60 remoteAssetEntity = Shape60(
+  late final Shape57 remoteAssetEntity = Shape57(
     source: i0.VersionedTable(
       entityName: 'remote_asset_entity',
       withoutRowId: true,
@@ -14370,7 +14380,6 @@ final class Schema27 extends i0.VersionedSchema {
         _column_135,
         _column_136,
         _column_137,
-        _column_237,
         _column_138,
         _column_139,
         _column_140,
@@ -14426,7 +14435,70 @@ final class Schema27 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape61 remoteAlbumEntity = Shape61(
+  late final Shape42 sharedSpaceEntity = Shape42(
+    source: i0.VersionedTable(
+      entityName: 'shared_space_entity',
+      withoutRowId: true,
+      isStrict: true,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_120,
+        _column_121,
+        _column_151,
+        _column_152,
+        _column_153,
+        _column_154,
+        _column_155,
+        _column_156,
+        _column_157,
+        _column_158,
+        _column_127,
+        _column_128,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape35 sharedSpaceAssetEntity = Shape35(
+    source: i0.VersionedTable(
+      entityName: 'shared_space_asset_entity',
+      withoutRowId: true,
+      isStrict: true,
+      tableConstraints: ['PRIMARY KEY(space_id, asset_id)'],
+      columns: [_column_159, _column_160],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape43 sharedSpaceMemberEntity = Shape43(
+    source: i0.VersionedTable(
+      entityName: 'shared_space_member_entity',
+      withoutRowId: true,
+      isStrict: true,
+      tableConstraints: ['PRIMARY KEY(space_id, user_id)'],
+      columns: [
+        _column_159,
+        _column_161,
+        _column_162,
+        _column_163,
+        _column_164,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape44 sharedSpaceLibraryEntity = Shape44(
+    source: i0.VersionedTable(
+      entityName: 'shared_space_library_entity',
+      withoutRowId: true,
+      isStrict: true,
+      tableConstraints: ['PRIMARY KEY(space_id, library_id)'],
+      columns: [_column_159, _column_165, _column_166, _column_127],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape60 remoteAlbumEntity = Shape60(
     source: i0.VersionedTable(
       entityName: 'remote_album_entity',
       withoutRowId: true,
@@ -14476,6 +14548,26 @@ final class Schema27 extends i0.VersionedSchema {
     ),
     alias: null,
   );
+  final i1.Index idxSharedSpaceCreatedById = i1.Index(
+    'idx_shared_space_created_by_id',
+    'CREATE INDEX IF NOT EXISTS idx_shared_space_created_by_id ON shared_space_entity (created_by_id)',
+  );
+  final i1.Index idxSharedSpaceLibrarySpaceId = i1.Index(
+    'idx_shared_space_library_space_id',
+    'CREATE INDEX IF NOT EXISTS idx_shared_space_library_space_id ON shared_space_library_entity (space_id)',
+  );
+  final i1.Index idxSharedSpaceLibraryLibrarySpace = i1.Index(
+    'idx_shared_space_library_library_space',
+    'CREATE INDEX IF NOT EXISTS idx_shared_space_library_library_space ON shared_space_library_entity (library_id, space_id)',
+  );
+  final i1.Index idxSharedSpaceAssetSpaceAsset = i1.Index(
+    'idx_shared_space_asset_space_asset',
+    'CREATE INDEX IF NOT EXISTS idx_shared_space_asset_space_asset ON shared_space_asset_entity (space_id, asset_id)',
+  );
+  final i1.Index idxSharedSpaceAssetAssetSpace = i1.Index(
+    'idx_shared_space_asset_asset_space',
+    'CREATE INDEX IF NOT EXISTS idx_shared_space_asset_asset_space ON shared_space_asset_entity (asset_id, space_id)',
+  );
   final i1.Index idxLocalAlbumAssetAlbumAsset = i1.Index(
     'idx_local_album_asset_album_asset',
     'CREATE INDEX IF NOT EXISTS idx_local_album_asset_album_asset ON local_album_asset_entity (album_id, asset_id)',
@@ -14491,6 +14583,10 @@ final class Schema27 extends i0.VersionedSchema {
   final i1.Index idxStackPrimaryAssetId = i1.Index(
     'idx_stack_primary_asset_id',
     'CREATE INDEX IF NOT EXISTS idx_stack_primary_asset_id ON stack_entity (primary_asset_id)',
+  );
+  final i1.Index idxRemoteAssetOwnerChecksum = i1.Index(
+    'idx_remote_asset_owner_checksum',
+    'CREATE INDEX IF NOT EXISTS idx_remote_asset_owner_checksum ON remote_asset_entity (owner_id, checksum)',
   );
   final i1.Index uQRemoteAssetsOwnerChecksum = i1.Index(
     'UQ_remote_assets_owner_checksum',
@@ -14508,9 +14604,17 @@ final class Schema27 extends i0.VersionedSchema {
     'idx_remote_asset_stack_id',
     'CREATE INDEX IF NOT EXISTS idx_remote_asset_stack_id ON remote_asset_entity (stack_id)',
   );
-  final i1.Index idxRemoteAssetOwnerVisibilityDeletedCreated = i1.Index(
-    'idx_remote_asset_owner_visibility_deleted_created',
-    'CREATE INDEX IF NOT EXISTS idx_remote_asset_owner_visibility_deleted_created ON remote_asset_entity (owner_id, visibility, deleted_at, created_at DESC)',
+  final i1.Index idxRemoteAssetLocalDateTimeDay = i1.Index(
+    'idx_remote_asset_local_date_time_day',
+    'CREATE INDEX IF NOT EXISTS idx_remote_asset_local_date_time_day ON remote_asset_entity (STRFTIME(\'%Y-%m-%d\', local_date_time))',
+  );
+  final i1.Index idxRemoteAssetLocalDateTimeMonth = i1.Index(
+    'idx_remote_asset_local_date_time_month',
+    'CREATE INDEX IF NOT EXISTS idx_remote_asset_local_date_time_month ON remote_asset_entity (STRFTIME(\'%Y-%m\', local_date_time))',
+  );
+  final i1.Index idxRemoteAssetLibraryCreated = i1.Index(
+    'idx_remote_asset_library_created',
+    'CREATE INDEX IF NOT EXISTS idx_remote_asset_library_created ON remote_asset_entity (library_id, created_at DESC)',
   );
   late final Shape48 authUserEntity = Shape48(
     source: i0.VersionedTable(
@@ -14625,6 +14729,23 @@ final class Schema27 extends i0.VersionedSchema {
         _column_147,
         _column_148,
         _column_149,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape52 libraryEntity = Shape52(
+    source: i0.VersionedTable(
+      entityName: 'library_entity',
+      withoutRowId: true,
+      isStrict: true,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_120,
+        _column_121,
+        _column_134,
+        _column_127,
+        _column_128,
       ],
       attachedDatabase: database,
     ),
@@ -14765,17 +14886,6 @@ final class Schema27 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape62 settings = Shape62(
-    source: i0.VersionedTable(
-      entityName: 'settings',
-      withoutRowId: true,
-      isStrict: true,
-      tableConstraints: ['PRIMARY KEY("key")'],
-      columns: [_column_238, _column_239, _column_128],
-      attachedDatabase: database,
-    ),
-    alias: null,
-  );
   final i1.Index idxPartnerSharedWithId = i1.Index(
     'idx_partner_shared_with_id',
     'CREATE INDEX IF NOT EXISTS idx_partner_shared_with_id ON partner_entity (shared_with_id)',
@@ -14783,10 +14893,6 @@ final class Schema27 extends i0.VersionedSchema {
   final i1.Index idxLatLng = i1.Index(
     'idx_lat_lng',
     'CREATE INDEX IF NOT EXISTS idx_lat_lng ON remote_exif_entity (latitude, longitude)',
-  );
-  final i1.Index idxRemoteExifCity = i1.Index(
-    'idx_remote_exif_city',
-    'CREATE INDEX IF NOT EXISTS idx_remote_exif_city ON remote_exif_entity (city) WHERE city IS NOT NULL',
   );
   final i1.Index idxRemoteAlbumAssetAlbumAsset = i1.Index(
     'idx_remote_album_asset_album_asset',
@@ -14808,10 +14914,6 @@ final class Schema27 extends i0.VersionedSchema {
     'idx_asset_face_asset_id',
     'CREATE INDEX IF NOT EXISTS idx_asset_face_asset_id ON asset_face_entity (asset_id)',
   );
-  final i1.Index idxAssetFaceVisiblePerson = i1.Index(
-    'idx_asset_face_visible_person',
-    'CREATE INDEX IF NOT EXISTS idx_asset_face_visible_person ON asset_face_entity (person_id, asset_id) WHERE is_visible = 1 AND deleted_at IS NULL',
-  );
   final i1.Index idxTrashedLocalAssetChecksum = i1.Index(
     'idx_trashed_local_asset_checksum',
     'CREATE INDEX IF NOT EXISTS idx_trashed_local_asset_checksum ON trashed_local_asset_entity (checksum)',
@@ -14828,59 +14930,6 @@ final class Schema27 extends i0.VersionedSchema {
 
 class Shape60 extends i0.VersionedTable {
   Shape60({required super.source, required super.alias}) : super.aliased();
-  i1.GeneratedColumn<String> get name =>
-      columnsByName['name']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<int> get type =>
-      columnsByName['type']! as i1.GeneratedColumn<int>;
-  i1.GeneratedColumn<String> get createdAt =>
-      columnsByName['created_at']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<String> get updatedAt =>
-      columnsByName['updated_at']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<int> get width =>
-      columnsByName['width']! as i1.GeneratedColumn<int>;
-  i1.GeneratedColumn<int> get height =>
-      columnsByName['height']! as i1.GeneratedColumn<int>;
-  i1.GeneratedColumn<int> get durationMs =>
-      columnsByName['duration_ms']! as i1.GeneratedColumn<int>;
-  i1.GeneratedColumn<String> get id =>
-      columnsByName['id']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<String> get checksum =>
-      columnsByName['checksum']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<int> get isFavorite =>
-      columnsByName['is_favorite']! as i1.GeneratedColumn<int>;
-  i1.GeneratedColumn<String> get ownerId =>
-      columnsByName['owner_id']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<String> get localDateTime =>
-      columnsByName['local_date_time']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<String> get thumbHash =>
-      columnsByName['thumb_hash']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<String> get deletedAt =>
-      columnsByName['deleted_at']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<String> get uploadedAt =>
-      columnsByName['uploaded_at']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<String> get livePhotoVideoId =>
-      columnsByName['live_photo_video_id']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<int> get visibility =>
-      columnsByName['visibility']! as i1.GeneratedColumn<int>;
-  i1.GeneratedColumn<String> get stackId =>
-      columnsByName['stack_id']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<String> get libraryId =>
-      columnsByName['library_id']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<int> get isEdited =>
-      columnsByName['is_edited']! as i1.GeneratedColumn<int>;
-}
-
-i1.GeneratedColumn<String> _column_237(String aliasedName) =>
-    i1.GeneratedColumn<String>(
-      'uploaded_at',
-      aliasedName,
-      true,
-      type: i1.DriftSqlType.string,
-      $customConstraints: 'NULL',
-    );
-
-class Shape61 extends i0.VersionedTable {
-  Shape61({required super.source, required super.alias}) : super.aliased();
   i1.GeneratedColumn<String> get id =>
       columnsByName['id']! as i1.GeneratedColumn<String>;
   i1.GeneratedColumn<String> get name =>
@@ -14898,33 +14947,6 @@ class Shape61 extends i0.VersionedTable {
   i1.GeneratedColumn<int> get order =>
       columnsByName['order']! as i1.GeneratedColumn<int>;
 }
-
-class Shape62 extends i0.VersionedTable {
-  Shape62({required super.source, required super.alias}) : super.aliased();
-  i1.GeneratedColumn<String> get key =>
-      columnsByName['key']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<String> get value =>
-      columnsByName['value']! as i1.GeneratedColumn<String>;
-  i1.GeneratedColumn<String> get updatedAt =>
-      columnsByName['updated_at']! as i1.GeneratedColumn<String>;
-}
-
-i1.GeneratedColumn<String> _column_238(String aliasedName) =>
-    i1.GeneratedColumn<String>(
-      'key',
-      aliasedName,
-      false,
-      type: i1.DriftSqlType.string,
-      $customConstraints: 'NOT NULL',
-    );
-i1.GeneratedColumn<String> _column_239(String aliasedName) =>
-    i1.GeneratedColumn<String>(
-      'value',
-      aliasedName,
-      false,
-      type: i1.DriftSqlType.string,
-      $customConstraints: 'NOT NULL',
-    );
 
 final class Schema28 extends i0.VersionedSchema {
   Schema28({required super.database}) : super(version: 28);
@@ -15142,7 +15164,7 @@ final class Schema28 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape61 remoteAlbumEntity = Shape61(
+  late final Shape60 remoteAlbumEntity = Shape60(
     source: i0.VersionedTable(
       entityName: 'remote_album_entity',
       withoutRowId: true,
@@ -15530,13 +15552,13 @@ final class Schema28 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape62 metadata = Shape62(
+  late final Shape61 metadata = Shape61(
     source: i0.VersionedTable(
       entityName: 'metadata',
       withoutRowId: true,
       isStrict: true,
       tableConstraints: ['PRIMARY KEY("key")'],
-      columns: [_column_238, _column_239, _column_128],
+      columns: [_column_237, _column_238, _column_128],
       attachedDatabase: database,
     ),
     alias: null,
@@ -15582,6 +15604,33 @@ final class Schema28 extends i0.VersionedSchema {
     'CREATE INDEX IF NOT EXISTS idx_asset_edit_asset_id ON asset_edit_entity (asset_id)',
   );
 }
+
+class Shape61 extends i0.VersionedTable {
+  Shape61({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<String> get key =>
+      columnsByName['key']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get value =>
+      columnsByName['value']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get updatedAt =>
+      columnsByName['updated_at']! as i1.GeneratedColumn<String>;
+}
+
+i1.GeneratedColumn<String> _column_237(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'key',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
+i1.GeneratedColumn<String> _column_238(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'value',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL',
+    );
 
 final class Schema29 extends i0.VersionedSchema {
   Schema29({required super.database}) : super(version: 29);
@@ -15660,7 +15709,7 @@ final class Schema29 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape60 remoteAssetEntity = Shape60(
+  late final Shape62 remoteAssetEntity = Shape62(
     source: i0.VersionedTable(
       entityName: 'remote_asset_entity',
       withoutRowId: true,
@@ -15681,7 +15730,7 @@ final class Schema29 extends i0.VersionedSchema {
         _column_135,
         _column_136,
         _column_137,
-        _column_237,
+        _column_239,
         _column_138,
         _column_139,
         _column_140,
@@ -15800,7 +15849,7 @@ final class Schema29 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape61 remoteAlbumEntity = Shape61(
+  late final Shape60 remoteAlbumEntity = Shape60(
     source: i0.VersionedTable(
       entityName: 'remote_album_entity',
       withoutRowId: true,
@@ -16188,13 +16237,13 @@ final class Schema29 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape62 metadata = Shape62(
+  late final Shape61 metadata = Shape61(
     source: i0.VersionedTable(
       entityName: 'metadata',
       withoutRowId: true,
       isStrict: true,
       tableConstraints: ['PRIMARY KEY("key")'],
-      columns: [_column_238, _column_239, _column_128],
+      columns: [_column_237, _column_238, _column_128],
       attachedDatabase: database,
     ),
     alias: null,
@@ -16240,6 +16289,59 @@ final class Schema29 extends i0.VersionedSchema {
     'CREATE INDEX IF NOT EXISTS idx_asset_edit_asset_id ON asset_edit_entity (asset_id)',
   );
 }
+
+class Shape62 extends i0.VersionedTable {
+  Shape62({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<String> get name =>
+      columnsByName['name']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get type =>
+      columnsByName['type']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get createdAt =>
+      columnsByName['created_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get updatedAt =>
+      columnsByName['updated_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get width =>
+      columnsByName['width']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get height =>
+      columnsByName['height']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get durationMs =>
+      columnsByName['duration_ms']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get id =>
+      columnsByName['id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get checksum =>
+      columnsByName['checksum']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get isFavorite =>
+      columnsByName['is_favorite']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get ownerId =>
+      columnsByName['owner_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get localDateTime =>
+      columnsByName['local_date_time']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get thumbHash =>
+      columnsByName['thumb_hash']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get deletedAt =>
+      columnsByName['deleted_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get uploadedAt =>
+      columnsByName['uploaded_at']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get livePhotoVideoId =>
+      columnsByName['live_photo_video_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get visibility =>
+      columnsByName['visibility']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get stackId =>
+      columnsByName['stack_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get libraryId =>
+      columnsByName['library_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get isEdited =>
+      columnsByName['is_edited']! as i1.GeneratedColumn<int>;
+}
+
+i1.GeneratedColumn<String> _column_239(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'uploaded_at',
+      aliasedName,
+      true,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NULL',
+    );
 
 final class Schema30 extends i0.VersionedSchema {
   Schema30({required super.database}) : super(version: 30);
@@ -16318,7 +16420,7 @@ final class Schema30 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape60 remoteAssetEntity = Shape60(
+  late final Shape62 remoteAssetEntity = Shape62(
     source: i0.VersionedTable(
       entityName: 'remote_asset_entity',
       withoutRowId: true,
@@ -16339,7 +16441,7 @@ final class Schema30 extends i0.VersionedSchema {
         _column_135,
         _column_136,
         _column_137,
-        _column_237,
+        _column_239,
         _column_138,
         _column_139,
         _column_140,
@@ -16458,7 +16560,7 @@ final class Schema30 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape61 remoteAlbumEntity = Shape61(
+  late final Shape60 remoteAlbumEntity = Shape60(
     source: i0.VersionedTable(
       entityName: 'remote_album_entity',
       withoutRowId: true,
@@ -16838,13 +16940,13 @@ final class Schema30 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape62 metadata = Shape62(
+  late final Shape61 metadata = Shape61(
     source: i0.VersionedTable(
       entityName: 'metadata',
       withoutRowId: true,
       isStrict: true,
       tableConstraints: ['PRIMARY KEY("key")'],
-      columns: [_column_238, _column_239, _column_128],
+      columns: [_column_237, _column_238, _column_128],
       attachedDatabase: database,
     ),
     alias: null,
@@ -16976,7 +17078,7 @@ final class Schema31 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape60 remoteAssetEntity = Shape60(
+  late final Shape62 remoteAssetEntity = Shape62(
     source: i0.VersionedTable(
       entityName: 'remote_asset_entity',
       withoutRowId: true,
@@ -16997,7 +17099,7 @@ final class Schema31 extends i0.VersionedSchema {
         _column_135,
         _column_136,
         _column_137,
-        _column_237,
+        _column_239,
         _column_138,
         _column_139,
         _column_140,
@@ -17116,7 +17218,7 @@ final class Schema31 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape61 remoteAlbumEntity = Shape61(
+  late final Shape60 remoteAlbumEntity = Shape60(
     source: i0.VersionedTable(
       entityName: 'remote_album_entity',
       withoutRowId: true,
@@ -17496,13 +17598,13 @@ final class Schema31 extends i0.VersionedSchema {
     ),
     alias: null,
   );
-  late final Shape62 settings = Shape62(
+  late final Shape61 settings = Shape61(
     source: i0.VersionedTable(
       entityName: 'settings',
       withoutRowId: true,
       isStrict: true,
       tableConstraints: ['PRIMARY KEY("key")'],
-      columns: [_column_238, _column_239, _column_128],
+      columns: [_column_237, _column_238, _column_128],
       attachedDatabase: database,
     ),
     alias: null,
