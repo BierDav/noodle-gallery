@@ -515,7 +515,7 @@ class DriftBackupNotifier extends StateNotifier<DriftBackupState> {
     }
 
     _logger.info("Resuming upload ${tasks.length} assets");
-    return _backgroundUploadService.resume();
+    return _backgroundUploadService.resume(userId);
   }
 }
 
