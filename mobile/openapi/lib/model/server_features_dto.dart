@@ -23,6 +23,7 @@ class ServerFeaturesDto {
     required this.oauthAutoLaunch,
     required this.ocr,
     required this.passwordLogin,
+    required this.peopleStatistics,
     required this.realtimeTranscoding,
     required this.reverseGeocoding,
     required this.search,
@@ -61,6 +62,9 @@ class ServerFeaturesDto {
   /// Whether password login is enabled
   bool passwordLogin;
 
+  /// Whether the people face statistics UI is enabled
+  bool peopleStatistics;
+
   /// Whether real-time transcoding is enabled
   bool realtimeTranscoding;
 
@@ -91,6 +95,7 @@ class ServerFeaturesDto {
     other.oauthAutoLaunch == oauthAutoLaunch &&
     other.ocr == ocr &&
     other.passwordLogin == passwordLogin &&
+    other.peopleStatistics == peopleStatistics &&
     other.realtimeTranscoding == realtimeTranscoding &&
     other.reverseGeocoding == reverseGeocoding &&
     other.search == search &&
@@ -111,6 +116,7 @@ class ServerFeaturesDto {
     (oauthAutoLaunch.hashCode) +
     (ocr.hashCode) +
     (passwordLogin.hashCode) +
+    (peopleStatistics.hashCode) +
     (realtimeTranscoding.hashCode) +
     (reverseGeocoding.hashCode) +
     (search.hashCode) +
@@ -119,7 +125,7 @@ class ServerFeaturesDto {
     (trash.hashCode);
 
   @override
-  String toString() => 'ServerFeaturesDto[configFile=$configFile, duplicateDetection=$duplicateDetection, email=$email, facialRecognition=$facialRecognition, importFaces=$importFaces, map=$map, oauth=$oauth, oauthAutoLaunch=$oauthAutoLaunch, ocr=$ocr, passwordLogin=$passwordLogin, realtimeTranscoding=$realtimeTranscoding, reverseGeocoding=$reverseGeocoding, search=$search, sidecar=$sidecar, smartSearch=$smartSearch, trash=$trash]';
+  String toString() => 'ServerFeaturesDto[configFile=$configFile, duplicateDetection=$duplicateDetection, email=$email, facialRecognition=$facialRecognition, importFaces=$importFaces, map=$map, oauth=$oauth, oauthAutoLaunch=$oauthAutoLaunch, ocr=$ocr, passwordLogin=$passwordLogin, peopleStatistics=$peopleStatistics, realtimeTranscoding=$realtimeTranscoding, reverseGeocoding=$reverseGeocoding, search=$search, sidecar=$sidecar, smartSearch=$smartSearch, trash=$trash]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -133,6 +139,7 @@ class ServerFeaturesDto {
       json[r'oauthAutoLaunch'] = this.oauthAutoLaunch;
       json[r'ocr'] = this.ocr;
       json[r'passwordLogin'] = this.passwordLogin;
+      json[r'peopleStatistics'] = this.peopleStatistics;
       json[r'realtimeTranscoding'] = this.realtimeTranscoding;
       json[r'reverseGeocoding'] = this.reverseGeocoding;
       json[r'search'] = this.search;
@@ -161,6 +168,7 @@ class ServerFeaturesDto {
         oauthAutoLaunch: mapValueOfType<bool>(json, r'oauthAutoLaunch')!,
         ocr: mapValueOfType<bool>(json, r'ocr')!,
         passwordLogin: mapValueOfType<bool>(json, r'passwordLogin')!,
+        peopleStatistics: mapValueOfType<bool>(json, r'peopleStatistics')!,
         realtimeTranscoding: mapValueOfType<bool>(json, r'realtimeTranscoding')!,
         reverseGeocoding: mapValueOfType<bool>(json, r'reverseGeocoding')!,
         search: mapValueOfType<bool>(json, r'search')!,
@@ -224,6 +232,7 @@ class ServerFeaturesDto {
     'oauthAutoLaunch',
     'ocr',
     'passwordLogin',
+    'peopleStatistics',
     'realtimeTranscoding',
     'reverseGeocoding',
     'search',
