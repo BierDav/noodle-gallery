@@ -391,6 +391,22 @@ class ApiClient {
           return ExifResponseDto.fromJson(value);
         case 'FaceDto':
           return FaceDto.fromJson(value);
+        case 'FaceRepairRequestDto':
+          return FaceRepairRequestDto.fromJson(value);
+        case 'FaceRepairResponseDto':
+          return FaceRepairResponseDto.fromJson(value);
+        case 'FaceRepairResponseDtoExecuted':
+          return FaceRepairResponseDtoExecuted.fromJson(value);
+        case 'FaceRepairResponseDtoReport':
+          return FaceRepairResponseDtoReport.fromJson(value);
+        case 'FaceRepairResponseDtoReportPersonsInner':
+          return FaceRepairResponseDtoReportPersonsInner.fromJson(value);
+        case 'FaceRepairResponseDtoReportPersonsInnerSuspectedOwnersInner':
+          return FaceRepairResponseDtoReportPersonsInnerSuspectedOwnersInner.fromJson(value);
+        case 'FaceRepairResponseDtoReportTotals':
+          return FaceRepairResponseDtoReportTotals.fromJson(value);
+        case 'FaceRepairResponseDtoReportTotalsReviewOnlyByReason':
+          return FaceRepairResponseDtoReportTotalsReviewOnlyByReason.fromJson(value);
         case 'FacialRecognitionConfig':
           return FacialRecognitionConfig.fromJson(value);
         case 'FilterSuggestionsPersonDto':

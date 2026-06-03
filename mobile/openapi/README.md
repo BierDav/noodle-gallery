@@ -174,6 +174,7 @@ Class | Method | HTTP request | Description
 *FacesApi* | [**deleteFace**](doc//FacesApi.md#deleteface) | **DELETE** /faces/{id} | Delete a face
 *FacesApi* | [**getFaces**](doc//FacesApi.md#getfaces) | **GET** /faces | Retrieve faces for asset
 *FacesApi* | [**reassignFacesById**](doc//FacesApi.md#reassignfacesbyid) | **PUT** /faces/{id} | Re-assign a face to another person
+*FacesApi* | [**runFaceRepair**](doc//FacesApi.md#runfacerepair) | **POST** /admin/face-repair | Run face re-attribution repair
 *GalleryMapApi* | [**getFilteredMapMarkers**](doc//GalleryMapApi.md#getfilteredmapmarkers) | **GET** /gallery/map/markers | Get filtered map markers
 *JobsApi* | [**createJob**](doc//JobsApi.md#createjob) | **POST** /jobs | Create a manual job
 *JobsApi* | [**getQueuesLegacy**](doc//JobsApi.md#getqueueslegacy) | **GET** /jobs | Retrieve queue counts and status
@@ -512,6 +513,14 @@ Class | Method | HTTP request | Description
  - [EmailNotificationsUpdate](doc//EmailNotificationsUpdate.md)
  - [ExifResponseDto](doc//ExifResponseDto.md)
  - [FaceDto](doc//FaceDto.md)
+ - [FaceRepairRequestDto](doc//FaceRepairRequestDto.md)
+ - [FaceRepairResponseDto](doc//FaceRepairResponseDto.md)
+ - [FaceRepairResponseDtoExecuted](doc//FaceRepairResponseDtoExecuted.md)
+ - [FaceRepairResponseDtoReport](doc//FaceRepairResponseDtoReport.md)
+ - [FaceRepairResponseDtoReportPersonsInner](doc//FaceRepairResponseDtoReportPersonsInner.md)
+ - [FaceRepairResponseDtoReportPersonsInnerSuspectedOwnersInner](doc//FaceRepairResponseDtoReportPersonsInnerSuspectedOwnersInner.md)
+ - [FaceRepairResponseDtoReportTotals](doc//FaceRepairResponseDtoReportTotals.md)
+ - [FaceRepairResponseDtoReportTotalsReviewOnlyByReason](doc//FaceRepairResponseDtoReportTotalsReviewOnlyByReason.md)
  - [FacialRecognitionConfig](doc//FacialRecognitionConfig.md)
  - [FilterSuggestionsPersonDto](doc//FilterSuggestionsPersonDto.md)
  - [FilterSuggestionsResponseDto](doc//FilterSuggestionsResponseDto.md)
