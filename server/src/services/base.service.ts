@@ -71,6 +71,7 @@ import { ViewRepository } from 'src/repositories/view-repository';
 import { WebsocketRepository } from 'src/repositories/websocket.repository';
 import { WorkflowRepository } from 'src/repositories/workflow.repository';
 import { UserTable } from 'src/schema/tables/user.table';
+import { IdentityMergePropagationService } from 'src/services/identity-merge-propagation.service';
 import { ClassConstructor, GenerateThumbnailOptions, ImageDimensions } from 'src/types';
 import { AccessRequest, checkAccess, requireAccess } from 'src/utils/access';
 import { getConfig, updateConfig } from 'src/utils/config';
@@ -154,6 +155,7 @@ export const BASE_SERVICE_DEPENDENCIES = [
 @Injectable()
 export class BaseService {
   protected storageCore: StorageCore;
+  protected identityMergePropagationService: IdentityMergePropagationService;
 
   constructor(
     protected logger: LoggingRepository,
@@ -226,6 +228,14 @@ export class BaseService {
       systemMetadataRepository,
       this.logger,
     );
+    this.identityMergePropagationService = new IdentityMergePropagationService({
+      databaseRepository,
+      faceIdentityRepository,
+      jobRepository,
+      logger: this.logger,
+      personRepository,
+      sharedSpaceRepository,
+    });
   }
 
   static create<T extends BaseService>(Service: ClassConstructor<T>, ctx: BaseService) {
