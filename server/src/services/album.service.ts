@@ -19,7 +19,7 @@ import { AlbumUserRole, Permission } from 'src/enum';
 import { AlbumAssetCount, AlbumInfoOptions } from 'src/repositories/album.repository';
 import { BaseService } from 'src/services/base.service';
 import { addAssets, getMyPartnerIds, removeAssets } from 'src/utils/asset.util';
-import { asDateString, asDateTimeString } from 'src/utils/date';
+import { asDateTimeString } from 'src/utils/date';
 import { getPreferences } from 'src/utils/preferences';
 
 @Injectable()
@@ -47,14 +47,14 @@ export class AlbumService extends BaseService {
       ...owned.map((r) => ({
         ...r,
         shared: false,
-        startDate: asDateString(r.startDate ?? undefined),
-        endDate: asDateString(r.endDate ?? undefined),
+        startDate: asDateTimeString(r.startDate ?? undefined),
+        endDate: asDateTimeString(r.endDate ?? undefined),
       })),
       ...shared.map((r) => ({
         ...r,
         shared: true,
-        startDate: asDateString(r.startDate ?? undefined),
-        endDate: asDateString(r.endDate ?? undefined),
+        startDate: asDateTimeString(r.startDate ?? undefined),
+        endDate: asDateTimeString(r.endDate ?? undefined),
       })),
     ];
   }

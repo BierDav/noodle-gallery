@@ -55,7 +55,7 @@ import {
   onBeforeUnlink,
 } from 'src/utils/asset.util';
 import { updateLockedColumns } from 'src/utils/database';
-import { asDateString, extractTimeZone } from 'src/utils/date';
+import { asDateTimeString, extractTimeZone } from 'src/utils/date';
 import { transformOcrBoundingBox } from 'src/utils/transform';
 
 @Injectable()
@@ -161,7 +161,7 @@ export class AssetService extends BaseService {
       }
 
       if (spacePerson.updatedAt !== undefined) {
-        person.updatedAt = asDateString(spacePerson.updatedAt);
+        person.updatedAt = asDateTimeString(spacePerson.updatedAt);
       }
 
       if (spacePerson.type) {
