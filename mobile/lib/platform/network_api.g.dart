@@ -310,9 +310,11 @@ class NetworkApi {
     _extractReplyValueOrThrow(pigeonVar_replyList, pigeonVar_channelName, isNullValid: true);
   }
 
-  Future<String> getAppGroupId() async {
+  /// Rebuilds the shared native URLSession (iOS). Used on foreground resume to
+  /// recover from the background-worker isolate orphaning the shared session.
+  Future<void> recreateSession() async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.immich_mobile.NetworkApi.getAppGroupId$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.immich_mobile.NetworkApi.recreateSession$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -321,11 +323,6 @@ class NetworkApi {
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
-    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
-    return pigeonVar_replyValue! as String;
+    _extractReplyValueOrThrow(pigeonVar_replyList, pigeonVar_channelName, isNullValid: true);
   }
 }
