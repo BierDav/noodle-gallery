@@ -9,14 +9,22 @@ import 'dart:typed_data' show Float64List, Int32List, Int64List;
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart' show immutable, protected, visibleForTesting;
 
-Object? _extractReplyValueOrThrow(List<Object?>? replyList, String channelName, {required bool isNullValid}) {
+Object? _extractReplyValueOrThrow(
+    List<Object?>? replyList,
+    String channelName, {
+    required bool isNullValid,
+}) {
   if (replyList == null) {
     throw PlatformException(
       code: 'channel-error',
       message: 'Unable to establish connection on channel: "$channelName".',
     );
   } else if (replyList.length > 1) {
-    throw PlatformException(code: replyList[0]! as String, message: replyList[1] as String?, details: replyList[2]);
+    throw PlatformException(
+      code: replyList[0]! as String,
+      message: replyList[1] as String?,
+      details: replyList[2],
+    );
   } else if (!isNullValid && (replyList.isNotEmpty && replyList[0] == null)) {
     throw PlatformException(
       code: 'null-error',
@@ -37,7 +45,9 @@ bool _deepEquals(Object? a, Object? b) {
     return a == b;
   }
   if (a is List && b is List) {
-    return a.length == b.length && a.indexed.every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
+    return a.length == b.length &&
+        a.indexed
+            .every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
   }
   if (a is Map && b is Map) {
     if (a.length != b.length) {
@@ -86,24 +96,33 @@ int _deepHash(Object? value) {
   return value.hashCode;
 }
 
+
 class ClientCertData {
-  ClientCertData({required this.data, required this.password});
+  ClientCertData({
+    required this.data,
+    required this.password,
+  });
 
   Uint8List data;
 
   String password;
 
   List<Object?> _toList() {
-    return <Object?>[data, password];
+    return <Object?>[
+      data,
+      password,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static ClientCertData decode(Object result) {
     result as List<Object?>;
-    return ClientCertData(data: result[0]! as Uint8List, password: result[1]! as String);
+    return ClientCertData(
+      data: result[0]! as Uint8List,
+      password: result[1]! as String,
+    );
   }
 
   @override
@@ -124,7 +143,12 @@ class ClientCertData {
 }
 
 class ClientCertPrompt {
-  ClientCertPrompt({required this.title, required this.message, required this.cancel, required this.confirm});
+  ClientCertPrompt({
+    required this.title,
+    required this.message,
+    required this.cancel,
+    required this.confirm,
+  });
 
   String title;
 
@@ -135,12 +159,16 @@ class ClientCertPrompt {
   String confirm;
 
   List<Object?> _toList() {
-    return <Object?>[title, message, cancel, confirm];
+    return <Object?>[
+      title,
+      message,
+      cancel,
+      confirm,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static ClientCertPrompt decode(Object result) {
     result as List<Object?>;
@@ -161,16 +189,14 @@ class ClientCertPrompt {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(title, other.title) &&
-        _deepEquals(message, other.message) &&
-        _deepEquals(cancel, other.cancel) &&
-        _deepEquals(confirm, other.confirm);
+    return _deepEquals(title, other.title) && _deepEquals(message, other.message) && _deepEquals(cancel, other.cancel) && _deepEquals(confirm, other.confirm);
   }
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   int get hashCode => _deepHash(<Object?>[runtimeType, ..._toList()]);
 }
+
 
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
@@ -179,10 +205,10 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    } else if (value is ClientCertData) {
+    }    else if (value is ClientCertData) {
       buffer.putUint8(129);
       writeValue(buffer, value.encode());
-    } else if (value is ClientCertPrompt) {
+    }    else if (value is ClientCertPrompt) {
       buffer.putUint8(130);
       writeValue(buffer, value.encode());
     } else {
@@ -208,8 +234,8 @@ class NetworkApi {
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
   NetworkApi({BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
-    : pigeonVar_binaryMessenger = binaryMessenger,
-      pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+      : pigeonVar_binaryMessenger = binaryMessenger,
+        pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
   final BinaryMessenger? pigeonVar_binaryMessenger;
 
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
@@ -217,8 +243,7 @@ class NetworkApi {
   final String pigeonVar_messageChannelSuffix;
 
   Future<void> addCertificate(ClientCertData clientData) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.immich_mobile.NetworkApi.addCertificate$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.immich_mobile.NetworkApi.addCertificate$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -227,12 +252,16 @@ class NetworkApi {
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[clientData]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
-    _extractReplyValueOrThrow(pigeonVar_replyList, pigeonVar_channelName, isNullValid: true);
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> selectCertificate(ClientCertPrompt promptText) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.immich_mobile.NetworkApi.selectCertificate$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.immich_mobile.NetworkApi.selectCertificate$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -241,12 +270,16 @@ class NetworkApi {
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[promptText]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
-    _extractReplyValueOrThrow(pigeonVar_replyList, pigeonVar_channelName, isNullValid: true);
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<void> removeCertificate() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.immich_mobile.NetworkApi.removeCertificate$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.immich_mobile.NetworkApi.removeCertificate$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -255,12 +288,16 @@ class NetworkApi {
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
-    _extractReplyValueOrThrow(pigeonVar_replyList, pigeonVar_channelName, isNullValid: true);
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
   Future<bool> hasCertificate() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.immich_mobile.NetworkApi.hasCertificate$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.immich_mobile.NetworkApi.hasCertificate$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -270,16 +307,16 @@ class NetworkApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as bool;
   }
 
   Future<int> getClientPointer() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.immich_mobile.NetworkApi.getClientPointer$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.immich_mobile.NetworkApi.getClientPointer$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -289,16 +326,16 @@ class NetworkApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: false,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
     return pigeonVar_replyValue! as int;
   }
 
   Future<void> setRequestHeaders(Map<String, String> headers, List<String> serverUrls, String? token) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.immich_mobile.NetworkApi.setRequestHeaders$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.immich_mobile.NetworkApi.setRequestHeaders$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -307,14 +344,16 @@ class NetworkApi {
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[headers, serverUrls, token]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
-    _extractReplyValueOrThrow(pigeonVar_replyList, pigeonVar_channelName, isNullValid: true);
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 
-  /// Rebuilds the shared native URLSession (iOS). Used on foreground resume to
-  /// recover from the background-worker isolate orphaning the shared session.
-  Future<void> recreateSession() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.immich_mobile.NetworkApi.recreateSession$pigeonVar_messageChannelSuffix';
+  Future<String> getAppGroupId() async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.immich_mobile.NetworkApi.getAppGroupId$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -323,6 +362,32 @@ class NetworkApi {
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
-    _extractReplyValueOrThrow(pigeonVar_replyList, pigeonVar_channelName, isNullValid: true);
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
+    return pigeonVar_replyValue! as String;
+  }
+
+  /// Rebuilds the shared native URLSession (iOS). Used on foreground resume to
+  /// recover from the background-worker isolate orphaning the shared session.
+  Future<void> recreateSession() async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.immich_mobile.NetworkApi.recreateSession$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
   }
 }
