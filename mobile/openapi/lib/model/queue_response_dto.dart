@@ -14,7 +14,7 @@ class QueueResponseDto {
   /// Returns a new [QueueResponseDto] instance.
   QueueResponseDto({
     required this.isPaused,
-    this.jobTypes = const [],
+    this.jobTypes = const Optional.present(const []),
     required this.name,
     required this.statistics,
   });
@@ -23,7 +23,7 @@ class QueueResponseDto {
   bool isPaused;
 
   /// Sampled job type counts for display purposes
-  List<QueueJobTypeCountsDto> jobTypes;
+  Optional<List<QueueJobTypeCountsDto>?> jobTypes;
 
   QueueName name;
 
@@ -50,7 +50,10 @@ class QueueResponseDto {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'isPaused'] = this.isPaused;
-      json[r'jobTypes'] = this.jobTypes;
+    if (this.jobTypes.isPresent) {
+      final value = this.jobTypes.value;
+      json[r'jobTypes'] = value;
+    }
       json[r'name'] = this.name;
       json[r'statistics'] = this.statistics;
     return json;
@@ -66,7 +69,7 @@ class QueueResponseDto {
 
       return QueueResponseDto(
         isPaused: mapValueOfType<bool>(json, r'isPaused')!,
-        jobTypes: QueueJobTypeCountsDto.listFromJson(json[r'jobTypes']),
+        jobTypes: json.containsKey(r'jobTypes') ? Optional.present(QueueJobTypeCountsDto.listFromJson(json[r'jobTypes'])) : const Optional.absent(),
         name: QueueName.fromJson(json[r'name'])!,
         statistics: QueueStatisticsDto.fromJson(json[r'statistics'])!,
       );

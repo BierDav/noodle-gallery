@@ -64,7 +64,7 @@ class CLIPConfig {
 
       return CLIPConfig(
         enabled: mapValueOfType<bool>(json, r'enabled')!,
-        maxDistance: (mapValueOfType<num>(json, r'maxDistance')!).toDouble(),
+        maxDistance: mapValueOfType<double>(json, r'maxDistance')!,
         modelName: mapValueOfType<String>(json, r'modelName')!,
       );
     }

@@ -113,7 +113,7 @@ class AssetFaceResponseDto {
     if (this.person != null) {
       json[r'person'] = this.person;
     } else {
-      json[r'person'] = null;
+    //  json[r'person'] = null;
     }
     if (this.sourceType.isPresent) {
       final value = this.sourceType.value;

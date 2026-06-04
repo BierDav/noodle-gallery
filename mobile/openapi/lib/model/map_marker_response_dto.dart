@@ -66,12 +66,12 @@ class MapMarkerResponseDto {
     if (this.city != null) {
       json[r'city'] = this.city;
     } else {
-      json[r'city'] = null;
+    //  json[r'city'] = null;
     }
     if (this.country != null) {
       json[r'country'] = this.country;
     } else {
-      json[r'country'] = null;
+    //  json[r'country'] = null;
     }
       json[r'id'] = this.id;
       json[r'lat'] = this.lat;
@@ -79,7 +79,7 @@ class MapMarkerResponseDto {
     if (this.state != null) {
       json[r'state'] = this.state;
     } else {
-      json[r'state'] = null;
+    //  json[r'state'] = null;
     }
     return json;
   }

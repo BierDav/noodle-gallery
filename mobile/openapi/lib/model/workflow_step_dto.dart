@@ -54,7 +54,7 @@ class WorkflowStepDto {
     if (this.config != null) {
       json[r'config'] = this.config;
     } else {
-      json[r'config'] = null;
+    //  json[r'config'] = null;
     }
     if (this.enabled.isPresent) {
       final value = this.enabled.value;

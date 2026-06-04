@@ -96,7 +96,7 @@ class SessionCreateResponseDto {
     if (this.appVersion != null) {
       json[r'appVersion'] = this.appVersion;
     } else {
-      json[r'appVersion'] = null;
+    //  json[r'appVersion'] = null;
     }
       json[r'createdAt'] = this.createdAt;
       json[r'current'] = this.current;

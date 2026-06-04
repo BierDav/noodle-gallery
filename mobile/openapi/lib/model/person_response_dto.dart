@@ -14,19 +14,19 @@ class PersonResponseDto {
   /// Returns a new [PersonResponseDto] instance.
   PersonResponseDto({
     required this.birthDate,
-    this.color,
-    this.filterId,
+    this.color = const Optional.absent(),
+    this.filterId = const Optional.absent(),
     required this.id,
-    this.isFavorite,
+    this.isFavorite = const Optional.absent(),
     required this.isHidden,
     required this.name,
-    this.numberOfAssets,
-    this.primaryProfile,
-    this.spacePersonId,
-    this.species,
+    this.numberOfAssets = const Optional.absent(),
+    this.primaryProfile = const Optional.absent(),
+    this.spacePersonId = const Optional.absent(),
+    this.species = const Optional.absent(),
     required this.thumbnailPath,
-    this.type = 'person',
-    this.updatedAt,
+    this.type = const Optional.present('person'),
+    this.updatedAt = const Optional.absent(),
   });
 
   /// Person date of birth
@@ -39,7 +39,7 @@ class PersonResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  String? color;
+  Optional<String?> color;
 
   /// Scoped identity filter token
   ///
@@ -48,7 +48,7 @@ class PersonResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  String? filterId;
+  Optional<String?> filterId;
 
   /// Person ID
   String id;
@@ -60,7 +60,7 @@ class PersonResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  bool? isFavorite;
+  Optional<bool?> isFavorite;
 
   /// Is hidden
   bool isHidden;
@@ -78,7 +78,7 @@ class PersonResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  int? numberOfAssets;
+  Optional<int?> numberOfAssets;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -86,7 +86,7 @@ class PersonResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  ScopedPrimaryProfile? primaryProfile;
+  Optional<ScopedPrimaryProfile?> primaryProfile;
 
   /// Space person ID when viewed through a shared space
   ///
@@ -95,16 +95,16 @@ class PersonResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  String? spacePersonId;
+  Optional<String?> spacePersonId;
 
   /// Pet species (e.g. dog, cat)
-  String? species;
+  Optional<String?> species;
 
   /// Thumbnail path
   String thumbnailPath;
 
   /// Entity type (person or pet)
-  String type;
+  Optional<String?> type;
 
   /// Last update date
   ///
@@ -113,7 +113,7 @@ class PersonResponseDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  DateTime? updatedAt;
+  Optional<DateTime?> updatedAt;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PersonResponseDto &&
@@ -160,50 +160,45 @@ class PersonResponseDto {
     } else {
     //  json[r'birthDate'] = null;
     }
-    if (this.color != null) {
-      json[r'color'] = this.color;
-    } else {
-    //  json[r'color'] = null;
+    if (this.color.isPresent) {
+      final value = this.color.value;
+      json[r'color'] = value;
     }
-    if (this.filterId != null) {
-      json[r'filterId'] = this.filterId;
-    } else {
-    //  json[r'filterId'] = null;
+    if (this.filterId.isPresent) {
+      final value = this.filterId.value;
+      json[r'filterId'] = value;
     }
       json[r'id'] = this.id;
-    if (this.isFavorite != null) {
-      json[r'isFavorite'] = this.isFavorite;
-    } else {
-    //  json[r'isFavorite'] = null;
+    if (this.isFavorite.isPresent) {
+      final value = this.isFavorite.value;
+      json[r'isFavorite'] = value;
     }
       json[r'isHidden'] = this.isHidden;
       json[r'name'] = this.name;
-    if (this.numberOfAssets != null) {
-      json[r'numberOfAssets'] = this.numberOfAssets;
-    } else {
-    //  json[r'numberOfAssets'] = null;
+    if (this.numberOfAssets.isPresent) {
+      final value = this.numberOfAssets.value;
+      json[r'numberOfAssets'] = value;
     }
-    if (this.primaryProfile != null) {
-      json[r'primaryProfile'] = this.primaryProfile;
-    } else {
-    //  json[r'primaryProfile'] = null;
+    if (this.primaryProfile.isPresent) {
+      final value = this.primaryProfile.value;
+      json[r'primaryProfile'] = value;
     }
-    if (this.spacePersonId != null) {
-      json[r'spacePersonId'] = this.spacePersonId;
-    } else {
-    //  json[r'spacePersonId'] = null;
+    if (this.spacePersonId.isPresent) {
+      final value = this.spacePersonId.value;
+      json[r'spacePersonId'] = value;
     }
-    if (this.species != null) {
-      json[r'species'] = this.species;
-    } else {
-    //  json[r'species'] = null;
+    if (this.species.isPresent) {
+      final value = this.species.value;
+      json[r'species'] = value;
     }
       json[r'thumbnailPath'] = this.thumbnailPath;
-      json[r'type'] = this.type;
-    if (this.updatedAt != null) {
-      json[r'updatedAt'] = this.updatedAt!.toUtc().toIso8601String();
-    } else {
-    //  json[r'updatedAt'] = null;
+    if (this.type.isPresent) {
+      final value = this.type.value;
+      json[r'type'] = value;
+    }
+    if (this.updatedAt.isPresent) {
+      final value = this.updatedAt.value;
+      json[r'updatedAt'] = value == null ? null : value.toUtc().toIso8601String();
     }
     return json;
   }
@@ -218,19 +213,19 @@ class PersonResponseDto {
 
       return PersonResponseDto(
         birthDate: mapDateTime(json, r'birthDate', r''),
-        color: mapValueOfType<String>(json, r'color'),
-        filterId: mapValueOfType<String>(json, r'filterId'),
+        color: json.containsKey(r'color') ? Optional.present(mapValueOfType<String>(json, r'color')) : const Optional.absent(),
+        filterId: json.containsKey(r'filterId') ? Optional.present(mapValueOfType<String>(json, r'filterId')) : const Optional.absent(),
         id: mapValueOfType<String>(json, r'id')!,
-        isFavorite: mapValueOfType<bool>(json, r'isFavorite'),
+        isFavorite: json.containsKey(r'isFavorite') ? Optional.present(mapValueOfType<bool>(json, r'isFavorite')) : const Optional.absent(),
         isHidden: mapValueOfType<bool>(json, r'isHidden')!,
         name: mapValueOfType<String>(json, r'name')!,
-        numberOfAssets: mapValueOfType<int>(json, r'numberOfAssets'),
-        primaryProfile: ScopedPrimaryProfile.fromJson(json[r'primaryProfile']),
-        spacePersonId: mapValueOfType<String>(json, r'spacePersonId'),
-        species: mapValueOfType<String>(json, r'species'),
+        numberOfAssets: json.containsKey(r'numberOfAssets') ? Optional.present(json[r'numberOfAssets'] == null ? null : int.parse('${json[r'numberOfAssets']}')) : const Optional.absent(),
+        primaryProfile: json.containsKey(r'primaryProfile') ? Optional.present(ScopedPrimaryProfile.fromJson(json[r'primaryProfile'])) : const Optional.absent(),
+        spacePersonId: json.containsKey(r'spacePersonId') ? Optional.present(mapValueOfType<String>(json, r'spacePersonId')) : const Optional.absent(),
+        species: json.containsKey(r'species') ? Optional.present(mapValueOfType<String>(json, r'species')) : const Optional.absent(),
         thumbnailPath: mapValueOfType<String>(json, r'thumbnailPath')!,
-        type: mapValueOfType<String>(json, r'type') ?? 'person',
-        updatedAt: mapDateTime(json, r'updatedAt', r''),
+        type: json.containsKey(r'type') ? Optional.present(mapValueOfType<String>(json, r'type')) : const Optional.absent(),
+        updatedAt: json.containsKey(r'updatedAt') ? Optional.present(mapDateTime(json, r'updatedAt', r'')) : const Optional.absent(),
       );
     }
     return null;

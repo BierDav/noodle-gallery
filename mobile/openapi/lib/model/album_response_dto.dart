@@ -152,7 +152,7 @@ class AlbumResponseDto {
     if (this.albumThumbnailAssetId != null) {
       json[r'albumThumbnailAssetId'] = this.albumThumbnailAssetId;
     } else {
-      json[r'albumThumbnailAssetId'] = null;
+    //  json[r'albumThumbnailAssetId'] = null;
     }
       json[r'albumUsers'] = this.albumUsers;
       json[r'assetCount'] = this.assetCount;

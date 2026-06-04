@@ -13,11 +13,11 @@ part of openapi.api;
 class DownloadInfoDto {
   /// Returns a new [DownloadInfoDto] instance.
   DownloadInfoDto({
-    this.albumId,
-    this.archiveSize,
-    this.assetIds = const [],
-    this.spaceId,
-    this.userId,
+    this.albumId = const Optional.absent(),
+    this.archiveSize = const Optional.absent(),
+    this.assetIds = const Optional.present(const []),
+    this.spaceId = const Optional.absent(),
+    this.userId = const Optional.absent(),
   });
 
   /// Album ID to download
@@ -27,7 +27,7 @@ class DownloadInfoDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  String? albumId;
+  Optional<String?> albumId;
 
   /// Archive size limit in bytes
   ///
@@ -39,10 +39,10 @@ class DownloadInfoDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  int? archiveSize;
+  Optional<int?> archiveSize;
 
   /// Asset IDs to download
-  List<String> assetIds;
+  Optional<List<String>?> assetIds;
 
   /// Shared space ID to download all assets from
   ///
@@ -51,7 +51,7 @@ class DownloadInfoDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  String? spaceId;
+  Optional<String?> spaceId;
 
   /// User ID to download assets from
   ///
@@ -60,7 +60,7 @@ class DownloadInfoDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  String? userId;
+  Optional<String?> userId;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is DownloadInfoDto &&
@@ -84,26 +84,25 @@ class DownloadInfoDto {
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.albumId != null) {
-      json[r'albumId'] = this.albumId;
-    } else {
-    //  json[r'albumId'] = null;
+    if (this.albumId.isPresent) {
+      final value = this.albumId.value;
+      json[r'albumId'] = value;
     }
-    if (this.archiveSize != null) {
-      json[r'archiveSize'] = this.archiveSize;
-    } else {
-    //  json[r'archiveSize'] = null;
+    if (this.archiveSize.isPresent) {
+      final value = this.archiveSize.value;
+      json[r'archiveSize'] = value;
     }
-      json[r'assetIds'] = this.assetIds;
-    if (this.spaceId != null) {
-      json[r'spaceId'] = this.spaceId;
-    } else {
-    //  json[r'spaceId'] = null;
+    if (this.assetIds.isPresent) {
+      final value = this.assetIds.value;
+      json[r'assetIds'] = value;
     }
-    if (this.userId != null) {
-      json[r'userId'] = this.userId;
-    } else {
-    //  json[r'userId'] = null;
+    if (this.spaceId.isPresent) {
+      final value = this.spaceId.value;
+      json[r'spaceId'] = value;
+    }
+    if (this.userId.isPresent) {
+      final value = this.userId.value;
+      json[r'userId'] = value;
     }
     return json;
   }
@@ -117,13 +116,13 @@ class DownloadInfoDto {
       final json = value.cast<String, dynamic>();
 
       return DownloadInfoDto(
-        albumId: mapValueOfType<String>(json, r'albumId'),
-        archiveSize: mapValueOfType<int>(json, r'archiveSize'),
-        assetIds: json[r'assetIds'] is Iterable
+        albumId: json.containsKey(r'albumId') ? Optional.present(mapValueOfType<String>(json, r'albumId')) : const Optional.absent(),
+        archiveSize: json.containsKey(r'archiveSize') ? Optional.present(json[r'archiveSize'] == null ? null : int.parse('${json[r'archiveSize']}')) : const Optional.absent(),
+        assetIds: json.containsKey(r'assetIds') ? Optional.present(json[r'assetIds'] is Iterable
             ? (json[r'assetIds'] as Iterable).cast<String>().toList(growable: false)
-            : const [],
-        spaceId: mapValueOfType<String>(json, r'spaceId'),
-        userId: mapValueOfType<String>(json, r'userId'),
+            : const []) : const Optional.absent(),
+        spaceId: json.containsKey(r'spaceId') ? Optional.present(mapValueOfType<String>(json, r'spaceId')) : const Optional.absent(),
+        userId: json.containsKey(r'userId') ? Optional.present(mapValueOfType<String>(json, r'userId')) : const Optional.absent(),
       );
     }
     return null;
