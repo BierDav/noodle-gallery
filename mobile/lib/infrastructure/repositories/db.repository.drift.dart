@@ -55,9 +55,11 @@ import 'package:immich_mobile/infrastructure/entities/asset_edit.entity.drift.da
     as i26;
 import 'package:immich_mobile/infrastructure/entities/settings.entity.drift.dart'
     as i27;
-import 'package:immich_mobile/infrastructure/entities/merged_asset.drift.dart'
+import 'package:immich_mobile/infrastructure/entities/asset_ocr.entity.drift.dart'
     as i28;
-import 'package:drift/internal/modular.dart' as i29;
+import 'package:immich_mobile/infrastructure/entities/merged_asset.drift.dart'
+    as i29;
+import 'package:drift/internal/modular.dart' as i30;
 
 abstract class $Drift extends i0.GeneratedDatabase {
   $Drift(i0.QueryExecutor e) : super(e);
@@ -115,9 +117,12 @@ abstract class $Drift extends i0.GeneratedDatabase {
   late final i27.$SettingsEntityTable settingsEntity = i27.$SettingsEntityTable(
     this,
   );
-  i28.MergedAssetDrift get mergedAssetDrift => i29.ReadDatabaseContainer(
+  late final i28.$AssetOcrEntityTable assetOcrEntity = i28.$AssetOcrEntityTable(
     this,
-  ).accessor<i28.MergedAssetDrift>(i28.MergedAssetDrift.new);
+  );
+  i29.MergedAssetDrift get mergedAssetDrift => i30.ReadDatabaseContainer(
+    this,
+  ).accessor<i29.MergedAssetDrift>(i29.MergedAssetDrift.new);
   @override
   Iterable<i0.TableInfo<i0.Table, Object?>> get allTables =>
       allSchemaEntities.whereType<i0.TableInfo<i0.Table, Object?>>();
@@ -166,6 +171,7 @@ abstract class $Drift extends i0.GeneratedDatabase {
     trashedLocalAssetEntity,
     assetEditEntity,
     settingsEntity,
+    assetOcrEntity,
     i14.idxPartnerSharedWithId,
     i15.idxLatLng,
     i15.idxRemoteExifCity,
@@ -178,6 +184,7 @@ abstract class $Drift extends i0.GeneratedDatabase {
     i25.idxTrashedLocalAssetChecksum,
     i25.idxTrashedLocalAssetAlbum,
     i26.idxAssetEditAssetId,
+    i28.idxAssetOcrAssetId,
   ];
   @override
   i0.StreamQueryUpdateRules
@@ -428,6 +435,13 @@ abstract class $Drift extends i0.GeneratedDatabase {
       ),
       result: [i0.TableUpdate('asset_edit_entity', kind: i0.UpdateKind.delete)],
     ),
+    i0.WritePropagation(
+      on: i0.TableUpdateQuery.onTableName(
+        'remote_asset_entity',
+        limitUpdateKind: i0.UpdateKind.delete,
+      ),
+      result: [i0.TableUpdate('asset_ocr_entity', kind: i0.UpdateKind.delete)],
+    ),
   ]);
   @override
   i0.DriftDatabaseOptions get options =>
@@ -510,4 +524,6 @@ class $DriftManager {
       i26.$$AssetEditEntityTableTableManager(_db, _db.assetEditEntity);
   i27.$$SettingsEntityTableTableManager get settingsEntity =>
       i27.$$SettingsEntityTableTableManager(_db, _db.settingsEntity);
+  i28.$$AssetOcrEntityTableTableManager get assetOcrEntity =>
+      i28.$$AssetOcrEntityTableTableManager(_db, _db.assetOcrEntity);
 }
