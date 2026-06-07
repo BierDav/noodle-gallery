@@ -983,6 +983,8 @@ class ApiClient {
           return TestEmailResponseDto.fromJson(value);
         case 'TimeBucketAssetResponseDto':
           return TimeBucketAssetResponseDto.fromJson(value);
+        case 'TimeBucketSize':
+          return TimeBucketSizeTypeTransformer().decode(value);
         case 'TimeBucketsResponseDto':
           return TimeBucketsResponseDto.fromJson(value);
         case 'ToneMapping':

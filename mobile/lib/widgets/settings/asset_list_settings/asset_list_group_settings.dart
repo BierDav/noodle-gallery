@@ -45,6 +45,10 @@ class GroupSettings extends HookConsumerWidget {
               value: GroupAssetsBy.day,
             ),
             SettingsRadioGroup(
+              title: 'year'.t(context: context),
+              value: GroupAssetsBy.year,
+            ),
+            SettingsRadioGroup(
               title: 'month'.t(context: context),
               value: GroupAssetsBy.month,
             ),

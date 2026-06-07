@@ -809,6 +809,7 @@ Class | Method | HTTP request | Description
  - [TemplateResponseDto](doc//TemplateResponseDto.md)
  - [TestEmailResponseDto](doc//TestEmailResponseDto.md)
  - [TimeBucketAssetResponseDto](doc//TimeBucketAssetResponseDto.md)
+ - [TimeBucketSize](doc//TimeBucketSize.md)
  - [TimeBucketsResponseDto](doc//TimeBucketsResponseDto.md)
  - [ToneMapping](doc//ToneMapping.md)
  - [TranscodeHWAccel](doc//TranscodeHWAccel.md)

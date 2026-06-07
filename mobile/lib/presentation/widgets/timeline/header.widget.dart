@@ -31,6 +31,11 @@ class TimelineHeader extends HookConsumerWidget {
     return formatter.format(date);
   }
 
+  String _formatYear(BuildContext context, DateTime date) {
+    final formatter = DateFormat.y(context.locale.toLanguageTag());
+    return formatter.format(date);
+  }
+
   String _formatDay(BuildContext context, DateTime date) {
     final formatter = DateFormat.yMMMEd(context.locale.toLanguageTag());
     return formatter.format(date);
@@ -43,17 +48,29 @@ class TimelineHeader extends HookConsumerWidget {
     }
 
     final date = (bucket as TimeBucket).date;
+    final isYearHeader = header == HeaderType.year;
     final isMonthHeader = header == HeaderType.month || header == HeaderType.monthAndDay;
     final isDayHeader = header == HeaderType.day || header == HeaderType.monthAndDay;
 
     return Padding(
-      padding: EdgeInsets.only(top: isMonthHeader ? 8.0 : 0.0, left: 12.0, right: 12.0),
+      padding: EdgeInsets.only(top: isYearHeader || isMonthHeader ? 8.0 : 0.0, left: 12.0, right: 12.0),
       child: SizedBox(
         height: height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            if (isYearHeader)
+              Row(
+                children: [
+                  Text(
+                    toBeginningOfSentenceCase(_formatYear(context, date)),
+                    style: context.textTheme.labelLarge?.copyWith(fontSize: 24),
+                  ),
+                  const Spacer(),
+                  _BulkSelectIconButton(bucket: bucket, assetOffset: assetOffset),
+                ],
+              ),
             if (isMonthHeader)
               Row(
                 children: [
