@@ -14,9 +14,6 @@ class TimeBucketsResponseDto {
   /// Returns a new [TimeBucketsResponseDto] instance.
   TimeBucketsResponseDto({
     required this.count,
-    this.representativeAssetId = const Optional.absent(),
-    this.representativeRatio = const Optional.absent(),
-    this.representativeThumbhash = const Optional.absent(),
     required this.timeBucket,
   });
 
@@ -26,53 +23,26 @@ class TimeBucketsResponseDto {
   /// Maximum value: 9007199254740991
   int count;
 
-  /// Representative asset ID for this bucket
-  Optional<String?> representativeAssetId;
-
-  /// Representative asset width/height ratio
-  Optional<num?> representativeRatio;
-
-  /// Representative asset thumbhash, base64 encoded
-  Optional<String?> representativeThumbhash;
-
   /// Time bucket identifier in YYYY-MM-DD format representing the start of the time period
   String timeBucket;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is TimeBucketsResponseDto &&
     other.count == count &&
-    other.representativeAssetId == representativeAssetId &&
-    other.representativeRatio == representativeRatio &&
-    other.representativeThumbhash == representativeThumbhash &&
     other.timeBucket == timeBucket;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (count.hashCode) +
-    (representativeAssetId == null ? 0 : representativeAssetId!.hashCode) +
-    (representativeRatio == null ? 0 : representativeRatio!.hashCode) +
-    (representativeThumbhash == null ? 0 : representativeThumbhash!.hashCode) +
     (timeBucket.hashCode);
 
   @override
-  String toString() => 'TimeBucketsResponseDto[count=$count, representativeAssetId=$representativeAssetId, representativeRatio=$representativeRatio, representativeThumbhash=$representativeThumbhash, timeBucket=$timeBucket]';
+  String toString() => 'TimeBucketsResponseDto[count=$count, timeBucket=$timeBucket]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'count'] = this.count;
-    if (this.representativeAssetId.isPresent) {
-      final value = this.representativeAssetId.value;
-      json[r'representativeAssetId'] = value;
-    }
-    if (this.representativeRatio.isPresent) {
-      final value = this.representativeRatio.value;
-      json[r'representativeRatio'] = value;
-    }
-    if (this.representativeThumbhash.isPresent) {
-      final value = this.representativeThumbhash.value;
-      json[r'representativeThumbhash'] = value;
-    }
       json[r'timeBucket'] = this.timeBucket;
     return json;
   }
@@ -87,9 +57,6 @@ class TimeBucketsResponseDto {
 
       return TimeBucketsResponseDto(
         count: mapValueOfType<int>(json, r'count')!,
-        representativeAssetId: json.containsKey(r'representativeAssetId') ? Optional.present(mapValueOfType<String>(json, r'representativeAssetId')) : const Optional.absent(),
-        representativeRatio: json.containsKey(r'representativeRatio') ? Optional.present(json[r'representativeRatio'] == null ? null : num.parse('${json[r'representativeRatio']}')) : const Optional.absent(),
-        representativeThumbhash: json.containsKey(r'representativeThumbhash') ? Optional.present(mapValueOfType<String>(json, r'representativeThumbhash')) : const Optional.absent(),
         timeBucket: mapValueOfType<String>(json, r'timeBucket')!,
       );
     }

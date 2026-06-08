@@ -359,6 +359,7 @@ Class | Method | HTTP request | Description
 *TagsApi* | [**updateTag**](doc//TagsApi.md#updatetag) | **PUT** /tags/{id} | Update a tag
 *TagsApi* | [**upsertTags**](doc//TagsApi.md#upserttags) | **PUT** /tags | Upsert tags
 *TimelineApi* | [**getTimeBucket**](doc//TimelineApi.md#gettimebucket) | **GET** /timeline/bucket | Get time bucket
+*TimelineApi* | [**getTimeBucketCovers**](doc//TimelineApi.md#gettimebucketcovers) | **GET** /timeline/bucket-covers | Get time bucket covers
 *TimelineApi* | [**getTimeBuckets**](doc//TimelineApi.md#gettimebuckets) | **GET** /timeline/buckets | Get time buckets
 *TrashApi* | [**emptyTrash**](doc//TrashApi.md#emptytrash) | **POST** /trash/empty | Empty trash
 *TrashApi* | [**restoreAssets**](doc//TrashApi.md#restoreassets) | **POST** /trash/restore/assets | Restore assets
@@ -809,6 +810,7 @@ Class | Method | HTTP request | Description
  - [TemplateResponseDto](doc//TemplateResponseDto.md)
  - [TestEmailResponseDto](doc//TestEmailResponseDto.md)
  - [TimeBucketAssetResponseDto](doc//TimeBucketAssetResponseDto.md)
+ - [TimeBucketCoverResponseDto](doc//TimeBucketCoverResponseDto.md)
  - [TimeBucketSize](doc//TimeBucketSize.md)
  - [TimeBucketsResponseDto](doc//TimeBucketsResponseDto.md)
  - [ToneMapping](doc//ToneMapping.md)
