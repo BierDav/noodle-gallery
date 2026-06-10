@@ -14,6 +14,7 @@ class SystemConfigDto {
   /// Returns a new [SystemConfigDto] instance.
   SystemConfigDto({
     required this.backup,
+    required this.classification,
     required this.ffmpeg,
     required this.image,
     required this.integrityChecks,
@@ -22,6 +23,7 @@ class SystemConfigDto {
     required this.logging,
     required this.machineLearning,
     required this.map,
+    required this.memories,
     required this.metadata,
     required this.newVersionCheck,
     required this.nightlyTasks,
@@ -39,6 +41,8 @@ class SystemConfigDto {
 
   SystemConfigBackupsDto backup;
 
+  SystemConfigClassificationDto classification;
+
   SystemConfigFFmpegDto ffmpeg;
 
   SystemConfigImageDto image;
@@ -54,6 +58,8 @@ class SystemConfigDto {
   SystemConfigMachineLearningDto machineLearning;
 
   SystemConfigMapDto map;
+
+  SystemConfigMemoriesDto memories;
 
   SystemConfigMetadataDto metadata;
 
@@ -84,6 +90,7 @@ class SystemConfigDto {
   @override
   bool operator ==(Object other) => identical(this, other) || other is SystemConfigDto &&
     other.backup == backup &&
+    other.classification == classification &&
     other.ffmpeg == ffmpeg &&
     other.image == image &&
     other.integrityChecks == integrityChecks &&
@@ -92,6 +99,7 @@ class SystemConfigDto {
     other.logging == logging &&
     other.machineLearning == machineLearning &&
     other.map == map &&
+    other.memories == memories &&
     other.metadata == metadata &&
     other.newVersionCheck == newVersionCheck &&
     other.nightlyTasks == nightlyTasks &&
@@ -110,6 +118,7 @@ class SystemConfigDto {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (backup.hashCode) +
+    (classification.hashCode) +
     (ffmpeg.hashCode) +
     (image.hashCode) +
     (integrityChecks.hashCode) +
@@ -118,6 +127,7 @@ class SystemConfigDto {
     (logging.hashCode) +
     (machineLearning.hashCode) +
     (map.hashCode) +
+    (memories.hashCode) +
     (metadata.hashCode) +
     (newVersionCheck.hashCode) +
     (nightlyTasks.hashCode) +
@@ -133,11 +143,12 @@ class SystemConfigDto {
     (user.hashCode);
 
   @override
-  String toString() => 'SystemConfigDto[backup=$backup, ffmpeg=$ffmpeg, image=$image, integrityChecks=$integrityChecks, job=$job, library_=$library_, logging=$logging, machineLearning=$machineLearning, map=$map, metadata=$metadata, newVersionCheck=$newVersionCheck, nightlyTasks=$nightlyTasks, notifications=$notifications, oauth=$oauth, passwordLogin=$passwordLogin, reverseGeocoding=$reverseGeocoding, server=$server, storageTemplate=$storageTemplate, templates=$templates, theme=$theme, trash=$trash, user=$user]';
+  String toString() => 'SystemConfigDto[backup=$backup, classification=$classification, ffmpeg=$ffmpeg, image=$image, integrityChecks=$integrityChecks, job=$job, library_=$library_, logging=$logging, machineLearning=$machineLearning, map=$map, memories=$memories, metadata=$metadata, newVersionCheck=$newVersionCheck, nightlyTasks=$nightlyTasks, notifications=$notifications, oauth=$oauth, passwordLogin=$passwordLogin, reverseGeocoding=$reverseGeocoding, server=$server, storageTemplate=$storageTemplate, templates=$templates, theme=$theme, trash=$trash, user=$user]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'backup'] = this.backup;
+      json[r'classification'] = this.classification;
       json[r'ffmpeg'] = this.ffmpeg;
       json[r'image'] = this.image;
       json[r'integrityChecks'] = this.integrityChecks;
@@ -146,6 +157,7 @@ class SystemConfigDto {
       json[r'logging'] = this.logging;
       json[r'machineLearning'] = this.machineLearning;
       json[r'map'] = this.map;
+      json[r'memories'] = this.memories;
       json[r'metadata'] = this.metadata;
       json[r'newVersionCheck'] = this.newVersionCheck;
       json[r'nightlyTasks'] = this.nightlyTasks;
@@ -172,6 +184,7 @@ class SystemConfigDto {
 
       return SystemConfigDto(
         backup: SystemConfigBackupsDto.fromJson(json[r'backup'])!,
+        classification: SystemConfigClassificationDto.fromJson(json[r'classification'])!,
         ffmpeg: SystemConfigFFmpegDto.fromJson(json[r'ffmpeg'])!,
         image: SystemConfigImageDto.fromJson(json[r'image'])!,
         integrityChecks: SystemConfigIntegrityChecks.fromJson(json[r'integrityChecks'])!,
@@ -180,6 +193,7 @@ class SystemConfigDto {
         logging: SystemConfigLoggingDto.fromJson(json[r'logging'])!,
         machineLearning: SystemConfigMachineLearningDto.fromJson(json[r'machineLearning'])!,
         map: SystemConfigMapDto.fromJson(json[r'map'])!,
+        memories: SystemConfigMemoriesDto.fromJson(json[r'memories'])!,
         metadata: SystemConfigMetadataDto.fromJson(json[r'metadata'])!,
         newVersionCheck: SystemConfigNewVersionCheckDto.fromJson(json[r'newVersionCheck'])!,
         nightlyTasks: SystemConfigNightlyTasksDto.fromJson(json[r'nightlyTasks'])!,
@@ -241,6 +255,7 @@ class SystemConfigDto {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'backup',
+    'classification',
     'ffmpeg',
     'image',
     'integrityChecks',
@@ -249,6 +264,7 @@ class SystemConfigDto {
     'logging',
     'machineLearning',
     'map',
+    'memories',
     'metadata',
     'newVersionCheck',
     'nightlyTasks',

@@ -103,11 +103,11 @@ String parameterToString(dynamic value) {
   if (value is CalendarHeatmapType) {
     return CalendarHeatmapTypeTypeTransformer().encode(value).toString();
   }
+  if (value is ClassificationFaceExclusion) {
+    return ClassificationFaceExclusionTypeTransformer().encode(value).toString();
+  }
   if (value is Colorspace) {
     return ColorspaceTypeTransformer().encode(value).toString();
-  }
-  if (value is HlsVideoResolution) {
-    return HlsVideoResolutionTypeTransformer().encode(value).toString();
   }
   if (value is ImageFormat) {
     return ImageFormatTypeTransformer().encode(value).toString();
@@ -126,6 +126,9 @@ String parameterToString(dynamic value) {
   }
   if (value is ManualJobName) {
     return ManualJobNameTypeTransformer().encode(value).toString();
+  }
+  if (value is MapMediaType) {
+    return MapMediaTypeTypeTransformer().encode(value).toString();
   }
   if (value is MemorySearchOrder) {
     return MemorySearchOrderTypeTransformer().encode(value).toString();
@@ -178,17 +181,26 @@ String parameterToString(dynamic value) {
   if (value is SharedLinkType) {
     return SharedLinkTypeTypeTransformer().encode(value).toString();
   }
+  if (value is SharedSpaceRole) {
+    return SharedSpaceRoleTypeTransformer().encode(value).toString();
+  }
   if (value is SourceType) {
     return SourceTypeTypeTransformer().encode(value).toString();
   }
   if (value is StorageFolder) {
     return StorageFolderTypeTransformer().encode(value).toString();
   }
+  if (value is StorageMigrationDirection) {
+    return StorageMigrationDirectionTypeTransformer().encode(value).toString();
+  }
   if (value is SyncEntityType) {
     return SyncEntityTypeTypeTransformer().encode(value).toString();
   }
   if (value is SyncRequestType) {
     return SyncRequestTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is TimeBucketSize) {
+    return TimeBucketSizeTypeTransformer().encode(value).toString();
   }
   if (value is ToneMapping) {
     return ToneMappingTypeTransformer().encode(value).toString();

@@ -14,6 +14,7 @@ class SystemConfigJobDto {
   /// Returns a new [SystemConfigJobDto] instance.
   SystemConfigJobDto({
     required this.backgroundTask,
+    required this.classification,
     required this.editor,
     required this.faceDetection,
     required this.integrityCheck,
@@ -22,6 +23,8 @@ class SystemConfigJobDto {
     required this.migration,
     required this.notifications,
     required this.ocr,
+    required this.peopleBackfill,
+    required this.petDetection,
     required this.search,
     required this.sidecar,
     required this.smartSearch,
@@ -31,6 +34,8 @@ class SystemConfigJobDto {
   });
 
   JobSettingsDto backgroundTask;
+
+  JobSettingsDto classification;
 
   JobSettingsDto editor;
 
@@ -48,6 +53,10 @@ class SystemConfigJobDto {
 
   JobSettingsDto ocr;
 
+  JobSettingsDto peopleBackfill;
+
+  JobSettingsDto petDetection;
+
   JobSettingsDto search;
 
   JobSettingsDto sidecar;
@@ -63,6 +72,7 @@ class SystemConfigJobDto {
   @override
   bool operator ==(Object other) => identical(this, other) || other is SystemConfigJobDto &&
     other.backgroundTask == backgroundTask &&
+    other.classification == classification &&
     other.editor == editor &&
     other.faceDetection == faceDetection &&
     other.integrityCheck == integrityCheck &&
@@ -71,6 +81,8 @@ class SystemConfigJobDto {
     other.migration == migration &&
     other.notifications == notifications &&
     other.ocr == ocr &&
+    other.peopleBackfill == peopleBackfill &&
+    other.petDetection == petDetection &&
     other.search == search &&
     other.sidecar == sidecar &&
     other.smartSearch == smartSearch &&
@@ -82,6 +94,7 @@ class SystemConfigJobDto {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (backgroundTask.hashCode) +
+    (classification.hashCode) +
     (editor.hashCode) +
     (faceDetection.hashCode) +
     (integrityCheck.hashCode) +
@@ -90,6 +103,8 @@ class SystemConfigJobDto {
     (migration.hashCode) +
     (notifications.hashCode) +
     (ocr.hashCode) +
+    (peopleBackfill.hashCode) +
+    (petDetection.hashCode) +
     (search.hashCode) +
     (sidecar.hashCode) +
     (smartSearch.hashCode) +
@@ -98,11 +113,12 @@ class SystemConfigJobDto {
     (workflow.hashCode);
 
   @override
-  String toString() => 'SystemConfigJobDto[backgroundTask=$backgroundTask, editor=$editor, faceDetection=$faceDetection, integrityCheck=$integrityCheck, library_=$library_, metadataExtraction=$metadataExtraction, migration=$migration, notifications=$notifications, ocr=$ocr, search=$search, sidecar=$sidecar, smartSearch=$smartSearch, thumbnailGeneration=$thumbnailGeneration, videoConversion=$videoConversion, workflow=$workflow]';
+  String toString() => 'SystemConfigJobDto[backgroundTask=$backgroundTask, classification=$classification, editor=$editor, faceDetection=$faceDetection, integrityCheck=$integrityCheck, library_=$library_, metadataExtraction=$metadataExtraction, migration=$migration, notifications=$notifications, ocr=$ocr, peopleBackfill=$peopleBackfill, petDetection=$petDetection, search=$search, sidecar=$sidecar, smartSearch=$smartSearch, thumbnailGeneration=$thumbnailGeneration, videoConversion=$videoConversion, workflow=$workflow]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'backgroundTask'] = this.backgroundTask;
+      json[r'classification'] = this.classification;
       json[r'editor'] = this.editor;
       json[r'faceDetection'] = this.faceDetection;
       json[r'integrityCheck'] = this.integrityCheck;
@@ -111,6 +127,8 @@ class SystemConfigJobDto {
       json[r'migration'] = this.migration;
       json[r'notifications'] = this.notifications;
       json[r'ocr'] = this.ocr;
+      json[r'peopleBackfill'] = this.peopleBackfill;
+      json[r'petDetection'] = this.petDetection;
       json[r'search'] = this.search;
       json[r'sidecar'] = this.sidecar;
       json[r'smartSearch'] = this.smartSearch;
@@ -130,6 +148,7 @@ class SystemConfigJobDto {
 
       return SystemConfigJobDto(
         backgroundTask: JobSettingsDto.fromJson(json[r'backgroundTask'])!,
+        classification: JobSettingsDto.fromJson(json[r'classification'])!,
         editor: JobSettingsDto.fromJson(json[r'editor'])!,
         faceDetection: JobSettingsDto.fromJson(json[r'faceDetection'])!,
         integrityCheck: JobSettingsDto.fromJson(json[r'integrityCheck'])!,
@@ -138,6 +157,8 @@ class SystemConfigJobDto {
         migration: JobSettingsDto.fromJson(json[r'migration'])!,
         notifications: JobSettingsDto.fromJson(json[r'notifications'])!,
         ocr: JobSettingsDto.fromJson(json[r'ocr'])!,
+        peopleBackfill: JobSettingsDto.fromJson(json[r'peopleBackfill'])!,
+        petDetection: JobSettingsDto.fromJson(json[r'petDetection'])!,
         search: JobSettingsDto.fromJson(json[r'search'])!,
         sidecar: JobSettingsDto.fromJson(json[r'sidecar'])!,
         smartSearch: JobSettingsDto.fromJson(json[r'smartSearch'])!,
@@ -192,6 +213,7 @@ class SystemConfigJobDto {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'backgroundTask',
+    'classification',
     'editor',
     'faceDetection',
     'integrityCheck',
@@ -200,6 +222,8 @@ class SystemConfigJobDto {
     'migration',
     'notifications',
     'ocr',
+    'peopleBackfill',
+    'petDetection',
     'search',
     'sidecar',
     'smartSearch',
