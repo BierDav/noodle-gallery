@@ -5,7 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:immich_mobile/extensions/build_context_extensions.dart';
 import 'package:immich_mobile/extensions/string_extensions.dart';
 import 'package:immich_mobile/providers/infrastructure/people.provider.dart';
+import 'package:immich_mobile/providers/infrastructure/settings.provider.dart';
 import 'package:immich_mobile/presentation/widgets/images/remote_image_provider.dart';
+import 'package:immich_mobile/presentation/widgets/people/people_sort_button.widget.dart';
 import 'package:immich_mobile/routing/router.dart';
 import 'package:immich_mobile/utils/image_url_builder.dart';
 import 'package:immich_mobile/utils/people.utils.dart';
@@ -31,7 +33,8 @@ class _DriftPeopleCollectionPageState extends ConsumerState<DriftPeopleCollectio
 
   @override
   Widget build(BuildContext context) {
-    final people = ref.watch(driftGetAllPeopleProvider);
+    final sortBy = ref.watch(appConfigProvider.select((config) => config.people.sortBy));
+    final people = ref.watch(driftGetAllPeopleProvider(sortBy));
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -52,6 +55,7 @@ class _DriftPeopleCollectionPageState extends ConsumerState<DriftPeopleCollectio
                   )
                 : Text('people'.tr()),
             actions: [
+              const PeopleSortButton(),
               IconButton(
                 icon: Icon(_search != null ? Icons.close : Icons.search),
                 onPressed: () {

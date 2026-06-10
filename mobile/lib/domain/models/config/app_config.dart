@@ -8,12 +8,14 @@ import 'package:immich_mobile/domain/models/config/feature_message_config.dart';
 import 'package:immich_mobile/domain/models/config/image_config.dart';
 import 'package:immich_mobile/domain/models/config/map_config.dart';
 import 'package:immich_mobile/domain/models/config/network_config.dart';
+import 'package:immich_mobile/domain/models/config/people_config.dart';
 import 'package:immich_mobile/domain/models/config/share_config.dart';
 import 'package:immich_mobile/domain/models/config/slideshow_config.dart';
 import 'package:immich_mobile/domain/models/config/theme_config.dart';
 import 'package:immich_mobile/domain/models/config/timeline_config.dart';
 import 'package:immich_mobile/domain/models/config/viewer_config.dart';
 import 'package:immich_mobile/domain/models/log.model.dart';
+import 'package:immich_mobile/domain/models/person.model.dart';
 import 'package:immich_mobile/domain/models/settings_key.dart';
 import 'package:immich_mobile/domain/models/timeline.model.dart';
 import 'package:immich_mobile/providers/album/album_sort_by_options.provider.dart';
@@ -31,6 +33,7 @@ class AppConfig {
   final ViewerConfig viewer;
   final SlideshowConfig slideshow;
   final AlbumConfig album;
+  final PeopleConfig people;
   final BackupConfig backup;
   final NetworkConfig network;
   final ShareConfig share;
@@ -46,6 +49,7 @@ class AppConfig {
     this.viewer = const .new(),
     this.slideshow = const .new(),
     this.album = const .new(),
+    this.people = const .new(),
     this.backup = const .new(),
     this.network = const .new(),
     this.share = const .new(),
@@ -62,6 +66,7 @@ class AppConfig {
     ViewerConfig? viewer,
     SlideshowConfig? slideshow,
     AlbumConfig? album,
+    PeopleConfig? people,
     BackupConfig? backup,
     NetworkConfig? network,
     ShareConfig? share,
@@ -76,6 +81,7 @@ class AppConfig {
     viewer: viewer ?? this.viewer,
     slideshow: slideshow ?? this.slideshow,
     album: album ?? this.album,
+    people: people ?? this.people,
     backup: backup ?? this.backup,
     network: network ?? this.network,
     share: share ?? this.share,
@@ -95,6 +101,7 @@ class AppConfig {
           other.viewer == viewer &&
           other.slideshow == slideshow &&
           other.album == album &&
+          other.people == people &&
           other.backup == backup &&
           other.network == network &&
           other.share == share &&
@@ -111,6 +118,7 @@ class AppConfig {
     viewer,
     slideshow,
     album,
+    people,
     backup,
     network,
     share,
@@ -119,7 +127,7 @@ class AppConfig {
 
   @override
   String toString() =>
-      'AppConfig(logLevel: $logLevel, theme: $theme, cleanup: $cleanup, map: $map, timeline: $timeline, image: $image, viewer: $viewer, slideshow: $slideshow, album: $album, backup: $backup, network: $network, share: $share, featureMessage: $featureMessage)';
+      'AppConfig(logLevel: $logLevel, theme: $theme, cleanup: $cleanup, map: $map, timeline: $timeline, image: $image, viewer: $viewer, slideshow: $slideshow, album: $album, people: $people, backup: $backup, network: $network, share: $share, featureMessage: $featureMessage)';
 
   T read<T>(SettingsKey<T> key) =>
       (switch (key) {
@@ -142,6 +150,7 @@ class AppConfig {
             .albumSortMode => album.sortMode,
             .albumIsReverse => album.isReverse,
             .albumIsGrid => album.isGrid,
+            .peopleSortBy => people.sortBy,
             .backupEnabled => backup.enabled,
             .backupUseCellularForVideos => backup.useCellularForVideos,
             .backupUseCellularForPhotos => backup.useCellularForPhotos,
@@ -198,6 +207,7 @@ class AppConfig {
       .albumSortMode => copyWith(album: album.copyWith(sortMode: value as AlbumSortMode)),
       .albumIsReverse => copyWith(album: album.copyWith(isReverse: value as bool)),
       .albumIsGrid => copyWith(album: album.copyWith(isGrid: value as bool)),
+      .peopleSortBy => copyWith(people: people.copyWith(sortBy: value as PeopleSortBy)),
       .backupEnabled => copyWith(backup: backup.copyWith(enabled: value as bool)),
       .backupUseCellularForVideos => copyWith(backup: backup.copyWith(useCellularForVideos: value as bool)),
       .backupUseCellularForPhotos => copyWith(backup: backup.copyWith(useCellularForPhotos: value as bool)),

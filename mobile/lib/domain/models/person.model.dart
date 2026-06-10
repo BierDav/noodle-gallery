@@ -192,3 +192,5 @@ class DriftPerson {
         birthDate.hashCode;
   }
 }
+
+enum PeopleSortBy { photoCount, name }
