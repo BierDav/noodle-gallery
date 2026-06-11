@@ -65,6 +65,15 @@ import { Point, transformPoints } from 'src/utils/transform';
 
 const FACE_IDENTITY_BACKFILL_CHUNK_SIZE = 1000;
 
+/**
+ * Upper bound on full re-scan passes one backfill chain may take when getBackfillWork() keeps
+ * reporting identity work. Repair passes are designed to converge in one or two passes; work that
+ * is still outstanding at the cap indicates a convergence bug, and re-queueing would otherwise
+ * loop full-table scans forever. The next external trigger (bootstrap, post-recognition
+ * maintenance, or a manual run) starts a fresh chain.
+ */
+export const FACE_IDENTITY_BACKFILL_MAX_CONTINUATIONS = 5;
+
 @Injectable()
 export class PersonService extends BaseService {
   @OnEvent({ name: 'AppBootstrap', workers: [ImmichWorker.Microservices] })
@@ -509,6 +518,7 @@ export class PersonService extends BaseService {
     stage = 'person',
     cursor,
     continuationId,
+    continuationCount,
   }: JobOf<JobName.FaceIdentityBackfill>): Promise<JobStatus> {
     const affectedSpaceAssets: SharedSpaceFaceMatchBackfillTarget[] = [];
 
@@ -522,7 +532,7 @@ export class PersonService extends BaseService {
       if (result.nextCursor) {
         await this.jobRepository.queue({
           name: JobName.FaceIdentityBackfill,
-          data: { stage: 'person', cursor: result.nextCursor },
+          data: { stage: 'person', cursor: result.nextCursor, continuationCount },
         });
         return JobStatus.Success;
       }
@@ -541,7 +551,7 @@ export class PersonService extends BaseService {
     if (result.nextCursor) {
       await this.jobRepository.queue({
         name: JobName.FaceIdentityBackfill,
-        data: { stage: 'space-person', cursor: result.nextCursor },
+        data: { stage: 'space-person', cursor: result.nextCursor, continuationCount },
       });
       return JobStatus.Success;
     }
@@ -549,9 +559,19 @@ export class PersonService extends BaseService {
     const work = await this.faceIdentityRepository.getBackfillWork();
 
     if (work.hasPersonalIdentityWork || work.hasSpacePersonIdentityWork) {
+      const passCount = continuationCount ?? 0;
+      if (passCount >= FACE_IDENTITY_BACKFILL_MAX_CONTINUATIONS) {
+        this.logger.error(
+          `Face identity backfill still reports work after ${passCount} continuation passes — stopping to prevent an endless re-queue loop`,
+        );
+        return JobStatus.Success;
+      }
       await this.jobRepository.queue({
         name: JobName.FaceIdentityBackfill,
-        data: { continuationId: this.getNextFaceIdentityBackfillContinuationId(continuationId) },
+        data: {
+          continuationId: this.getNextFaceIdentityBackfillContinuationId(continuationId),
+          continuationCount: passCount + 1,
+        },
       });
       return JobStatus.Success;
     }
