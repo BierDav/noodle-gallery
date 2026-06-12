@@ -77,7 +77,7 @@ class PersonCreateDto {
     final json = <String, dynamic>{};
     if (this.birthDate.isPresent) {
       final value = this.birthDate.value;
-      json[r'birthDate'] = value == null ? null : _dateFormatter.format(value.toUtc());
+      json[r'birthDate'] = value == null ? null : _dateFormatter.format(value);
     }
     if (this.color.isPresent) {
       final value = this.color.value;
