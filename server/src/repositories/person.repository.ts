@@ -242,6 +242,21 @@ export class PersonRepository {
     await this.db.deleteFrom('asset_face').where('asset_face.sourceType', '=', sourceType).execute();
   }
 
+  async deleteAllPets(): Promise<void> {
+    await this.db.transaction().execute(async (trx) => {
+      // Delete pet faces before the pet people they belong to: asset_face.personId is
+      // ON DELETE SET NULL, so removing the people first would orphan (not delete) the faces.
+      await trx
+        .deleteFrom('asset_face')
+        .where('asset_face.personId', 'in', (eb) =>
+          eb.selectFrom('person').select('person.id').where('person.type', '=', 'pet'),
+        )
+        .execute();
+
+      await trx.deleteFrom('person').where('person.type', '=', 'pet').execute();
+    });
+  }
+
   getAllFaces(options: GetAllFacesOptions = {}) {
     return this.db
       .selectFrom('asset_face')
