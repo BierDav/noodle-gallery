@@ -437,6 +437,14 @@ class ApiClient {
           return JobNameTypeTransformer().decode(value);
         case 'JobSettingsDto':
           return JobSettingsDto.fromJson(value);
+        case 'LibraryManifestAlbumDto':
+          return LibraryManifestAlbumDto.fromJson(value);
+        case 'LibraryManifestAssetDto':
+          return LibraryManifestAssetDto.fromJson(value);
+        case 'LibraryManifestOwnerDto':
+          return LibraryManifestOwnerDto.fromJson(value);
+        case 'LibraryManifestResponseDto':
+          return LibraryManifestResponseDto.fromJson(value);
         case 'LibraryResponseDto':
           return LibraryResponseDto.fromJson(value);
         case 'LibraryStatsResponseDto':
