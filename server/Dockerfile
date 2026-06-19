@@ -39,8 +39,10 @@ RUN --mount=type=cache,id=pnpm-web,target=/buildcache/pnpm-store \
   --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
   --mount=type=bind,source=pnpm-workspace.yaml,target=pnpm-workspace.yaml \
   --mount=type=bind,source=patches,target=patches \
-  SHARP_IGNORE_GLOBAL_LIBVIPS=true pnpm --filter @immich/sdk --filter immich-web install --frozen-lockfile --force && \
-  pnpm --filter @immich/sdk --filter immich-web build
+  SHARP_IGNORE_GLOBAL_LIBVIPS=true pnpm --filter @immich/sdk install --frozen-lockfile && \
+  pnpm --filter @immich/sdk build && \
+  pnpm --filter @immich/sdk --filter immich-web install --frozen-lockfile --force && \
+  pnpm --filter immich-web build
 
 FROM builder AS cli
 
@@ -51,8 +53,9 @@ RUN --mount=type=cache,id=pnpm-cli,target=/buildcache/pnpm-store \
   --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
   --mount=type=bind,source=pnpm-workspace.yaml,target=pnpm-workspace.yaml \
   --mount=type=bind,source=patches,target=patches \
-  pnpm --filter @immich/sdk --filter @immich/cli install --frozen-lockfile && \
+  pnpm --filter @immich/sdk install --frozen-lockfile && \
   pnpm --filter @immich/sdk build && \
+  pnpm --filter @immich/sdk --filter @immich/cli install --frozen-lockfile && \
   pnpm --filter @immich/cli build && \
   pnpm --filter @immich/cli --prod --no-optional deploy /output/cli-pruned
 
@@ -80,8 +83,9 @@ RUN --mount=type=cache,id=pnpm-packages,target=/buildcache/pnpm-store \
   --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
   --mount=type=bind,source=pnpm-workspace.yaml,target=pnpm-workspace.yaml \
   --mount=type=bind,source=patches,target=patches \
-  pnpm --filter @immich/sdk --filter @immich/plugin-sdk --filter @immich/plugin-core install --frozen-lockfile && \
+  pnpm --filter @immich/sdk install --frozen-lockfile && \
   pnpm --filter @immich/sdk build && \
+  pnpm --filter @immich/sdk --filter @immich/plugin-sdk --filter @immich/plugin-core install --frozen-lockfile && \
   mise exec --no-deps --jobs=1 github:extism/js-pdk@1.6.0 -- \
     pnpm --filter @immich/plugin-sdk --filter @immich/plugin-core build
 
