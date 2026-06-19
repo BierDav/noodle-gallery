@@ -42,7 +42,7 @@ RUN --mount=type=cache,id=pnpm-web,target=/buildcache/pnpm-store \
   --mount=type=bind,source=pnpm-lock.yaml,target=pnpm-lock.yaml \
   --mount=type=bind,source=pnpm-workspace.yaml,target=pnpm-workspace.yaml \
   --mount=type=bind,source=patches,target=patches \
-  SHARP_IGNORE_GLOBAL_LIBVIPS=true pnpm --filter @immich/sdk install --frozen-lockfile && \
+  SHARP_IGNORE_GLOBAL_LIBVIPS=true pnpm --filter @immich/sdk --filter immich-web install --frozen-lockfile --force && \
   pnpm --filter @immich/sdk build && \
   pnpm --filter @immich/sdk --filter immich-web install --frozen-lockfile --force && \
   pnpm --filter immich-web build
