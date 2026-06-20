@@ -6526,6 +6526,15 @@
             }
           },
           {
+            "name": "isInAlbum",
+            "required": false,
+            "in": "query",
+            "description": "Filter assets in at least one album",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "isNotInAlbum",
             "required": false,
             "in": "query",
@@ -11198,6 +11207,15 @@
             }
           },
           {
+            "name": "isInAlbum",
+            "required": false,
+            "in": "query",
+            "description": "Filter assets in at least one album",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "isMotion",
             "required": false,
             "in": "query",
@@ -12069,6 +12087,15 @@
             }
           },
           {
+            "name": "isInAlbum",
+            "required": false,
+            "in": "query",
+            "description": "Filter assets in at least one album",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "isNotInAlbum",
             "required": false,
             "in": "query",
@@ -12292,6 +12319,15 @@
             "required": false,
             "in": "query",
             "description": "Filter by favorites",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isInAlbum",
+            "required": false,
+            "in": "query",
+            "description": "Filter assets in at least one album",
             "schema": {
               "type": "boolean"
             }
@@ -18475,6 +18511,15 @@
             }
           },
           {
+            "name": "isInAlbum",
+            "required": false,
+            "in": "query",
+            "description": "Filter assets in at least one album",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "isNotInAlbum",
             "required": false,
             "in": "query",
@@ -18835,6 +18880,15 @@
             "required": false,
             "in": "query",
             "description": "Filter by favorite status (true for favorites only, false for non-favorites only)",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isInAlbum",
+            "required": false,
+            "in": "query",
+            "description": "Filter assets in at least one album",
             "schema": {
               "type": "boolean"
             }
@@ -19205,6 +19259,15 @@
             "required": false,
             "in": "query",
             "description": "Filter by favorite status (true for favorites only, false for non-favorites only)",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isInAlbum",
+            "required": false,
+            "in": "query",
+            "description": "Filter assets in at least one album",
             "schema": {
               "type": "boolean"
             }
@@ -25901,6 +25964,10 @@
             "description": "Filter by favorite status",
             "type": "boolean"
           },
+          "isInAlbum": {
+            "description": "Filter assets in at least one album",
+            "type": "boolean"
+          },
           "isMotion": {
             "description": "Filter by motion photo status",
             "type": "boolean"
@@ -27926,6 +27993,10 @@
           },
           "isFavorite": {
             "description": "Filter by favorite status",
+            "type": "boolean"
+          },
+          "isInAlbum": {
+            "description": "Filter assets in at least one album",
             "type": "boolean"
           },
           "isMotion": {
@@ -30152,6 +30223,10 @@
             "description": "Filter by favorite status",
             "type": "boolean"
           },
+          "isInAlbum": {
+            "description": "Filter assets in at least one album",
+            "type": "boolean"
+          },
           "isMotion": {
             "description": "Filter by motion photo status",
             "type": "boolean"
@@ -30364,6 +30439,10 @@
           },
           "isFavorite": {
             "description": "Filter by favorite status",
+            "type": "boolean"
+          },
+          "isInAlbum": {
+            "description": "Filter assets in at least one album",
             "type": "boolean"
           },
           "isNotInAlbum": {
@@ -30698,6 +30777,10 @@
           },
           "isFavorite": {
             "description": "Filter by favorite status",
+            "type": "boolean"
+          },
+          "isInAlbum": {
+            "description": "Filter assets in at least one album",
             "type": "boolean"
           },
           "isMotion": {
