@@ -20,6 +20,7 @@ class RandomSearchDto {
     this.createdBefore = const Optional.absent(),
     this.isEncoded = const Optional.absent(),
     this.isFavorite = const Optional.absent(),
+    this.isInAlbum = const Optional.absent(),
     this.isMotion = const Optional.absent(),
     this.isNotInAlbum = const Optional.absent(),
     this.isOffline = const Optional.absent(),
@@ -94,6 +95,15 @@ class RandomSearchDto {
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
   Optional<bool?> isFavorite;
+
+  /// Filter assets in at least one album
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  Optional<bool?> isInAlbum;
 
   /// Filter by motion photo status
   ///
@@ -306,6 +316,7 @@ class RandomSearchDto {
     other.createdBefore == createdBefore &&
     other.isEncoded == isEncoded &&
     other.isFavorite == isFavorite &&
+    other.isInAlbum == isInAlbum &&
     other.isMotion == isMotion &&
     other.isNotInAlbum == isNotInAlbum &&
     other.isOffline == isOffline &&
@@ -345,6 +356,7 @@ class RandomSearchDto {
     (createdBefore == null ? 0 : createdBefore!.hashCode) +
     (isEncoded == null ? 0 : isEncoded!.hashCode) +
     (isFavorite == null ? 0 : isFavorite!.hashCode) +
+    (isInAlbum == null ? 0 : isInAlbum!.hashCode) +
     (isMotion == null ? 0 : isMotion!.hashCode) +
     (isNotInAlbum == null ? 0 : isNotInAlbum!.hashCode) +
     (isOffline == null ? 0 : isOffline!.hashCode) +
@@ -375,7 +387,7 @@ class RandomSearchDto {
     (withStacked == null ? 0 : withStacked!.hashCode);
 
   @override
-  String toString() => 'RandomSearchDto[albumIds=$albumIds, city=$city, country=$country, createdAfter=$createdAfter, createdBefore=$createdBefore, isEncoded=$isEncoded, isFavorite=$isFavorite, isMotion=$isMotion, isNotInAlbum=$isNotInAlbum, isOffline=$isOffline, lensModel=$lensModel, libraryId=$libraryId, make=$make, model=$model, ocr=$ocr, personIds=$personIds, rating=$rating, size=$size, spaceId=$spaceId, spacePersonIds=$spacePersonIds, state=$state, tagIds=$tagIds, takenAfter=$takenAfter, takenBefore=$takenBefore, trashedAfter=$trashedAfter, trashedBefore=$trashedBefore, type=$type, updatedAfter=$updatedAfter, updatedBefore=$updatedBefore, visibility=$visibility, withDeleted=$withDeleted, withExif=$withExif, withPeople=$withPeople, withSharedSpaces=$withSharedSpaces, withStacked=$withStacked]';
+  String toString() => 'RandomSearchDto[albumIds=$albumIds, city=$city, country=$country, createdAfter=$createdAfter, createdBefore=$createdBefore, isEncoded=$isEncoded, isFavorite=$isFavorite, isInAlbum=$isInAlbum, isMotion=$isMotion, isNotInAlbum=$isNotInAlbum, isOffline=$isOffline, lensModel=$lensModel, libraryId=$libraryId, make=$make, model=$model, ocr=$ocr, personIds=$personIds, rating=$rating, size=$size, spaceId=$spaceId, spacePersonIds=$spacePersonIds, state=$state, tagIds=$tagIds, takenAfter=$takenAfter, takenBefore=$takenBefore, trashedAfter=$trashedAfter, trashedBefore=$trashedBefore, type=$type, updatedAfter=$updatedAfter, updatedBefore=$updatedBefore, visibility=$visibility, withDeleted=$withDeleted, withExif=$withExif, withPeople=$withPeople, withSharedSpaces=$withSharedSpaces, withStacked=$withStacked]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -410,6 +422,10 @@ class RandomSearchDto {
     if (this.isFavorite.isPresent) {
       final value = this.isFavorite.value;
       json[r'isFavorite'] = value;
+    }
+    if (this.isInAlbum.isPresent) {
+      final value = this.isInAlbum.value;
+      json[r'isInAlbum'] = value;
     }
     if (this.isMotion.isPresent) {
       final value = this.isMotion.value;
@@ -556,6 +572,7 @@ class RandomSearchDto {
         createdBefore: json.containsKey(r'createdBefore') ? Optional.present(mapDateTime(json, r'createdBefore', r'/^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$/')) : const Optional.absent(),
         isEncoded: json.containsKey(r'isEncoded') ? Optional.present(mapValueOfType<bool>(json, r'isEncoded')) : const Optional.absent(),
         isFavorite: json.containsKey(r'isFavorite') ? Optional.present(mapValueOfType<bool>(json, r'isFavorite')) : const Optional.absent(),
+        isInAlbum: json.containsKey(r'isInAlbum') ? Optional.present(mapValueOfType<bool>(json, r'isInAlbum')) : const Optional.absent(),
         isMotion: json.containsKey(r'isMotion') ? Optional.present(mapValueOfType<bool>(json, r'isMotion')) : const Optional.absent(),
         isNotInAlbum: json.containsKey(r'isNotInAlbum') ? Optional.present(mapValueOfType<bool>(json, r'isNotInAlbum')) : const Optional.absent(),
         isOffline: json.containsKey(r'isOffline') ? Optional.present(mapValueOfType<bool>(json, r'isOffline')) : const Optional.absent(),

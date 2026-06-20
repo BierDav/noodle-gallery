@@ -140,6 +140,9 @@ class SearchApi {
   /// * [bool] isFavorite:
   ///   Filter by favorites
   ///
+  /// * [bool] isInAlbum:
+  ///   Filter assets in at least one album
+  ///
   /// * [bool] isNotInAlbum:
   ///   Filter assets not in any album
   ///
@@ -172,7 +175,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<Response> getFilterSuggestionsWithHttpInfo({ String? albumId, String? city, String? country, bool? isFavorite, bool? isNotInAlbum, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+  Future<Response> getFilterSuggestionsWithHttpInfo({ String? albumId, String? city, String? country, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/suggestions/filters';
 
@@ -194,6 +197,9 @@ class SearchApi {
     }
     if (isFavorite != null) {
       queryParams.addAll(_queryParams('', 'isFavorite', isFavorite));
+    }
+    if (isInAlbum != null) {
+      queryParams.addAll(_queryParams('', 'isInAlbum', isInAlbum));
     }
     if (isNotInAlbum != null) {
       queryParams.addAll(_queryParams('', 'isNotInAlbum', isNotInAlbum));
@@ -262,6 +268,9 @@ class SearchApi {
   /// * [bool] isFavorite:
   ///   Filter by favorites
   ///
+  /// * [bool] isInAlbum:
+  ///   Filter assets in at least one album
+  ///
   /// * [bool] isNotInAlbum:
   ///   Filter assets not in any album
   ///
@@ -294,8 +303,8 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<FilterSuggestionsResponseDto?> getFilterSuggestions({ String? albumId, String? city, String? country, bool? isFavorite, bool? isNotInAlbum, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
-    final response = await getFilterSuggestionsWithHttpInfo(albumId: albumId, city: city, country: country, isFavorite: isFavorite, isNotInAlbum: isNotInAlbum, make: make, mediaType: mediaType, model: model, personIds: personIds, rating: rating, spaceId: spaceId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
+  Future<FilterSuggestionsResponseDto?> getFilterSuggestions({ String? albumId, String? city, String? country, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await getFilterSuggestionsWithHttpInfo(albumId: albumId, city: city, country: country, isFavorite: isFavorite, isInAlbum: isInAlbum, isNotInAlbum: isNotInAlbum, make: make, mediaType: mediaType, model: model, personIds: personIds, rating: rating, spaceId: spaceId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -330,6 +339,9 @@ class SearchApi {
   ///
   /// * [bool] isFavorite:
   ///   Filter by favorites
+  ///
+  /// * [bool] isInAlbum:
+  ///   Filter assets in at least one album
   ///
   /// * [bool] isNotInAlbum:
   ///   Filter assets not in any album
@@ -366,7 +378,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include suggestions from shared spaces the user is a member of
-  Future<Response> getSearchSuggestionsWithHttpInfo(SearchSuggestionType type, { String? albumId, String? country, bool? includeNull, bool? isFavorite, bool? isNotInAlbum, String? lensModel, String? make, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+  Future<Response> getSearchSuggestionsWithHttpInfo(SearchSuggestionType type, { String? albumId, String? country, bool? includeNull, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, String? lensModel, String? make, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/suggestions';
 
@@ -388,6 +400,9 @@ class SearchApi {
     }
     if (isFavorite != null) {
       queryParams.addAll(_queryParams('', 'isFavorite', isFavorite));
+    }
+    if (isInAlbum != null) {
+      queryParams.addAll(_queryParams('', 'isInAlbum', isInAlbum));
     }
     if (isNotInAlbum != null) {
       queryParams.addAll(_queryParams('', 'isNotInAlbum', isNotInAlbum));
@@ -462,6 +477,9 @@ class SearchApi {
   /// * [bool] isFavorite:
   ///   Filter by favorites
   ///
+  /// * [bool] isInAlbum:
+  ///   Filter assets in at least one album
+  ///
   /// * [bool] isNotInAlbum:
   ///   Filter assets not in any album
   ///
@@ -497,8 +515,8 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include suggestions from shared spaces the user is a member of
-  Future<List<String>?> getSearchSuggestions(SearchSuggestionType type, { String? albumId, String? country, bool? includeNull, bool? isFavorite, bool? isNotInAlbum, String? lensModel, String? make, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
-    final response = await getSearchSuggestionsWithHttpInfo(type, albumId: albumId, country: country, includeNull: includeNull, isFavorite: isFavorite, isNotInAlbum: isNotInAlbum, lensModel: lensModel, make: make, model: model, personIds: personIds, rating: rating, spaceId: spaceId, state: state, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
+  Future<List<String>?> getSearchSuggestions(SearchSuggestionType type, { String? albumId, String? country, bool? includeNull, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, String? lensModel, String? make, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await getSearchSuggestionsWithHttpInfo(type, albumId: albumId, country: country, includeNull: includeNull, isFavorite: isFavorite, isInAlbum: isInAlbum, isNotInAlbum: isNotInAlbum, lensModel: lensModel, make: make, model: model, personIds: personIds, rating: rating, spaceId: spaceId, state: state, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -751,6 +769,9 @@ class SearchApi {
   /// * [bool] isFavorite:
   ///   Filter by favorite status
   ///
+  /// * [bool] isInAlbum:
+  ///   Filter assets in at least one album
+  ///
   /// * [bool] isMotion:
   ///   Filter by motion photo status
   ///
@@ -829,7 +850,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<Response> searchLargeAssetsWithHttpInfo({ List<String>? albumIds, String? city, String? country, DateTime? createdAfter, DateTime? createdBefore, bool? isEncoded, bool? isFavorite, bool? isMotion, bool? isNotInAlbum, bool? isOffline, String? lensModel, String? libraryId, String? make, int? minFileSize, String? model, String? ocr, List<String>? personIds, int? rating, int? size, String? spaceId, List<String>? spacePersonIds, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, DateTime? trashedAfter, DateTime? trashedBefore, AssetTypeEnum? type, DateTime? updatedAfter, DateTime? updatedBefore, AssetVisibility? visibility, bool? withDeleted, bool? withExif, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+  Future<Response> searchLargeAssetsWithHttpInfo({ List<String>? albumIds, String? city, String? country, DateTime? createdAfter, DateTime? createdBefore, bool? isEncoded, bool? isFavorite, bool? isInAlbum, bool? isMotion, bool? isNotInAlbum, bool? isOffline, String? lensModel, String? libraryId, String? make, int? minFileSize, String? model, String? ocr, List<String>? personIds, int? rating, int? size, String? spaceId, List<String>? spacePersonIds, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, DateTime? trashedAfter, DateTime? trashedBefore, AssetTypeEnum? type, DateTime? updatedAfter, DateTime? updatedBefore, AssetVisibility? visibility, bool? withDeleted, bool? withExif, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/large-assets';
 
@@ -860,6 +881,9 @@ class SearchApi {
     }
     if (isFavorite != null) {
       queryParams.addAll(_queryParams('', 'isFavorite', isFavorite));
+    }
+    if (isInAlbum != null) {
+      queryParams.addAll(_queryParams('', 'isInAlbum', isInAlbum));
     }
     if (isMotion != null) {
       queryParams.addAll(_queryParams('', 'isMotion', isMotion));
@@ -985,6 +1009,9 @@ class SearchApi {
   /// * [bool] isFavorite:
   ///   Filter by favorite status
   ///
+  /// * [bool] isInAlbum:
+  ///   Filter assets in at least one album
+  ///
   /// * [bool] isMotion:
   ///   Filter by motion photo status
   ///
@@ -1063,8 +1090,8 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include shared spaces the user is a member of
-  Future<List<AssetResponseDto>?> searchLargeAssets({ List<String>? albumIds, String? city, String? country, DateTime? createdAfter, DateTime? createdBefore, bool? isEncoded, bool? isFavorite, bool? isMotion, bool? isNotInAlbum, bool? isOffline, String? lensModel, String? libraryId, String? make, int? minFileSize, String? model, String? ocr, List<String>? personIds, int? rating, int? size, String? spaceId, List<String>? spacePersonIds, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, DateTime? trashedAfter, DateTime? trashedBefore, AssetTypeEnum? type, DateTime? updatedAfter, DateTime? updatedBefore, AssetVisibility? visibility, bool? withDeleted, bool? withExif, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
-    final response = await searchLargeAssetsWithHttpInfo(albumIds: albumIds, city: city, country: country, createdAfter: createdAfter, createdBefore: createdBefore, isEncoded: isEncoded, isFavorite: isFavorite, isMotion: isMotion, isNotInAlbum: isNotInAlbum, isOffline: isOffline, lensModel: lensModel, libraryId: libraryId, make: make, minFileSize: minFileSize, model: model, ocr: ocr, personIds: personIds, rating: rating, size: size, spaceId: spaceId, spacePersonIds: spacePersonIds, state: state, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, trashedAfter: trashedAfter, trashedBefore: trashedBefore, type: type, updatedAfter: updatedAfter, updatedBefore: updatedBefore, visibility: visibility, withDeleted: withDeleted, withExif: withExif, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
+  Future<List<AssetResponseDto>?> searchLargeAssets({ List<String>? albumIds, String? city, String? country, DateTime? createdAfter, DateTime? createdBefore, bool? isEncoded, bool? isFavorite, bool? isInAlbum, bool? isMotion, bool? isNotInAlbum, bool? isOffline, String? lensModel, String? libraryId, String? make, int? minFileSize, String? model, String? ocr, List<String>? personIds, int? rating, int? size, String? spaceId, List<String>? spacePersonIds, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, DateTime? trashedAfter, DateTime? trashedBefore, AssetTypeEnum? type, DateTime? updatedAfter, DateTime? updatedBefore, AssetVisibility? visibility, bool? withDeleted, bool? withExif, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await searchLargeAssetsWithHttpInfo(albumIds: albumIds, city: city, country: country, createdAfter: createdAfter, createdBefore: createdBefore, isEncoded: isEncoded, isFavorite: isFavorite, isInAlbum: isInAlbum, isMotion: isMotion, isNotInAlbum: isNotInAlbum, isOffline: isOffline, lensModel: lensModel, libraryId: libraryId, make: make, minFileSize: minFileSize, model: model, ocr: ocr, personIds: personIds, rating: rating, size: size, spaceId: spaceId, spacePersonIds: spacePersonIds, state: state, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, trashedAfter: trashedAfter, trashedBefore: trashedBefore, type: type, updatedAfter: updatedAfter, updatedBefore: updatedBefore, visibility: visibility, withDeleted: withDeleted, withExif: withExif, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

@@ -1860,6 +1860,8 @@ export type MetadataSearchDto = {
     isEncoded?: boolean;
     /** Filter by favorite status */
     isFavorite?: boolean;
+    /** Filter assets in at least one album */
+    isInAlbum?: boolean;
     /** Filter by motion photo status */
     isMotion?: boolean;
     /** Filter assets not in any album */
@@ -1987,6 +1989,8 @@ export type RandomSearchDto = {
     isEncoded?: boolean;
     /** Filter by favorite status */
     isFavorite?: boolean;
+    /** Filter assets in at least one album */
+    isInAlbum?: boolean;
     /** Filter by motion photo status */
     isMotion?: boolean;
     /** Filter assets not in any album */
@@ -2057,6 +2061,8 @@ export type SmartSearchDto = {
     isEncoded?: boolean;
     /** Filter by favorite status */
     isFavorite?: boolean;
+    /** Filter assets in at least one album */
+    isInAlbum?: boolean;
     /** Filter by motion photo status */
     isMotion?: boolean;
     /** Filter assets not in any album */
@@ -2125,6 +2131,8 @@ export type SmartSearchFacetsDto = {
     country?: string | null;
     /** Filter by favorite status */
     isFavorite?: boolean;
+    /** Filter assets in at least one album */
+    isInAlbum?: boolean;
     /** Filter assets not in any album */
     isNotInAlbum?: boolean;
     /** Search language code */
@@ -2216,6 +2224,8 @@ export type StatisticsSearchDto = {
     isEncoded?: boolean;
     /** Filter by favorite status */
     isFavorite?: boolean;
+    /** Filter assets in at least one album */
+    isInAlbum?: boolean;
     /** Filter by motion photo status */
     isMotion?: boolean;
     /** Filter assets not in any album */
@@ -5642,10 +5652,11 @@ export function reassignFacesById({ id, faceDto }: {
 /**
  * Get filtered map markers
  */
-export function getFilteredMapMarkers({ city, country, isFavorite, isNotInAlbum, make, model, personIds, rating, spaceId, tagIds, takenAfter, takenBefore, $type, withSharedSpaces }: {
+export function getFilteredMapMarkers({ city, country, isFavorite, isInAlbum, isNotInAlbum, make, model, personIds, rating, spaceId, tagIds, takenAfter, takenBefore, $type, withSharedSpaces }: {
     city?: string;
     country?: string;
     isFavorite?: boolean;
+    isInAlbum?: boolean;
     isNotInAlbum?: boolean;
     make?: string;
     model?: string;
@@ -5665,6 +5676,7 @@ export function getFilteredMapMarkers({ city, country, isFavorite, isNotInAlbum,
         city,
         country,
         isFavorite,
+        isInAlbum,
         isNotInAlbum,
         make,
         model,
@@ -6700,7 +6712,7 @@ export function getExploreData(opts?: Oazapfts.RequestOpts) {
 /**
  * Search large assets
  */
-export function searchLargeAssets({ albumIds, city, country, createdAfter, createdBefore, isEncoded, isFavorite, isMotion, isNotInAlbum, isOffline, lensModel, libraryId, make, minFileSize, model, ocr, personIds, rating, size, spaceId, spacePersonIds, state, tagIds, takenAfter, takenBefore, trashedAfter, trashedBefore, $type, updatedAfter, updatedBefore, visibility, withDeleted, withExif, withSharedSpaces }: {
+export function searchLargeAssets({ albumIds, city, country, createdAfter, createdBefore, isEncoded, isFavorite, isInAlbum, isMotion, isNotInAlbum, isOffline, lensModel, libraryId, make, minFileSize, model, ocr, personIds, rating, size, spaceId, spacePersonIds, state, tagIds, takenAfter, takenBefore, trashedAfter, trashedBefore, $type, updatedAfter, updatedBefore, visibility, withDeleted, withExif, withSharedSpaces }: {
     albumIds?: string[];
     city?: string | null;
     country?: string | null;
@@ -6708,6 +6720,7 @@ export function searchLargeAssets({ albumIds, city, country, createdAfter, creat
     createdBefore?: string;
     isEncoded?: boolean;
     isFavorite?: boolean;
+    isInAlbum?: boolean;
     isMotion?: boolean;
     isNotInAlbum?: boolean;
     isOffline?: boolean;
@@ -6747,6 +6760,7 @@ export function searchLargeAssets({ albumIds, city, country, createdAfter, creat
         createdBefore,
         isEncoded,
         isFavorite,
+        isInAlbum,
         isMotion,
         isNotInAlbum,
         isOffline,
@@ -6891,11 +6905,12 @@ export function searchAssetStatistics({ statisticsSearchDto }: {
 /**
  * Retrieve search suggestions
  */
-export function getSearchSuggestions({ albumId, country, includeNull, isFavorite, isNotInAlbum, lensModel, make, model, personIds, rating, spaceId, state, tagIds, takenAfter, takenBefore, $type, withSharedSpaces }: {
+export function getSearchSuggestions({ albumId, country, includeNull, isFavorite, isInAlbum, isNotInAlbum, lensModel, make, model, personIds, rating, spaceId, state, tagIds, takenAfter, takenBefore, $type, withSharedSpaces }: {
     albumId?: string;
     country?: string;
     includeNull?: boolean;
     isFavorite?: boolean;
+    isInAlbum?: boolean;
     isNotInAlbum?: boolean;
     lensModel?: string;
     make?: string;
@@ -6918,6 +6933,7 @@ export function getSearchSuggestions({ albumId, country, includeNull, isFavorite
         country,
         includeNull,
         isFavorite,
+        isInAlbum,
         isNotInAlbum,
         lensModel,
         make,
@@ -6938,11 +6954,12 @@ export function getSearchSuggestions({ albumId, country, includeNull, isFavorite
 /**
  * Retrieve dynamic filter suggestions
  */
-export function getFilterSuggestions({ albumId, city, country, isFavorite, isNotInAlbum, make, mediaType, model, personIds, rating, spaceId, tagIds, takenAfter, takenBefore, withSharedSpaces }: {
+export function getFilterSuggestions({ albumId, city, country, isFavorite, isInAlbum, isNotInAlbum, make, mediaType, model, personIds, rating, spaceId, tagIds, takenAfter, takenBefore, withSharedSpaces }: {
     albumId?: string;
     city?: string;
     country?: string;
     isFavorite?: boolean;
+    isInAlbum?: boolean;
     isNotInAlbum?: boolean;
     make?: string;
     mediaType?: AssetTypeEnum;
@@ -6963,6 +6980,7 @@ export function getFilterSuggestions({ albumId, city, country, isFavorite, isNot
         city,
         country,
         isFavorite,
+        isInAlbum,
         isNotInAlbum,
         make,
         mediaType,
@@ -8338,13 +8356,14 @@ export function tagAssets({ id, bulkIdsDto }: {
 /**
  * Get time bucket
  */
-export function getTimeBucket({ albumId, bbox, bucketSize, city, country, isFavorite, isNotInAlbum, isTrashed, key, make, model, order, orderBy, personId, personIds, rating, slug, spaceId, spacePersonId, spacePersonIds, tagId, tagIds, takenAfter, takenBefore, timeBucket, $type, userId, visibility, withCoordinates, withPartners, withSharedSpaces, withStacked }: {
+export function getTimeBucket({ albumId, bbox, bucketSize, city, country, isFavorite, isInAlbum, isNotInAlbum, isTrashed, key, make, model, order, orderBy, personId, personIds, rating, slug, spaceId, spacePersonId, spacePersonIds, tagId, tagIds, takenAfter, takenBefore, timeBucket, $type, userId, visibility, withCoordinates, withPartners, withSharedSpaces, withStacked }: {
     albumId?: string;
     bbox?: string;
     bucketSize?: TimeBucketSize;
     city?: string;
     country?: string;
     isFavorite?: boolean;
+    isInAlbum?: boolean;
     isNotInAlbum?: boolean;
     isTrashed?: boolean;
     key?: string;
@@ -8382,6 +8401,7 @@ export function getTimeBucket({ albumId, bbox, bucketSize, city, country, isFavo
         city,
         country,
         isFavorite,
+        isInAlbum,
         isNotInAlbum,
         isTrashed,
         key,
@@ -8415,13 +8435,14 @@ export function getTimeBucket({ albumId, bbox, bucketSize, city, country, isFavo
 /**
  * Get time bucket covers
  */
-export function getTimeBucketCovers({ albumId, bbox, bucketSize, city, country, isFavorite, isNotInAlbum, isTrashed, key, make, model, order, orderBy, personId, personIds, rating, slug, spaceId, spacePersonId, spacePersonIds, tagId, tagIds, takenAfter, takenBefore, timeBuckets, $type, userId, visibility, withCoordinates, withPartners, withSharedSpaces, withStacked }: {
+export function getTimeBucketCovers({ albumId, bbox, bucketSize, city, country, isFavorite, isInAlbum, isNotInAlbum, isTrashed, key, make, model, order, orderBy, personId, personIds, rating, slug, spaceId, spacePersonId, spacePersonIds, tagId, tagIds, takenAfter, takenBefore, timeBuckets, $type, userId, visibility, withCoordinates, withPartners, withSharedSpaces, withStacked }: {
     albumId?: string;
     bbox?: string;
     bucketSize?: TimeBucketSize;
     city?: string;
     country?: string;
     isFavorite?: boolean;
+    isInAlbum?: boolean;
     isNotInAlbum?: boolean;
     isTrashed?: boolean;
     key?: string;
@@ -8459,6 +8480,7 @@ export function getTimeBucketCovers({ albumId, bbox, bucketSize, city, country, 
         city,
         country,
         isFavorite,
+        isInAlbum,
         isNotInAlbum,
         isTrashed,
         key,
@@ -8492,13 +8514,14 @@ export function getTimeBucketCovers({ albumId, bbox, bucketSize, city, country, 
 /**
  * Get time buckets
  */
-export function getTimeBuckets({ albumId, bbox, bucketSize, city, country, isFavorite, isNotInAlbum, isTrashed, key, make, model, order, orderBy, personId, personIds, rating, slug, spaceId, spacePersonId, spacePersonIds, tagId, tagIds, takenAfter, takenBefore, $type, userId, visibility, withCoordinates, withPartners, withSharedSpaces, withStacked }: {
+export function getTimeBuckets({ albumId, bbox, bucketSize, city, country, isFavorite, isInAlbum, isNotInAlbum, isTrashed, key, make, model, order, orderBy, personId, personIds, rating, slug, spaceId, spacePersonId, spacePersonIds, tagId, tagIds, takenAfter, takenBefore, $type, userId, visibility, withCoordinates, withPartners, withSharedSpaces, withStacked }: {
     albumId?: string;
     bbox?: string;
     bucketSize?: TimeBucketSize;
     city?: string;
     country?: string;
     isFavorite?: boolean;
+    isInAlbum?: boolean;
     isNotInAlbum?: boolean;
     isTrashed?: boolean;
     key?: string;
@@ -8535,6 +8558,7 @@ export function getTimeBuckets({ albumId, bbox, bucketSize, city, country, isFav
         city,
         country,
         isFavorite,
+        isInAlbum,
         isNotInAlbum,
         isTrashed,
         key,

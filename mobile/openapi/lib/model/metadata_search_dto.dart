@@ -24,6 +24,7 @@ class MetadataSearchDto {
     this.id = const Optional.absent(),
     this.isEncoded = const Optional.absent(),
     this.isFavorite = const Optional.absent(),
+    this.isInAlbum = const Optional.absent(),
     this.isMotion = const Optional.absent(),
     this.isNotInAlbum = const Optional.absent(),
     this.isOffline = const Optional.absent(),
@@ -140,6 +141,15 @@ class MetadataSearchDto {
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
   Optional<bool?> isFavorite;
+
+  /// Filter assets in at least one album
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  Optional<bool?> isInAlbum;
 
   /// Filter by motion photo status
   ///
@@ -412,6 +422,7 @@ class MetadataSearchDto {
     other.id == id &&
     other.isEncoded == isEncoded &&
     other.isFavorite == isFavorite &&
+    other.isInAlbum == isInAlbum &&
     other.isMotion == isMotion &&
     other.isNotInAlbum == isNotInAlbum &&
     other.isOffline == isOffline &&
@@ -461,6 +472,7 @@ class MetadataSearchDto {
     (id == null ? 0 : id!.hashCode) +
     (isEncoded == null ? 0 : isEncoded!.hashCode) +
     (isFavorite == null ? 0 : isFavorite!.hashCode) +
+    (isInAlbum == null ? 0 : isInAlbum!.hashCode) +
     (isMotion == null ? 0 : isMotion!.hashCode) +
     (isNotInAlbum == null ? 0 : isNotInAlbum!.hashCode) +
     (isOffline == null ? 0 : isOffline!.hashCode) +
@@ -497,7 +509,7 @@ class MetadataSearchDto {
     (withStacked == null ? 0 : withStacked!.hashCode);
 
   @override
-  String toString() => 'MetadataSearchDto[albumIds=$albumIds, checksum=$checksum, city=$city, country=$country, createdAfter=$createdAfter, createdBefore=$createdBefore, description=$description, encodedVideoPath=$encodedVideoPath, id=$id, isEncoded=$isEncoded, isFavorite=$isFavorite, isMotion=$isMotion, isNotInAlbum=$isNotInAlbum, isOffline=$isOffline, lensModel=$lensModel, libraryId=$libraryId, make=$make, model=$model, ocr=$ocr, order=$order, originalFileName=$originalFileName, originalPath=$originalPath, page=$page, personIds=$personIds, previewPath=$previewPath, rating=$rating, size=$size, spaceId=$spaceId, spacePersonIds=$spacePersonIds, state=$state, tagIds=$tagIds, takenAfter=$takenAfter, takenBefore=$takenBefore, thumbnailPath=$thumbnailPath, trashedAfter=$trashedAfter, trashedBefore=$trashedBefore, type=$type, updatedAfter=$updatedAfter, updatedBefore=$updatedBefore, visibility=$visibility, withDeleted=$withDeleted, withExif=$withExif, withPeople=$withPeople, withSharedSpaces=$withSharedSpaces, withStacked=$withStacked]';
+  String toString() => 'MetadataSearchDto[albumIds=$albumIds, checksum=$checksum, city=$city, country=$country, createdAfter=$createdAfter, createdBefore=$createdBefore, description=$description, encodedVideoPath=$encodedVideoPath, id=$id, isEncoded=$isEncoded, isFavorite=$isFavorite, isInAlbum=$isInAlbum, isMotion=$isMotion, isNotInAlbum=$isNotInAlbum, isOffline=$isOffline, lensModel=$lensModel, libraryId=$libraryId, make=$make, model=$model, ocr=$ocr, order=$order, originalFileName=$originalFileName, originalPath=$originalPath, page=$page, personIds=$personIds, previewPath=$previewPath, rating=$rating, size=$size, spaceId=$spaceId, spacePersonIds=$spacePersonIds, state=$state, tagIds=$tagIds, takenAfter=$takenAfter, takenBefore=$takenBefore, thumbnailPath=$thumbnailPath, trashedAfter=$trashedAfter, trashedBefore=$trashedBefore, type=$type, updatedAfter=$updatedAfter, updatedBefore=$updatedBefore, visibility=$visibility, withDeleted=$withDeleted, withExif=$withExif, withPeople=$withPeople, withSharedSpaces=$withSharedSpaces, withStacked=$withStacked]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -548,6 +560,10 @@ class MetadataSearchDto {
     if (this.isFavorite.isPresent) {
       final value = this.isFavorite.value;
       json[r'isFavorite'] = value;
+    }
+    if (this.isInAlbum.isPresent) {
+      final value = this.isInAlbum.value;
+      json[r'isInAlbum'] = value;
     }
     if (this.isMotion.isPresent) {
       final value = this.isMotion.value;
@@ -722,6 +738,7 @@ class MetadataSearchDto {
         id: json.containsKey(r'id') ? Optional.present(mapValueOfType<String>(json, r'id')) : const Optional.absent(),
         isEncoded: json.containsKey(r'isEncoded') ? Optional.present(mapValueOfType<bool>(json, r'isEncoded')) : const Optional.absent(),
         isFavorite: json.containsKey(r'isFavorite') ? Optional.present(mapValueOfType<bool>(json, r'isFavorite')) : const Optional.absent(),
+        isInAlbum: json.containsKey(r'isInAlbum') ? Optional.present(mapValueOfType<bool>(json, r'isInAlbum')) : const Optional.absent(),
         isMotion: json.containsKey(r'isMotion') ? Optional.present(mapValueOfType<bool>(json, r'isMotion')) : const Optional.absent(),
         isNotInAlbum: json.containsKey(r'isNotInAlbum') ? Optional.present(mapValueOfType<bool>(json, r'isNotInAlbum')) : const Optional.absent(),
         isOffline: json.containsKey(r'isOffline') ? Optional.present(mapValueOfType<bool>(json, r'isOffline')) : const Optional.absent(),
