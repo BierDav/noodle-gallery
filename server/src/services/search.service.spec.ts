@@ -1428,6 +1428,7 @@ describe(SearchService.name, () => {
     it('passes timelineSpaceIds for album-scoped searchMetadata', async () => {
       const albumId = newUuid();
       const spaceId = newUuid();
+      mocks.access.album.checkOwnerAccess.mockResolvedValue(new Set([albumId]));
       mocks.sharedSpace.getSpaceIdsForTimeline.mockResolvedValue([{ spaceId }]);
       mocks.search.searchMetadata.mockResolvedValue({ hasNextPage: false, items: [] });
 
