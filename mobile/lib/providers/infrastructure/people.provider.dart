@@ -4,6 +4,7 @@ import 'package:immich_mobile/domain/services/people.service.dart';
 import 'package:immich_mobile/infrastructure/repositories/people.repository.dart';
 import 'package:immich_mobile/providers/infrastructure/db.provider.dart';
 import 'package:immich_mobile/providers/infrastructure/user_metadata.provider.dart';
+import 'package:immich_mobile/providers/user.provider.dart';
 import 'package:immich_mobile/repositories/person_api.repository.dart';
 
 final driftPeopleRepositoryProvider = Provider<DriftPeopleRepository>(
@@ -14,9 +15,13 @@ final driftPeopleServiceProvider = Provider<DriftPeopleService>(
   (ref) => DriftPeopleService(ref.watch(driftPeopleRepositoryProvider), ref.watch(personApiRepositoryProvider)),
 );
 
-final driftPeopleAssetProvider = FutureProvider.family<List<DriftPerson>, String>((ref, assetId) async {
+final driftPeopleAssetProvider = FutureProvider.family<List<DriftPerson>, ({String id, String ownerId})>((
+  ref,
+  key,
+) async {
   final service = ref.watch(driftPeopleServiceProvider);
-  return service.getAssetPeople(assetId);
+  final currentUserId = ref.watch(currentUserProvider.select((user) => user?.id));
+  return service.getAssetPeople(key.id, ownedByCurrentUser: key.ownerId == currentUserId);
 });
 
 final driftGetAllPeopleProvider = FutureProvider.family<List<DriftPerson>, PeopleSortBy>((ref, sortBy) async {
