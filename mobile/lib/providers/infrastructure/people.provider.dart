@@ -6,14 +6,33 @@ import 'package:immich_mobile/providers/infrastructure/db.provider.dart';
 import 'package:immich_mobile/providers/infrastructure/user_metadata.provider.dart';
 import 'package:immich_mobile/providers/user.provider.dart';
 import 'package:immich_mobile/repositories/person_api.repository.dart';
+import 'package:immich_mobile/repositories/shared_space_api.repository.dart';
 
 final driftPeopleRepositoryProvider = Provider<DriftPeopleRepository>(
   (ref) => DriftPeopleRepository(ref.watch(driftProvider)),
 );
 
 final driftPeopleServiceProvider = Provider<DriftPeopleService>(
-  (ref) => DriftPeopleService(ref.watch(driftPeopleRepositoryProvider), ref.watch(personApiRepositoryProvider)),
+  (ref) => DriftPeopleService(
+    ref.watch(driftPeopleRepositoryProvider),
+    ref.watch(personApiRepositoryProvider),
+    ref.watch(sharedSpaceApiRepositoryProvider),
+  ),
 );
+
+/// Whether the viewer may edit Space-scoped people in [spaceId] (owner or editor role),
+/// mirroring the web People page (isSpaceEditor). Cached per space for the container lifetime
+/// and re-resolved on login change; defaults to editable until resolved and fails open, since
+/// the server enforces the role on every write. Personal/owned people (null spaceId) never
+/// consult this — they are always editable by their owner.
+final driftSpaceEditableProvider = FutureProvider.family<bool, String>((ref, spaceId) async {
+  final userId = ref.watch(currentUserProvider.select((user) => user?.id));
+  if (userId == null) {
+    return true;
+  }
+  final repository = ref.watch(sharedSpaceApiRepositoryProvider);
+  return repository.isSpaceEditor(spaceId, userId);
+});
 
 final driftPeopleAssetProvider = FutureProvider.family<List<DriftPerson>, ({String id, String ownerId})>((
   ref,
@@ -28,4 +47,15 @@ final driftGetAllPeopleProvider = FutureProvider.family<List<DriftPerson>, Peopl
   final service = ref.watch(driftPeopleServiceProvider);
   final prefs = await ref.watch(userMetadataPreferencesProvider.future);
   return service.getAllPeople(minFaces: prefs?.minimumFaces ?? 3, sortBy: sortBy);
+});
+
+/// People for the global People page — the viewer's own people plus people on Space-shared
+/// assets, matching the web People page. Kept distinct from [driftGetAllPeopleProvider] so
+/// the owner-scoped, local-first people picker and library card stay local. See issue #727.
+final driftGetAllPeopleWithSharedSpacesProvider = FutureProvider.family<List<DriftPerson>, PeopleSortBy>((
+  ref,
+  sortBy,
+) async {
+  final service = ref.watch(driftPeopleServiceProvider);
+  return service.getAllPeopleWithSharedSpaces(sortBy: sortBy);
 });

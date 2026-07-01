@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:immich_mobile/domain/models/person.model.dart';
 import 'package:immich_mobile/extensions/build_context_extensions.dart';
 import 'package:immich_mobile/extensions/string_extensions.dart';
 import 'package:immich_mobile/providers/infrastructure/people.provider.dart';
@@ -34,7 +35,7 @@ class _DriftPeopleCollectionPageState extends ConsumerState<DriftPeopleCollectio
   @override
   Widget build(BuildContext context) {
     final sortBy = ref.watch(appConfigProvider.select((config) => config.people.sortBy));
-    final people = ref.watch(driftGetAllPeopleProvider(sortBy));
+    final people = ref.watch(driftGetAllPeopleWithSharedSpacesProvider(sortBy));
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -98,30 +99,14 @@ class _DriftPeopleCollectionPageState extends ConsumerState<DriftPeopleCollectio
                             child: CircleAvatar(
                               key: ValueKey(person.id),
                               maxRadius: isTablet ? 100 / 2 : 96 / 2,
-                              backgroundImage: RemoteImageProvider(url: getFaceThumbnailUrl(person.id)),
+                              backgroundImage: RemoteImageProvider(
+                                url: getPersonThumbnailUrl(person.id, spaceId: person.spaceId),
+                              ),
                             ),
                           ),
                         ),
                         const SizedBox(height: 12),
-                        GestureDetector(
-                          onTap: () => showNameEditModal(context, person),
-                          child: person.name.isEmpty
-                              ? Text(
-                                  'add_a_name'.tr(),
-                                  style: context.textTheme.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: context.colorScheme.primary,
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                  child: Text(
-                                    person.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                        ),
+                        _PersonName(person: person),
                       ],
                     );
                   },
@@ -134,5 +119,52 @@ class _DriftPeopleCollectionPageState extends ConsumerState<DriftPeopleCollectio
         );
       },
     );
+  }
+}
+
+// Renders a person's name and gates the rename affordance exactly like the web People page:
+// a personal/owned person (null spaceId) is always editable by the viewer; a Space-scoped
+// person is editable only when the viewer is an editor of that space (resolved optimistically,
+// defaulting to editable until known). A read-only Space person shows a plain, non-tappable
+// name and no "add a name" prompt for empty names.
+class _PersonName extends ConsumerWidget {
+  const _PersonName({required this.person});
+
+  final DriftPerson person;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final spaceId = person.spaceId;
+    final editable = spaceId == null ? true : ref.watch(driftSpaceEditableProvider(spaceId)).value ?? true;
+
+    if (person.name.isEmpty) {
+      if (!editable) {
+        return const SizedBox.shrink();
+      }
+      return GestureDetector(
+        onTap: () => showNameEditModal(context, person),
+        child: Text(
+          'add_a_name'.tr(),
+          style: context.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w500,
+            color: context.colorScheme.primary,
+          ),
+        ),
+      );
+    }
+
+    final nameText = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Text(
+        person.name,
+        overflow: TextOverflow.ellipsis,
+        style: context.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w500),
+      ),
+    );
+
+    if (!editable) {
+      return nameText;
+    }
+    return GestureDetector(onTap: () => showNameEditModal(context, person), child: nameText);
   }
 }

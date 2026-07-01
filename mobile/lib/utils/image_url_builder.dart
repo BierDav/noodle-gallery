@@ -23,3 +23,18 @@ String getPlaybackUrlForRemoteId(final String id) {
 String getFaceThumbnailUrl(final String personId) {
   return '${Store.get(StoreKey.serverEndpoint)}/people/$personId/thumbnail';
 }
+
+/// Thumbnail for a Space-scoped person. Its [personId] is a `shared_space_person` id with no
+/// row in the owner-only `person` table, so `getFaceThumbnailUrl` (GET /people/{id}/thumbnail)
+/// 404s for it. This routes to the membership-gated space endpoint instead, mirroring the web
+/// People page (`getGlobalPersonThumbnailUrl`).
+String getSpacePersonThumbnailUrl(final String spaceId, final String personId) {
+  return '${Store.get(StoreKey.serverEndpoint)}/shared-spaces/$spaceId/people/$personId/thumbnail';
+}
+
+/// Selects the correct thumbnail URL for a person by profile scope: a Space-scoped person
+/// (non-null [spaceId]) routes to the space endpoint, a personal/owned person to the owner
+/// endpoint. Mirrors the web `getGlobalPersonThumbnailUrl`.
+String getPersonThumbnailUrl(final String personId, {final String? spaceId}) {
+  return spaceId == null ? getFaceThumbnailUrl(personId) : getSpacePersonThumbnailUrl(spaceId, personId);
+}

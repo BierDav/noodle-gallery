@@ -117,6 +117,7 @@ void _onNavigationSelected(TabsRouter router, int index, WidgetRef ref) {
   if (index == kLibraryTabIndex) {
     ref.invalidate(localAlbumProvider);
     ref.invalidate(driftGetAllPeopleProvider);
+    ref.invalidate(driftGetAllPeopleWithSharedSpacesProvider);
   }
 
   ref.read(hapticFeedbackProvider.notifier).selectionClick();

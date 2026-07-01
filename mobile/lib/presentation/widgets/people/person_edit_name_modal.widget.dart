@@ -27,11 +27,12 @@ class _DriftPersonNameEditFormState extends ConsumerState<DriftPersonNameEditFor
     _formController = TextEditingController(text: widget.person.name);
   }
 
-  void onEdit(String personId, String newName) async {
+  void onEdit(String newName) async {
     try {
-      final result = await ref.read(driftPeopleServiceProvider).updateName(personId, newName);
+      final result = await ref.read(driftPeopleServiceProvider).updateName(widget.person, newName);
       if (result != 0) {
         ref.invalidate(driftGetAllPeopleProvider);
+        ref.invalidate(driftGetAllPeopleWithSharedSpacesProvider);
         context.pop<String>(newName);
       }
     } catch (error) {
@@ -71,7 +72,7 @@ class _DriftPersonNameEditFormState extends ConsumerState<DriftPersonNameEditFor
           ).tr(),
         ),
         TextButton(
-          onPressed: () => onEdit(widget.person.id, _formController.text),
+          onPressed: () => onEdit(_formController.text),
           child: Text(
             "save",
             style: TextStyle(color: context.primaryColor, fontWeight: FontWeight.bold),

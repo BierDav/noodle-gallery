@@ -105,6 +105,12 @@ class DriftPerson {
   final String? color;
   final DateTime? birthDate;
 
+  /// Non-null when this person is a Space-scoped identity resolved from the server (the
+  /// People-page shared-space list). Personal/owned people are always null. Edits to a
+  /// Space person must route through the editor-gated shared-space endpoint, never the
+  /// owner-only person endpoint.
+  final String? spaceId;
+
   const DriftPerson({
     required this.id,
     required this.createdAt,
@@ -116,6 +122,7 @@ class DriftPerson {
     required this.isHidden,
     required this.color,
     this.birthDate,
+    this.spaceId,
   });
 
   DriftPerson copyWith({
@@ -129,6 +136,7 @@ class DriftPerson {
     bool? isHidden,
     String? color,
     DateTime? birthDate,
+    String? spaceId,
   }) {
     return DriftPerson(
       id: id ?? this.id,
@@ -141,6 +149,7 @@ class DriftPerson {
       isHidden: isHidden ?? this.isHidden,
       color: color ?? this.color,
       birthDate: birthDate ?? this.birthDate,
+      spaceId: spaceId ?? this.spaceId,
     );
   }
 
@@ -156,7 +165,8 @@ class DriftPerson {
     isFavorite: $isFavorite,
     isHidden: $isHidden,
     color: ${color ?? "<NA>"},
-    birthDate: ${birthDate ?? "<NA>"}
+    birthDate: ${birthDate ?? "<NA>"},
+    spaceId: ${spaceId ?? "<NA>"}
 }''';
   }
 
@@ -175,7 +185,8 @@ class DriftPerson {
         other.isFavorite == isFavorite &&
         other.isHidden == isHidden &&
         other.color == color &&
-        other.birthDate == birthDate;
+        other.birthDate == birthDate &&
+        other.spaceId == spaceId;
   }
 
   @override
@@ -189,7 +200,8 @@ class DriftPerson {
         isFavorite.hashCode ^
         isHidden.hashCode ^
         color.hashCode ^
-        birthDate.hashCode;
+        birthDate.hashCode ^
+        spaceId.hashCode;
   }
 }
 
