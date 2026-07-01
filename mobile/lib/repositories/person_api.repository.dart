@@ -27,25 +27,24 @@ class PersonApiRepository extends ApiRepository {
   /// app (see `AssetService.get`), which keeps mobile at parity with web. See issue #727.
   Future<List<DriftPerson>> getAssetPeople(String assetId) async {
     final info = await checkNull(_apiService.assetsApi.getAssetInfo(assetId));
-    return info.people
-        .where((person) => !person.isHidden)
-        .map((person) => _toDriftPerson(person, info.ownerId))
-        .toList();
+    final people = info.people.orElse(null) ?? const <PersonResponseDto>[];
+    return people.where((person) => !person.isHidden).map((person) => _toDriftPerson(person, info.ownerId)).toList();
   }
 
-  static DriftPerson _toDriftPerson(PersonWithFacesResponseDto dto, String ownerId) {
+  static DriftPerson _toDriftPerson(PersonResponseDto dto, String ownerId) {
     // The asset-info DTO does not carry created/faceAsset fields; the people strip does
     // not render them, so mirror updatedAt and leave the face-asset unset.
-    final updatedAt = dto.updatedAt ?? DateTime.fromMillisecondsSinceEpoch(0);
+    // v3 openapi wraps optional person fields in Optional<...?> → unwrap with orElse.
+    final updatedAt = dto.updatedAt.orElse(null) ?? DateTime.fromMillisecondsSinceEpoch(0);
     return DriftPerson(
       id: dto.id,
       createdAt: updatedAt,
       updatedAt: updatedAt,
       ownerId: ownerId,
       name: dto.name,
-      isFavorite: dto.isFavorite ?? false,
+      isFavorite: dto.isFavorite.orElse(null) ?? false,
       isHidden: dto.isHidden,
-      color: dto.color,
+      color: dto.color.orElse(null),
       birthDate: dto.birthDate,
     );
   }
