@@ -2071,6 +2071,22 @@ class TabShellRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [WhatsNewPage]
+class WhatsNewRoute extends PageRouteInfo<void> {
+  const WhatsNewRoute({List<PageRouteInfo>? children})
+    : super(WhatsNewRoute.name, initialChildren: children);
+
+  static const String name = 'WhatsNewRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const WhatsNewPage();
+    },
+  );
+}
+
+/// generated route for
 /// [WhenPickerPage]
 class WhenPickerRoute extends PageRouteInfo<void> {
   const WhenPickerRoute({List<PageRouteInfo>? children})
