@@ -4,7 +4,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/constants.dart';
 import 'package:immich_mobile/domain/models/events.model.dart';
 import 'package:immich_mobile/domain/utils/event_stream.dart';
 import 'package:immich_mobile/extensions/build_context_extensions.dart';
@@ -98,23 +97,61 @@ class _TabShellPageState extends ConsumerState<TabShellPage> {
   }
 }
 
+/// A section of the fork's 3-tab legacy [TabShellPage] shell, whose
+/// `AutoTabsRouter` routes are `[MainTimelineRoute, SpacesRoute,
+/// DriftLibraryRoute]` — Photos = 0, Spaces = 1, Library = 2.
+enum TabShellSection { photos, spaces, library, other }
+
+/// Maps a bottom-nav index to its [TabShellSection] for the fork's 3-tab
+/// layout. Intentionally NOT keyed on the upstream 4-tab constants in
+/// `constants.dart` (`kSpacesTabIndex = 2`, `kLibraryTabIndex = 3`), which are
+/// left untouched for rebase hygiene (see `gallery_tab_enum.dart`) and describe
+/// the upstream layout — using them here made tab switches off-by-one (finding
+/// LOW #14: Spaces invalidated nothing, Library invalidated Spaces).
+TabShellSection tabShellSectionForIndex(int index) {
+  switch (index) {
+    case 0:
+      return TabShellSection.photos;
+    case 1:
+      return TabShellSection.spaces;
+    case 2:
+      return TabShellSection.library;
+    default:
+      return TabShellSection.other;
+  }
+}
+
+TabEnum _tabEnumForSection(TabShellSection section) {
+  switch (section) {
+    case TabShellSection.photos:
+    case TabShellSection.other:
+      return TabEnum.home;
+    case TabShellSection.spaces:
+      return TabEnum.spaces;
+    case TabShellSection.library:
+      return TabEnum.library;
+  }
+}
+
 void _onNavigationSelected(TabsRouter router, int index, WidgetRef ref) {
+  final section = tabShellSectionForIndex(index);
+
   // On Photos page menu tapped
-  if (router.activeIndex == kPhotoTabIndex && index == kPhotoTabIndex) {
+  if (router.activeIndex == index && section == TabShellSection.photos) {
     EventStream.shared.emit(const ScrollToTopEvent());
   }
 
-  if (index == kPhotoTabIndex) {
+  if (section == TabShellSection.photos) {
     ref.invalidate(driftMemoryFutureProvider);
   }
 
   // Spaces page
-  if (index == kSpacesTabIndex) {
+  if (section == TabShellSection.spaces) {
     ref.invalidate(sharedSpacesProvider);
   }
 
   // Library page
-  if (index == kLibraryTabIndex) {
+  if (section == TabShellSection.library) {
     ref.invalidate(localAlbumProvider);
     ref.invalidate(driftGetAllPeopleProvider);
     ref.invalidate(driftGetAllPeopleWithSharedSpacesProvider);
@@ -122,7 +159,7 @@ void _onNavigationSelected(TabsRouter router, int index, WidgetRef ref) {
 
   ref.read(hapticFeedbackProvider.notifier).selectionClick();
   router.setActiveIndex(index);
-  ref.read(tabProvider.notifier).state = TabEnum.values[index];
+  ref.read(tabProvider.notifier).state = _tabEnumForSection(section);
 }
 
 class _BottomNavigationBar extends ConsumerStatefulWidget {
