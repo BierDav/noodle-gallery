@@ -276,6 +276,8 @@ class SyncStreamRepository extends DriftDatabaseRepository {
           );
         }
       });
+
+      await _hideReferencedLivePhotoMotionAssets();
     } catch (error, stack) {
       _logger.severe('Error: updateAssetsV2 - $debugLabel', error, stack);
       rethrow;
