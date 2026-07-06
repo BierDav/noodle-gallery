@@ -28,6 +28,9 @@ import 'package:immich_mobile/infrastructure/entities/remote_asset.entity.drift.
 import 'package:immich_mobile/infrastructure/entities/remote_asset_cloud_id.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/settings.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/shared_space.entity.dart';
+import 'package:immich_mobile/infrastructure/entities/shared_space_album.entity.dart';
+import 'package:immich_mobile/infrastructure/entities/shared_space_album_asset.entity.dart';
+import 'package:immich_mobile/infrastructure/entities/shared_space_album_link.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/shared_space_asset.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/shared_space_library.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/shared_space_member.entity.dart';
@@ -67,6 +70,9 @@ import 'package:sqlite_async/sqlite_async.dart';
     SharedSpaceAssetEntity,
     LibraryEntity,
     SharedSpaceLibraryEntity,
+    SharedSpaceAlbumEntity,
+    SharedSpaceAlbumLinkEntity,
+    SharedSpaceAlbumAssetEntity,
     MemoryEntity,
     MemoryAssetEntity,
     StackEntity,
@@ -130,7 +136,7 @@ class Drift extends $Drift {
   }
 
   @override
-  int get schemaVersion => 34;
+  int get schemaVersion => 35;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -345,6 +351,15 @@ class Drift extends $Drift {
           // v34 (next after the fork's v33).
           from33To34: (m, v34) async {
             await m.alterTable(TableMigration(v34.settings));
+          },
+          from34To35: (m, v35) async {
+            await m.createTable(v35.sharedSpaceAlbumEntity);
+            await m.createTable(v35.sharedSpaceAlbumLinkEntity);
+            await m.createTable(v35.sharedSpaceAlbumAssetEntity);
+            await m.createIndex(v35.idxSharedSpaceAlbumLinkSpace);
+            await m.createIndex(v35.idxSharedSpaceAlbumLinkAlbumSpace);
+            await m.createIndex(v35.idxSharedSpaceAlbumAssetAlbum);
+            await m.createIndex(v35.idxSharedSpaceAlbumAssetAssetAlbum);
           },
         ),
       );

@@ -111,6 +111,9 @@ class Permission {
   static const sharedSpaceAssetPeriodDelete = Permission._(r'sharedSpaceAsset.delete');
   static const sharedSpaceLibraryPeriodCreate = Permission._(r'sharedSpaceLibrary.create');
   static const sharedSpaceLibraryPeriodDelete = Permission._(r'sharedSpaceLibrary.delete');
+  static const sharedSpaceAlbumPeriodCreate = Permission._(r'sharedSpaceAlbum.create');
+  static const sharedSpaceAlbumPeriodUpdate = Permission._(r'sharedSpaceAlbum.update');
+  static const sharedSpaceAlbumPeriodDelete = Permission._(r'sharedSpaceAlbum.delete');
   static const userGroupPeriodCreate = Permission._(r'userGroup.create');
   static const userGroupPeriodRead = Permission._(r'userGroup.read');
   static const userGroupPeriodUpdate = Permission._(r'userGroup.update');
@@ -285,6 +288,9 @@ class Permission {
     sharedSpaceAssetPeriodDelete,
     sharedSpaceLibraryPeriodCreate,
     sharedSpaceLibraryPeriodDelete,
+    sharedSpaceAlbumPeriodCreate,
+    sharedSpaceAlbumPeriodUpdate,
+    sharedSpaceAlbumPeriodDelete,
     userGroupPeriodCreate,
     userGroupPeriodRead,
     userGroupPeriodUpdate,
@@ -494,6 +500,9 @@ class PermissionTypeTransformer {
         case r'sharedSpaceAsset.delete': return Permission.sharedSpaceAssetPeriodDelete;
         case r'sharedSpaceLibrary.create': return Permission.sharedSpaceLibraryPeriodCreate;
         case r'sharedSpaceLibrary.delete': return Permission.sharedSpaceLibraryPeriodDelete;
+        case r'sharedSpaceAlbum.create': return Permission.sharedSpaceAlbumPeriodCreate;
+        case r'sharedSpaceAlbum.update': return Permission.sharedSpaceAlbumPeriodUpdate;
+        case r'sharedSpaceAlbum.delete': return Permission.sharedSpaceAlbumPeriodDelete;
         case r'userGroup.create': return Permission.userGroupPeriodCreate;
         case r'userGroup.read': return Permission.userGroupPeriodRead;
         case r'userGroup.update': return Permission.userGroupPeriodUpdate;
