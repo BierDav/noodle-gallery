@@ -59,11 +59,6 @@ class SyncRequestType {
   static const libraryAssetsV1 = SyncRequestType._(r'LibraryAssetsV1');
   static const libraryAssetExifsV1 = SyncRequestType._(r'LibraryAssetExifsV1');
   static const sharedSpaceLibrariesV1 = SyncRequestType._(r'SharedSpaceLibrariesV1');
-  static const sharedSpaceAlbumsV1 = SyncRequestType._(r'SharedSpaceAlbumsV1');
-  static const sharedSpaceAlbumLinksV1 = SyncRequestType._(r'SharedSpaceAlbumLinksV1');
-  static const sharedSpaceAlbumToAssetsV1 = SyncRequestType._(r'SharedSpaceAlbumToAssetsV1');
-  static const sharedSpaceAlbumAssetsV1 = SyncRequestType._(r'SharedSpaceAlbumAssetsV1');
-  static const sharedSpaceAlbumAssetExifsV1 = SyncRequestType._(r'SharedSpaceAlbumAssetExifsV1');
 
   /// List of all possible values in this [enum][SyncRequestType].
   static const values = <SyncRequestType>[
@@ -103,11 +98,6 @@ class SyncRequestType {
     libraryAssetsV1,
     libraryAssetExifsV1,
     sharedSpaceLibrariesV1,
-    sharedSpaceAlbumsV1,
-    sharedSpaceAlbumLinksV1,
-    sharedSpaceAlbumToAssetsV1,
-    sharedSpaceAlbumAssetsV1,
-    sharedSpaceAlbumAssetExifsV1,
   ];
 
   static SyncRequestType? fromJson(dynamic value) => SyncRequestTypeTypeTransformer().decode(value);
@@ -182,11 +172,6 @@ class SyncRequestTypeTypeTransformer {
         case r'LibraryAssetsV1': return SyncRequestType.libraryAssetsV1;
         case r'LibraryAssetExifsV1': return SyncRequestType.libraryAssetExifsV1;
         case r'SharedSpaceLibrariesV1': return SyncRequestType.sharedSpaceLibrariesV1;
-        case r'SharedSpaceAlbumsV1': return SyncRequestType.sharedSpaceAlbumsV1;
-        case r'SharedSpaceAlbumLinksV1': return SyncRequestType.sharedSpaceAlbumLinksV1;
-        case r'SharedSpaceAlbumToAssetsV1': return SyncRequestType.sharedSpaceAlbumToAssetsV1;
-        case r'SharedSpaceAlbumAssetsV1': return SyncRequestType.sharedSpaceAlbumAssetsV1;
-        case r'SharedSpaceAlbumAssetExifsV1': return SyncRequestType.sharedSpaceAlbumAssetExifsV1;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

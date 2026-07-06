@@ -103,21 +103,6 @@ class SyncEntityType {
   static const sharedSpaceLibraryV1 = SyncEntityType._(r'SharedSpaceLibraryV1');
   static const sharedSpaceLibraryDeleteV1 = SyncEntityType._(r'SharedSpaceLibraryDeleteV1');
   static const sharedSpaceLibraryBackfillV1 = SyncEntityType._(r'SharedSpaceLibraryBackfillV1');
-  static const sharedSpaceAlbumV1 = SyncEntityType._(r'SharedSpaceAlbumV1');
-  static const sharedSpaceAlbumDeleteV1 = SyncEntityType._(r'SharedSpaceAlbumDeleteV1');
-  static const sharedSpaceAlbumBackfillV1 = SyncEntityType._(r'SharedSpaceAlbumBackfillV1');
-  static const sharedSpaceAlbumLinkV1 = SyncEntityType._(r'SharedSpaceAlbumLinkV1');
-  static const sharedSpaceAlbumLinkDeleteV1 = SyncEntityType._(r'SharedSpaceAlbumLinkDeleteV1');
-  static const sharedSpaceAlbumLinkBackfillV1 = SyncEntityType._(r'SharedSpaceAlbumLinkBackfillV1');
-  static const sharedSpaceAlbumToAssetV1 = SyncEntityType._(r'SharedSpaceAlbumToAssetV1');
-  static const sharedSpaceAlbumToAssetDeleteV1 = SyncEntityType._(r'SharedSpaceAlbumToAssetDeleteV1');
-  static const sharedSpaceAlbumToAssetBackfillV1 = SyncEntityType._(r'SharedSpaceAlbumToAssetBackfillV1');
-  static const sharedSpaceAlbumAssetCreateV1 = SyncEntityType._(r'SharedSpaceAlbumAssetCreateV1');
-  static const sharedSpaceAlbumAssetUpdateV1 = SyncEntityType._(r'SharedSpaceAlbumAssetUpdateV1');
-  static const sharedSpaceAlbumAssetBackfillV1 = SyncEntityType._(r'SharedSpaceAlbumAssetBackfillV1');
-  static const sharedSpaceAlbumAssetExifCreateV1 = SyncEntityType._(r'SharedSpaceAlbumAssetExifCreateV1');
-  static const sharedSpaceAlbumAssetExifUpdateV1 = SyncEntityType._(r'SharedSpaceAlbumAssetExifUpdateV1');
-  static const sharedSpaceAlbumAssetExifBackfillV1 = SyncEntityType._(r'SharedSpaceAlbumAssetExifBackfillV1');
   static const syncAckV1 = SyncEntityType._(r'SyncAckV1');
   static const syncResetV1 = SyncEntityType._(r'SyncResetV1');
   static const syncCompleteV1 = SyncEntityType._(r'SyncCompleteV1');
@@ -204,21 +189,6 @@ class SyncEntityType {
     sharedSpaceLibraryV1,
     sharedSpaceLibraryDeleteV1,
     sharedSpaceLibraryBackfillV1,
-    sharedSpaceAlbumV1,
-    sharedSpaceAlbumDeleteV1,
-    sharedSpaceAlbumBackfillV1,
-    sharedSpaceAlbumLinkV1,
-    sharedSpaceAlbumLinkDeleteV1,
-    sharedSpaceAlbumLinkBackfillV1,
-    sharedSpaceAlbumToAssetV1,
-    sharedSpaceAlbumToAssetDeleteV1,
-    sharedSpaceAlbumToAssetBackfillV1,
-    sharedSpaceAlbumAssetCreateV1,
-    sharedSpaceAlbumAssetUpdateV1,
-    sharedSpaceAlbumAssetBackfillV1,
-    sharedSpaceAlbumAssetExifCreateV1,
-    sharedSpaceAlbumAssetExifUpdateV1,
-    sharedSpaceAlbumAssetExifBackfillV1,
     syncAckV1,
     syncResetV1,
     syncCompleteV1,
@@ -340,21 +310,6 @@ class SyncEntityTypeTypeTransformer {
         case r'SharedSpaceLibraryV1': return SyncEntityType.sharedSpaceLibraryV1;
         case r'SharedSpaceLibraryDeleteV1': return SyncEntityType.sharedSpaceLibraryDeleteV1;
         case r'SharedSpaceLibraryBackfillV1': return SyncEntityType.sharedSpaceLibraryBackfillV1;
-        case r'SharedSpaceAlbumV1': return SyncEntityType.sharedSpaceAlbumV1;
-        case r'SharedSpaceAlbumDeleteV1': return SyncEntityType.sharedSpaceAlbumDeleteV1;
-        case r'SharedSpaceAlbumBackfillV1': return SyncEntityType.sharedSpaceAlbumBackfillV1;
-        case r'SharedSpaceAlbumLinkV1': return SyncEntityType.sharedSpaceAlbumLinkV1;
-        case r'SharedSpaceAlbumLinkDeleteV1': return SyncEntityType.sharedSpaceAlbumLinkDeleteV1;
-        case r'SharedSpaceAlbumLinkBackfillV1': return SyncEntityType.sharedSpaceAlbumLinkBackfillV1;
-        case r'SharedSpaceAlbumToAssetV1': return SyncEntityType.sharedSpaceAlbumToAssetV1;
-        case r'SharedSpaceAlbumToAssetDeleteV1': return SyncEntityType.sharedSpaceAlbumToAssetDeleteV1;
-        case r'SharedSpaceAlbumToAssetBackfillV1': return SyncEntityType.sharedSpaceAlbumToAssetBackfillV1;
-        case r'SharedSpaceAlbumAssetCreateV1': return SyncEntityType.sharedSpaceAlbumAssetCreateV1;
-        case r'SharedSpaceAlbumAssetUpdateV1': return SyncEntityType.sharedSpaceAlbumAssetUpdateV1;
-        case r'SharedSpaceAlbumAssetBackfillV1': return SyncEntityType.sharedSpaceAlbumAssetBackfillV1;
-        case r'SharedSpaceAlbumAssetExifCreateV1': return SyncEntityType.sharedSpaceAlbumAssetExifCreateV1;
-        case r'SharedSpaceAlbumAssetExifUpdateV1': return SyncEntityType.sharedSpaceAlbumAssetExifUpdateV1;
-        case r'SharedSpaceAlbumAssetExifBackfillV1': return SyncEntityType.sharedSpaceAlbumAssetExifBackfillV1;
         case r'SyncAckV1': return SyncEntityType.syncAckV1;
         case r'SyncResetV1': return SyncEntityType.syncResetV1;
         case r'SyncCompleteV1': return SyncEntityType.syncCompleteV1;

@@ -26,17 +26,6 @@ class RemoteAlbum {
   final String ownerName;
   final bool isShared;
 
-  /// The current user's role in this album, if known.
-  ///
-  /// - `null` when not populated (e.g. from DB queries that don't join the
-  ///   role table or in test fixtures that don't need it).
-  /// - [AlbumUserRole.owner] when the current user is the album owner.
-  /// - [AlbumUserRole.editor] / [AlbumUserRole.viewer] for shared albums.
-  ///
-  /// Used by [linkableAlbumCandidates] to determine own/editable albums
-  /// without an extra async DB call per album.
-  final AlbumUserRole? currentUserRole;
-
   const RemoteAlbum({
     required this.id,
     required this.name,
@@ -50,7 +39,6 @@ class RemoteAlbum {
     required this.assetCount,
     required this.ownerName,
     required this.isShared,
-    this.currentUserRole,
   });
 
   @override
@@ -68,7 +56,6 @@ class RemoteAlbum {
     assetCount: $assetCount
     ownerName: $ownerName
     isShared: $isShared
-    currentUserRole: $currentUserRole
  }''';
   }
 
@@ -91,8 +78,7 @@ class RemoteAlbum {
         order == other.order &&
         assetCount == other.assetCount &&
         ownerName == other.ownerName &&
-        isShared == other.isShared &&
-        currentUserRole == other.currentUserRole;
+        isShared == other.isShared;
   }
 
   @override
@@ -108,8 +94,7 @@ class RemoteAlbum {
         order.hashCode ^
         assetCount.hashCode ^
         ownerName.hashCode ^
-        isShared.hashCode ^
-        currentUserRole.hashCode;
+        isShared.hashCode;
   }
 
   RemoteAlbum copyWith({
@@ -125,7 +110,6 @@ class RemoteAlbum {
     int? assetCount,
     String? ownerName,
     bool? isShared,
-    AlbumUserRole? currentUserRole,
   }) {
     return RemoteAlbum(
       id: id ?? this.id,
@@ -140,7 +124,6 @@ class RemoteAlbum {
       assetCount: assetCount ?? this.assetCount,
       ownerName: ownerName ?? this.ownerName,
       isShared: isShared ?? this.isShared,
-      currentUserRole: currentUserRole ?? this.currentUserRole,
     );
   }
 }
