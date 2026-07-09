@@ -9,6 +9,7 @@ class PersonDto {
     required this.name,
     required this.thumbnailPath,
     this.updatedAt,
+    this.numberOfAssets,
   });
 
   final String id;
@@ -18,9 +19,14 @@ class PersonDto {
   final String thumbnailPath;
   final DateTime? updatedAt;
 
+  /// Photo count for the picker row (`_PersonRow` "N photos" subtitle). Sourced from
+  /// [DriftPerson.numberOfAssets] with no extra network call; null hides the subtitle
+  /// (e.g. the offline local-Drift fallback path never populates it).
+  final int? numberOfAssets;
+
   @override
   String toString() {
-    return 'Person(id: $id, birthDate: $birthDate, isHidden: $isHidden, name: $name, thumbnailPath: $thumbnailPath, updatedAt: $updatedAt)';
+    return 'Person(id: $id, birthDate: $birthDate, isHidden: $isHidden, name: $name, thumbnailPath: $thumbnailPath, updatedAt: $updatedAt, numberOfAssets: $numberOfAssets)';
   }
 
   PersonDto copyWith({
@@ -30,6 +36,7 @@ class PersonDto {
     String? name,
     String? thumbnailPath,
     DateTime? updatedAt,
+    int? numberOfAssets,
   }) {
     return PersonDto(
       id: id ?? this.id,
@@ -38,6 +45,7 @@ class PersonDto {
       name: name ?? this.name,
       thumbnailPath: thumbnailPath ?? this.thumbnailPath,
       updatedAt: updatedAt ?? this.updatedAt,
+      numberOfAssets: numberOfAssets ?? this.numberOfAssets,
     );
   }
 
@@ -49,6 +57,7 @@ class PersonDto {
       'name': name,
       'thumbnailPath': thumbnailPath,
       'updatedAt': updatedAt?.millisecondsSinceEpoch,
+      'numberOfAssets': numberOfAssets,
     };
   }
 
@@ -60,6 +69,7 @@ class PersonDto {
       name: map['name'] as String,
       thumbnailPath: map['thumbnailPath'] as String,
       updatedAt: map['updatedAt'] != null ? DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int) : null,
+      numberOfAssets: map['numberOfAssets'] as int?,
     );
   }
 
@@ -78,7 +88,8 @@ class PersonDto {
         other.isHidden == isHidden &&
         other.name == name &&
         other.thumbnailPath == thumbnailPath &&
-        other.updatedAt == updatedAt;
+        other.updatedAt == updatedAt &&
+        other.numberOfAssets == numberOfAssets;
   }
 
   @override
@@ -88,7 +99,8 @@ class PersonDto {
         isHidden.hashCode ^
         name.hashCode ^
         thumbnailPath.hashCode ^
-        updatedAt.hashCode;
+        updatedAt.hashCode ^
+        numberOfAssets.hashCode;
   }
 }
 
@@ -111,6 +123,11 @@ class DriftPerson {
   /// owner-only person endpoint.
   final String? spaceId;
 
+  /// Photo count sourced from the shared-spaces server list (`PersonResponseDto.numberOfAssets`).
+  /// Null when unavailable — the owner-scoped local Drift query and the offline fallback path
+  /// never populate it, so the picker row hides the count gracefully rather than erroring.
+  final int? numberOfAssets;
+
   const DriftPerson({
     required this.id,
     required this.createdAt,
@@ -123,6 +140,7 @@ class DriftPerson {
     required this.color,
     this.birthDate,
     this.spaceId,
+    this.numberOfAssets,
   });
 
   DriftPerson copyWith({
@@ -137,6 +155,7 @@ class DriftPerson {
     String? color,
     DateTime? birthDate,
     String? spaceId,
+    int? numberOfAssets,
   }) {
     return DriftPerson(
       id: id ?? this.id,
@@ -150,6 +169,7 @@ class DriftPerson {
       color: color ?? this.color,
       birthDate: birthDate ?? this.birthDate,
       spaceId: spaceId ?? this.spaceId,
+      numberOfAssets: numberOfAssets ?? this.numberOfAssets,
     );
   }
 
@@ -166,7 +186,8 @@ class DriftPerson {
     isHidden: $isHidden,
     color: ${color ?? "<NA>"},
     birthDate: ${birthDate ?? "<NA>"},
-    spaceId: ${spaceId ?? "<NA>"}
+    spaceId: ${spaceId ?? "<NA>"},
+    numberOfAssets: ${numberOfAssets ?? "<NA>"}
 }''';
   }
 
@@ -186,7 +207,8 @@ class DriftPerson {
         other.isHidden == isHidden &&
         other.color == color &&
         other.birthDate == birthDate &&
-        other.spaceId == spaceId;
+        other.spaceId == spaceId &&
+        other.numberOfAssets == numberOfAssets;
   }
 
   @override
@@ -201,7 +223,8 @@ class DriftPerson {
         isHidden.hashCode ^
         color.hashCode ^
         birthDate.hashCode ^
-        spaceId.hashCode;
+        spaceId.hashCode ^
+        numberOfAssets.hashCode;
   }
 }
 

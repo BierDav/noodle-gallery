@@ -110,6 +110,7 @@ class PersonApiRepository extends ApiRepository {
       color: dto.color.orElse(null),
       birthDate: dto.birthDate,
       spaceId: spaceId,
+      numberOfAssets: dto.numberOfAssets.orElse(null),
     );
   }
 
