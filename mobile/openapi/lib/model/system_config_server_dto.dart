@@ -15,6 +15,7 @@ class SystemConfigServerDto {
   SystemConfigServerDto({
     required this.externalDomain,
     required this.loginPageMessage,
+    required this.mergePeopleAcrossOwners,
     required this.publicUsers,
   });
 
@@ -24,6 +25,9 @@ class SystemConfigServerDto {
   /// Login page message
   String loginPageMessage;
 
+  /// Allow merging people/faces across different owners and external libraries
+  bool mergePeopleAcrossOwners;
+
   /// Public users
   bool publicUsers;
 
@@ -31,6 +35,7 @@ class SystemConfigServerDto {
   bool operator ==(Object other) => identical(this, other) || other is SystemConfigServerDto &&
     other.externalDomain == externalDomain &&
     other.loginPageMessage == loginPageMessage &&
+    other.mergePeopleAcrossOwners == mergePeopleAcrossOwners &&
     other.publicUsers == publicUsers;
 
   @override
@@ -38,15 +43,17 @@ class SystemConfigServerDto {
     // ignore: unnecessary_parenthesis
     (externalDomain.hashCode) +
     (loginPageMessage.hashCode) +
+    (mergePeopleAcrossOwners.hashCode) +
     (publicUsers.hashCode);
 
   @override
-  String toString() => 'SystemConfigServerDto[externalDomain=$externalDomain, loginPageMessage=$loginPageMessage, publicUsers=$publicUsers]';
+  String toString() => 'SystemConfigServerDto[externalDomain=$externalDomain, loginPageMessage=$loginPageMessage, mergePeopleAcrossOwners=$mergePeopleAcrossOwners, publicUsers=$publicUsers]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'externalDomain'] = this.externalDomain;
       json[r'loginPageMessage'] = this.loginPageMessage;
+      json[r'mergePeopleAcrossOwners'] = this.mergePeopleAcrossOwners;
       json[r'publicUsers'] = this.publicUsers;
     return json;
   }
@@ -62,6 +69,7 @@ class SystemConfigServerDto {
       return SystemConfigServerDto(
         externalDomain: mapValueOfType<String>(json, r'externalDomain')!,
         loginPageMessage: mapValueOfType<String>(json, r'loginPageMessage')!,
+        mergePeopleAcrossOwners: mapValueOfType<bool>(json, r'mergePeopleAcrossOwners')!,
         publicUsers: mapValueOfType<bool>(json, r'publicUsers')!,
       );
     }
@@ -112,6 +120,7 @@ class SystemConfigServerDto {
   static const requiredKeys = <String>{
     'externalDomain',
     'loginPageMessage',
+    'mergePeopleAcrossOwners',
     'publicUsers',
   };
 }
