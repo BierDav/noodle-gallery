@@ -692,7 +692,11 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [MetadataSearchDto] metadataSearchDto (required):
-  Future<Response> searchAssetsWithHttpInfo(MetadataSearchDto metadataSearchDto, { Future<void>? abortTrigger, }) async {
+  ///
+  /// * [String] key:
+  ///
+  /// * [String] slug:
+  Future<Response> searchAssetsWithHttpInfo(MetadataSearchDto metadataSearchDto, { String? key, String? slug, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/metadata';
 
@@ -702,6 +706,13 @@ class SearchApi {
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
+
+    if (key != null) {
+      queryParams.addAll(_queryParams('', 'key', key));
+    }
+    if (slug != null) {
+      queryParams.addAll(_queryParams('', 'slug', slug));
+    }
 
     const contentTypes = <String>['application/json'];
 
@@ -725,8 +736,12 @@ class SearchApi {
   /// Parameters:
   ///
   /// * [MetadataSearchDto] metadataSearchDto (required):
-  Future<SearchResponseDto?> searchAssets(MetadataSearchDto metadataSearchDto, { Future<void>? abortTrigger, }) async {
-    final response = await searchAssetsWithHttpInfo(metadataSearchDto, abortTrigger: abortTrigger,);
+  ///
+  /// * [String] key:
+  ///
+  /// * [String] slug:
+  Future<SearchResponseDto?> searchAssets(MetadataSearchDto metadataSearchDto, { String? key, String? slug, Future<void>? abortTrigger, }) async {
+    final response = await searchAssetsWithHttpInfo(metadataSearchDto, key: key, slug: slug, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
