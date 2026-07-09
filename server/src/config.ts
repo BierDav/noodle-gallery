@@ -178,8 +178,12 @@ export type SystemConfig = {
   };
   memories: {
     retentionDays: number;
+    /** @deprecated superseded by `types['birthday']`; kept for back-compat */
     birthday: boolean;
+    /** @deprecated superseded by `types['recent_trip']`; kept for back-compat */
     recentTrips: boolean;
+    /** sparse admin availability overrides, memory-type key -> enabled */
+    types: Record<string, boolean>;
   };
   trash: {
     enabled: boolean;
@@ -440,6 +444,7 @@ export const defaults = Object.freeze<SystemConfig>({
     retentionDays: 365,
     birthday: true,
     recentTrips: true,
+    types: {},
   },
   trash: {
     enabled: true,

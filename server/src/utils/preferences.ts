@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { UserPreferencesUpdateDto } from 'src/dtos/user-preferences.dto';
 import { AssetOrder, UserMetadataKey } from 'src/enum';
+import { buildDefaultMemoryTypeMap } from 'src/services/memory-rules/memory-type.metadata';
 import { DeepPartial, UserMetadataItem, UserPreferences } from 'src/types';
 import { HumanReadableSize } from 'src/utils/bytes';
 import { getKeysDeep } from 'src/utils/misc';
@@ -17,6 +18,7 @@ const getDefaultPreferences = (): UserPreferences => {
     memories: {
       enabled: true,
       duration: 5,
+      types: buildDefaultMemoryTypeMap(),
     },
     people: {
       enabled: true,

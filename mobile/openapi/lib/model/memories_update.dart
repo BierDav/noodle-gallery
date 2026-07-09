@@ -15,6 +15,7 @@ class MemoriesUpdate {
   MemoriesUpdate({
     this.duration = const Optional.absent(),
     this.enabled = const Optional.absent(),
+    this.types = const Optional.present(const {}),
   });
 
   /// Memory duration in seconds
@@ -38,19 +39,24 @@ class MemoriesUpdate {
   ///
   Optional<bool?> enabled;
 
+  /// Per-memory-type enable overrides, keyed by memory type
+  Optional<Map<String, bool>?> types;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is MemoriesUpdate &&
     other.duration == duration &&
-    other.enabled == enabled;
+    other.enabled == enabled &&
+    _deepEquality.equals(other.types, types);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (duration == null ? 0 : duration!.hashCode) +
-    (enabled == null ? 0 : enabled!.hashCode);
+    (enabled == null ? 0 : enabled!.hashCode) +
+    (types.hashCode);
 
   @override
-  String toString() => 'MemoriesUpdate[duration=$duration, enabled=$enabled]';
+  String toString() => 'MemoriesUpdate[duration=$duration, enabled=$enabled, types=$types]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -61,6 +67,10 @@ class MemoriesUpdate {
     if (this.enabled.isPresent) {
       final value = this.enabled.value;
       json[r'enabled'] = value;
+    }
+    if (this.types.isPresent) {
+      final value = this.types.value;
+      json[r'types'] = value;
     }
     return json;
   }
@@ -76,6 +86,7 @@ class MemoriesUpdate {
       return MemoriesUpdate(
         duration: json.containsKey(r'duration') ? Optional.present(json[r'duration'] == null ? null : int.parse('${json[r'duration']}')) : const Optional.absent(),
         enabled: json.containsKey(r'enabled') ? Optional.present(mapValueOfType<bool>(json, r'enabled')) : const Optional.absent(),
+        types: json.containsKey(r'types') ? Optional.present(mapCastOfType<String, bool>(json, r'types')) : const Optional.absent(),
       );
     }
     return null;

@@ -15,6 +15,7 @@ class MemoriesResponse {
   MemoriesResponse({
     required this.duration,
     required this.enabled,
+    this.types = const {},
   });
 
   /// Memory duration in seconds
@@ -26,24 +27,30 @@ class MemoriesResponse {
   /// Whether memories are enabled
   bool enabled;
 
+  /// Per-memory-type enable map, keyed by memory type
+  Map<String, bool> types;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is MemoriesResponse &&
     other.duration == duration &&
-    other.enabled == enabled;
+    other.enabled == enabled &&
+    _deepEquality.equals(other.types, types);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (duration.hashCode) +
-    (enabled.hashCode);
+    (enabled.hashCode) +
+    (types.hashCode);
 
   @override
-  String toString() => 'MemoriesResponse[duration=$duration, enabled=$enabled]';
+  String toString() => 'MemoriesResponse[duration=$duration, enabled=$enabled, types=$types]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'duration'] = this.duration;
       json[r'enabled'] = this.enabled;
+      json[r'types'] = this.types;
     return json;
   }
 
@@ -58,6 +65,7 @@ class MemoriesResponse {
       return MemoriesResponse(
         duration: mapValueOfType<int>(json, r'duration')!,
         enabled: mapValueOfType<bool>(json, r'enabled')!,
+        types: mapCastOfType<String, bool>(json, r'types')!,
       );
     }
     return null;
@@ -107,6 +115,7 @@ class MemoriesResponse {
   static const requiredKeys = <String>{
     'duration',
     'enabled',
+    'types',
   };
 }
 

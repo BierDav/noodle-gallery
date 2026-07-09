@@ -724,6 +724,8 @@ export type UserPreferences = {
   memories: {
     enabled: boolean;
     duration: number;
+    /** per-memory-type enable map; default built from the registry */
+    types: Record<string, boolean>;
   };
   people: {
     enabled: boolean;

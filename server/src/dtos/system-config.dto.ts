@@ -261,6 +261,7 @@ const SystemConfigMemoriesSchema = z
     retentionDays: z.coerce.number().int().min(0).describe('Retention days'),
     birthday: configBool.describe('Birthday memories'),
     recentTrips: configBool.describe('Recent trip memories'),
+    types: z.record(z.string(), z.boolean()).default({}).describe('Per-type memory availability overrides'),
   })
   .meta({ id: 'SystemConfigMemoriesDto' });
 
