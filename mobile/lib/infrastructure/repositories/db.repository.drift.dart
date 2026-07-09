@@ -155,6 +155,7 @@ abstract class $Drift extends i0.GeneratedDatabase {
     i2.idxRemoteAssetStackId,
     i2.idxRemoteAssetOwnerVisibilityDeletedCreated,
     i2.idxRemoteAssetLibraryCreated,
+    i2.idxRemoteAssetUploaded,
     authUserEntity,
     userMetadataEntity,
     partnerEntity,
