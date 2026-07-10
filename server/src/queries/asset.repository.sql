@@ -608,13 +608,29 @@ order by
 
 -- AssetRepository.getTimeBucket
 with
+  "filtered" as (
+    select
+      "asset"."id"
+    from
+      "asset"
+      left join "stack" on "stack"."id" = "asset"."stackId"
+      and "stack"."primaryAssetId" = "asset"."id"
+    where
+      date_trunc('MONTH', "localDateTime" AT TIME ZONE 'UTC') AT TIME ZONE 'UTC' = $1
+      and "asset"."deletedAt" is null
+      and "asset"."visibility" in ('archive', 'timeline')
+      and (
+        "asset"."stackId" is null
+        or "stack" is not null
+      )
+  ),
   "cte" as (
     select
       "asset"."duration",
       "asset"."id",
       "asset"."visibility",
       asset."isFavorite"
-      and asset."ownerId" = $1 as "isFavorite",
+      and asset."ownerId" = $2 as "isFavorite",
       asset.type = 'IMAGE' as "isImage",
       asset."deletedAt" is not null as "isTrashed",
       "asset"."livePhotoVideoId",
@@ -646,7 +662,8 @@ with
       "asset_exif"."country",
       "stack"
     from
-      "asset"
+      "filtered"
+      inner join "asset" on "asset"."id" = "filtered"."id"
       inner join "asset_exif" on "asset"."id" = "asset_exif"."assetId"
       left join lateral (
         select
@@ -656,22 +673,10 @@ with
         where
           "stacked"."stackId" = "asset"."stackId"
           and "stacked"."deletedAt" is null
-          and "stacked"."visibility" = $2
+          and "stacked"."visibility" = $3
         group by
           "stacked"."stackId"
       ) as "stacked_assets" on true
-    where
-      "asset"."deletedAt" is null
-      and "asset"."visibility" in ('archive', 'timeline')
-      and date_trunc('MONTH', "localDateTime" AT TIME ZONE 'UTC') AT TIME ZONE 'UTC' = $3
-      and not exists (
-        select
-        from
-          "stack"
-        where
-          "stack"."id" = "asset"."stackId"
-          and "stack"."primaryAssetId" != "asset"."id"
-      )
     order by
       (asset."localDateTime" AT TIME ZONE 'UTC')::date desc,
       "asset"."fileCreatedAt" desc
@@ -706,13 +711,23 @@ from
 
 -- AssetRepository.getTimeBucket
 with
+  "filtered" as (
+    select
+      "asset"."id"
+    from
+      "asset"
+    where
+      date_trunc('YEAR', "localDateTime" AT TIME ZONE 'UTC') AT TIME ZONE 'UTC' = $1
+      and "asset"."deletedAt" is null
+      and "asset"."visibility" in ('archive', 'timeline')
+  ),
   "cte" as (
     select
       "asset"."duration",
       "asset"."id",
       "asset"."visibility",
       asset."isFavorite"
-      and asset."ownerId" = $1 as "isFavorite",
+      and asset."ownerId" = $2 as "isFavorite",
       asset.type = 'IMAGE' as "isImage",
       asset."deletedAt" is not null as "isTrashed",
       "asset"."livePhotoVideoId",
@@ -743,12 +758,9 @@ with
       "asset_exif"."city",
       "asset_exif"."country"
     from
-      "asset"
+      "filtered"
+      inner join "asset" on "asset"."id" = "filtered"."id"
       inner join "asset_exif" on "asset"."id" = "asset_exif"."assetId"
-    where
-      "asset"."deletedAt" is null
-      and "asset"."visibility" in ('archive', 'timeline')
-      and date_trunc('YEAR', "localDateTime" AT TIME ZONE 'UTC') AT TIME ZONE 'UTC' = $2
     order by
       (asset."localDateTime" AT TIME ZONE 'UTC')::date desc,
       "asset"."fileCreatedAt" desc
@@ -782,13 +794,23 @@ from
 
 -- AssetRepository.getTimeBucket
 with
+  "filtered" as (
+    select
+      "asset"."id"
+    from
+      "asset"
+    where
+      date_trunc('DAY', "localDateTime" AT TIME ZONE 'UTC') AT TIME ZONE 'UTC' = $1
+      and "asset"."deletedAt" is null
+      and "asset"."visibility" in ('archive', 'timeline')
+  ),
   "cte" as (
     select
       "asset"."duration",
       "asset"."id",
       "asset"."visibility",
       asset."isFavorite"
-      and asset."ownerId" = $1 as "isFavorite",
+      and asset."ownerId" = $2 as "isFavorite",
       asset.type = 'IMAGE' as "isImage",
       asset."deletedAt" is not null as "isTrashed",
       "asset"."livePhotoVideoId",
@@ -819,12 +841,9 @@ with
       "asset_exif"."city",
       "asset_exif"."country"
     from
-      "asset"
+      "filtered"
+      inner join "asset" on "asset"."id" = "filtered"."id"
       inner join "asset_exif" on "asset"."id" = "asset_exif"."assetId"
-    where
-      "asset"."deletedAt" is null
-      and "asset"."visibility" in ('archive', 'timeline')
-      and date_trunc('DAY', "localDateTime" AT TIME ZONE 'UTC') AT TIME ZONE 'UTC' = $2
     order by
       (asset."localDateTime" AT TIME ZONE 'UTC')::date desc,
       "asset"."fileCreatedAt" desc

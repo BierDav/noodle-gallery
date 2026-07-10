@@ -1303,9 +1303,24 @@ export class AssetRepository {
     const order = options.order === AssetOrder.Asc ? AssetOrder.Asc : AssetOrder.Desc;
     const bucketSize = options.bucketSize ?? TimeBucketSize.Month;
     const query = this.db
+      // Stage 1 — FILTER: reuse the shared timeline filter chain (the same one
+      // getTimeBuckets/getTimeBucketCovers use) so the asset list can never drift
+      // out of sync with the scrubber counts. Selects ids only; asset_exif is
+      // joined by the helper only when an exif filter is active.
+      .with('filtered', (qb) =>
+        withTimeBucketAssetFilters(
+          qb
+            .selectFrom('asset')
+            .select('asset.id')
+            .where(truncatedDate(options.orderBy, bucketSize), '=', timeBucket.replace(/^[+-]/, '')),
+          options,
+        ),
+      )
+      // Stage 2 — PROJECT: build the columnar row shape for the matched ids.
       .with('cte', (qb) =>
         qb
-          .selectFrom('asset')
+          .selectFrom('filtered')
+          .innerJoin('asset', 'asset.id', 'filtered.id')
           .innerJoin('asset_exif', 'asset.id', 'asset_exif.assetId')
           .select((eb) => [
             'asset.duration',
@@ -1340,104 +1355,10 @@ export class AssetRepository {
             qb.select(['asset_exif.city', 'asset_exif.country']),
           )
           .$if(!!options.withCoordinates, (qb) => qb.select(['asset_exif.latitude', 'asset_exif.longitude']))
-          .$if(!!options.forceEmptyResult, (qb) => qb.where(sql<SqlBool>`false`))
-          .where('asset.deletedAt', options.isTrashed ? 'is not' : 'is', null)
-          .$if(options.visibility == undefined, withDefaultVisibility)
-          .$if(!!options.visibility, (qb) => qb.where('asset.visibility', '=', options.visibility!))
-          .$if(!!options.bbox, (qb) => {
-            const bbox = options.bbox!;
-            const circle = getBoundingCircle(bbox);
-
-            const withBoundingCircle = qb.where(
-              sql`earth_box(ll_to_earth_public(${circle.centerLatitude}, ${circle.centerLongitude}), ${circle.radius})`,
-              '@>',
-              sql`ll_to_earth_public(asset_exif.latitude, asset_exif.longitude)`,
-            );
-
-            return withBoundingBox(withBoundingCircle, bbox);
-          })
-          .where(truncatedDate(options.orderBy, bucketSize), '=', timeBucket.replace(/^[+-]/, ''))
-          .$if(!!options.albumId, (qb) =>
-            qb.where((eb) =>
-              eb.exists(
-                eb
-                  .selectFrom('album_asset')
-                  .whereRef('album_asset.assetId', '=', 'asset.id')
-                  .where('album_asset.albumId', '=', asUuid(options.albumId!)),
-              ),
-            ),
-          )
-          .$if(!!options.isNotInAlbum && !options.albumId, (qb) =>
-            qb.where((eb) =>
-              eb.not(eb.exists((eb) => eb.selectFrom('album_asset').whereRef('album_asset.assetId', '=', 'asset.id'))),
-            ),
-          )
-          .$if(!!options.isInAlbum && !options.albumId, (qb) =>
-            qb.where((eb) =>
-              eb.exists((eb) => eb.selectFrom('album_asset').whereRef('album_asset.assetId', '=', 'asset.id')),
-            ),
-          )
-          .$if(!!options.spaceId, (qb) =>
-            qb.where((eb) =>
-              eb.or([
-                eb.exists(
-                  eb
-                    .selectFrom('shared_space_asset')
-                    .whereRef('shared_space_asset.assetId', '=', 'asset.id')
-                    .where('shared_space_asset.spaceId', '=', asUuid(options.spaceId!)),
-                ),
-                eb.exists(
-                  eb
-                    .selectFrom('shared_space_library')
-                    .whereRef('shared_space_library.libraryId', '=', 'asset.libraryId')
-                    .where('shared_space_library.spaceId', '=', asUuid(options.spaceId!)),
-                ),
-              ]),
-            ),
-          )
-          .$if(!!options.personIds?.length, (qb) => hasPeople(qb, options.personIds!))
-          .$if(!!options.spacePersonIds?.length, (qb) => hasSpacePeople(qb, options.spacePersonIds!))
-          .$if(!!options.identityIds?.length, (qb) => hasFaceIdentities(qb, options.identityIds!))
-          .$if(!!options.city, (qb) => qb.where('asset_exif.city', '=', options.city!))
-          .$if(!!options.country, (qb) => qb.where('asset_exif.country', '=', options.country!))
-          .$if(!!options.make, (qb) => qb.where('asset_exif.make', '=', options.make!))
-          .$if(!!options.model, (qb) => qb.where('asset_exif.model', '=', options.model!))
-          .$if(options.rating !== undefined, (qb) => qb.where('asset_exif.rating', '>=', options.rating!))
-          .$if(!!options.userIds && !options.timelineSpaceIds, (qb) =>
-            qb.where('asset.ownerId', '=', anyUuid(options.userIds!)),
-          )
-          .$if(!!options.userIds && !!options.timelineSpaceIds, (qb) =>
-            qb.where((eb) =>
-              eb.or([
-                eb('asset.ownerId', '=', anyUuid(options.userIds!)),
-                eb.exists(
-                  eb
-                    .selectFrom('shared_space_asset')
-                    .whereRef('shared_space_asset.assetId', '=', 'asset.id')
-                    .where('shared_space_asset.spaceId', '=', anyUuid(options.timelineSpaceIds!)),
-                ),
-                eb.exists(
-                  eb
-                    .selectFrom('shared_space_library')
-                    .whereRef('shared_space_library.libraryId', '=', 'asset.libraryId')
-                    .where('shared_space_library.spaceId', '=', anyUuid(options.timelineSpaceIds!)),
-                ),
-              ]),
-            ),
-          )
-          .$if(options.isFavorite !== undefined, (qb) => qb.where('asset.isFavorite', '=', options.isFavorite!))
+          // withStacked collapses a stack to its primary asset (filtered in Stage 1)
+          // and projects the [stackId, count] array for the columnar output.
           .$if(!!options.withStacked, (qb) =>
             qb
-              .where((eb) =>
-                eb.not(
-                  eb.exists(
-                    eb
-                      .selectFrom('stack')
-                      .whereRef('stack.id', '=', 'asset.stackId')
-                      .whereRef('stack.primaryAssetId', '!=', 'asset.id'),
-                  ),
-                ),
-              )
               .leftJoinLateral(
                 (eb) =>
                   eb
@@ -1452,14 +1373,6 @@ export class AssetRepository {
               )
               .select('stack'),
           )
-          .$if(!!options.assetType, (qb) => qb.where('asset.type', '=', options.assetType!))
-          .$if(options.isDuplicate !== undefined, (qb) =>
-            qb.where('asset.duplicateId', options.isDuplicate ? 'is not' : 'is', null),
-          )
-          .$if(!!options.isTrashed, (qb) => qb.where('asset.status', '!=', AssetStatus.Deleted))
-          .$if(!!options.tagIds?.length, (qb) => withAnyTagId(qb, options.tagIds!))
-          .$if(!!options.takenAfter, (qb) => qb.where('asset.localDateTime', '>=', new Date(options.takenAfter!)))
-          .$if(!!options.takenBefore, (qb) => qb.where('asset.localDateTime', '<=', new Date(options.takenBefore!)))
           .orderBy(
             options.orderBy == AssetOrderBy.CreatedAt
               ? sql`"createdAt"`
