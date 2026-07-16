@@ -102,9 +102,10 @@
   let videoPlayer: HTMLVideoElement | undefined = $state();
   const memoryViewerSource = $derived(isHistorySource ? 'history' : undefined);
   const exitRoute = $derived(getMemoryViewerExitRoute(memoryViewerSource));
-  const asHref = (asset: { id: string }) => Route.memoryViewer({ id: asset.id, source: memoryViewerSource });
+  const asHref = (asset: { id: string }, memory?: { id: string }) =>
+    Route.memoryViewer({ id: asset.id, memoryId: memory?.id, source: memoryViewerSource });
 
-  const handleNavigate = async (asset?: { id: string }) => {
+  const handleNavigate = async (asset?: { id: string }, memory?: { id: string }) => {
     if (assetViewerManager.isViewing) {
       return asset;
     }
@@ -113,7 +114,7 @@
       return;
     }
 
-    await goto(asHref(asset));
+    await goto(asHref(asset, memory));
   };
 
   const setProgressDuration = (asset: TimelineAsset) => {
@@ -123,10 +124,10 @@
     });
   };
 
-  const handleNextAsset = () => handleNavigate(current?.next?.asset);
-  const handlePreviousAsset = () => handleNavigate(current?.previous?.asset);
-  const handleNextMemory = () => handleNavigate(current?.nextMemory?.assets[0]);
-  const handlePreviousMemory = () => handleNavigate(current?.previousMemory?.assets[0]);
+  const handleNextAsset = () => handleNavigate(current?.next?.asset, current?.next?.memory);
+  const handlePreviousAsset = () => handleNavigate(current?.previous?.asset, current?.previous?.memory);
+  const handleNextMemory = () => handleNavigate(current?.nextMemory?.assets[0], current?.nextMemory);
+  const handlePreviousMemory = () => handleNavigate(current?.previousMemory?.assets[0], current?.previousMemory);
   const handleEscape = async () => goto(exitRoute);
   const handleSelectAll = () =>
     assetMultiSelectManager.selectAssets(current?.memory.assets.map((a) => toTimelineAsset(a)) || []);
@@ -300,7 +301,10 @@
 
   const loadFromParams = (page: Page | NavigationTarget | null) => {
     const assetId = page?.params?.assetId ?? page?.url.searchParams.get(QueryParameter.ID) ?? undefined;
-    return isHistorySource ? findMemoryAsset(historyMemories, assetId) : memoryManager.getMemoryAsset(assetId);
+    const memoryId = page?.url.searchParams.get(QueryParameter.MEMORY_ID) ?? undefined;
+    return isHistorySource
+      ? findMemoryAsset(historyMemories, assetId, memoryId)
+      : memoryManager.getMemoryAsset(assetId, memoryId);
   };
 
   const init = (target: Page | NavigationTarget | null) => {
@@ -465,7 +469,7 @@
         />
 
         {#each current.memory.assets as asset, index (asset.id)}
-          <a class="relative grow py-2" href={asHref(asset)} aria-label={$t('view')}>
+          <a class="relative grow py-2" href={asHref(asset, current.memory)} aria-label={$t('view')}>
             <span class="absolute inset-s-0 h-0.5 w-full bg-gray-500"></span>
             <span class="absolute inset-s-0 h-0.5 bg-white" style:width={`${toProgressPercentage(index)}%`}></span>
           </a>

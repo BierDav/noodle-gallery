@@ -57,7 +57,7 @@ describe('MemoryCard component', () => {
     expect(screen.getByTestId('memory-saved-indicator')).toBeInTheDocument();
 
     const link = screen.getByTestId('memory-card');
-    expect(link).toHaveAttribute('href', '/memory?id=asset-1&source=history');
+    expect(link).toHaveAttribute('href', '/memory?id=asset-1&memoryId=memory-id&source=history');
     expect(link).toHaveAttribute('aria-label', 'Seven years ago');
 
     const images = container.querySelectorAll('img');

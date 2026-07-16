@@ -542,7 +542,7 @@
     memoryManager.memories.map((memory) => ({
       id: memory.id,
       title: $memoryLaneTitle(memory),
-      href: Route.memoryViewer({ id: memory.assets[0].id }),
+      href: Route.memoryViewer({ id: memory.assets[0].id, memoryId: memory.id }),
       alt: $t('memory_lane_title', { values: { title: $getAltText(toTimelineAsset(memory.assets[0])) } }),
       src: getAssetMediaUrl({ id: memory.assets[0].id }),
     })),

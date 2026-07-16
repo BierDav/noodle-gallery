@@ -87,7 +87,7 @@ export const Route = {
 
   // memories
   memories: () => '/memories',
-  memoryViewer: (params?: { id?: string; source?: 'history' }) => '/memory' + asQueryString(params),
+  memoryViewer: (params?: { id?: string; memoryId?: string; source?: 'history' }) => '/memory' + asQueryString(params),
 
   // partners
   viewPartner: ({ id }: { id: string }) => `/partners/${id}`,

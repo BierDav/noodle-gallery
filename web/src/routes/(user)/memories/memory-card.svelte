@@ -24,7 +24,7 @@
 
 {#if firstAsset}
   <a
-    href={Route.memoryViewer({ id: firstAsset.id, source: 'history' })}
+    href={Route.memoryViewer({ id: firstAsset.id, memoryId: item.memory.id, source: 'history' })}
     aria-label={item.title}
     data-testid="memory-card"
     class="group relative block rounded-2xl border border-transparent p-5 hover:border-gray-200 hover:bg-gray-100 dark:hover:border-gray-800 dark:hover:bg-gray-900"

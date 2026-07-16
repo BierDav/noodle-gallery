@@ -48,6 +48,7 @@ export enum QueryParameter {
   ACTION = 'action',
   ID = 'id',
   IS_OPEN = 'isOpen',
+  MEMORY_ID = 'memoryId',
   OPEN_SETTING = 'openSetting',
   PREVIOUS_ROUTE = 'previousRoute',
   QUERY = 'query',

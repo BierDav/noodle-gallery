@@ -29,8 +29,8 @@ class MemoryManager {
 
   memories = $state<MemoryResponseDto[]>([]);
 
-  getMemoryAsset(assetId: string | undefined) {
-    return findMemoryAsset(this.memories, assetId);
+  getMemoryAsset(assetId: string | undefined, memoryId?: string) {
+    return findMemoryAsset(this.memories, assetId, memoryId);
   }
 
   hideAssetsFromMemory(ids: string[]) {
