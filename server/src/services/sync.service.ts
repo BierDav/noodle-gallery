@@ -837,6 +837,7 @@ export class SyncService extends BaseService {
         const backfill = this.syncRepository.libraryAsset.getBackfill(
           { ...options, afterUpdateId: startId, beforeUpdateId: endId },
           library.id,
+          options.userId,
         );
 
         for await (const { updateId, ...data } of backfill) {
