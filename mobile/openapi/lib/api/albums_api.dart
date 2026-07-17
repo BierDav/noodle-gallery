@@ -733,8 +733,10 @@ class AlbumsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
+  ///   Album ID
   ///
   /// * [String] userId (required):
+  ///   Album user ID, or \"me\" to reference the current user.
   Future<Response> removeUserFromAlbumWithHttpInfo(String id, String userId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/albums/{id}/user/{userId}'
@@ -770,8 +772,10 @@ class AlbumsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
+  ///   Album ID
   ///
   /// * [String] userId (required):
+  ///   Album user ID, or \"me\" to reference the current user.
   Future<void> removeUserFromAlbum(String id, String userId, { Future<void>? abortTrigger, }) async {
     final response = await removeUserFromAlbumWithHttpInfo(id, userId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -850,8 +854,10 @@ class AlbumsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
+  ///   Album ID
   ///
   /// * [String] userId (required):
+  ///   Album user ID, or \"me\" to reference the current user.
   ///
   /// * [UpdateAlbumUserDto] updateAlbumUserDto (required):
   Future<Response> updateAlbumUserWithHttpInfo(String id, String userId, UpdateAlbumUserDto updateAlbumUserDto, { Future<void>? abortTrigger, }) async {
@@ -889,8 +895,10 @@ class AlbumsApi {
   /// Parameters:
   ///
   /// * [String] id (required):
+  ///   Album ID
   ///
   /// * [String] userId (required):
+  ///   Album user ID, or \"me\" to reference the current user.
   ///
   /// * [UpdateAlbumUserDto] updateAlbumUserDto (required):
   Future<void> updateAlbumUser(String id, String userId, UpdateAlbumUserDto updateAlbumUserDto, { Future<void>? abortTrigger, }) async {
