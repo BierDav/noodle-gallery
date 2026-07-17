@@ -13,26 +13,42 @@ part of openapi.api;
 class MergePersonDto {
   /// Returns a new [MergePersonDto] instance.
   MergePersonDto({
+    this.confirmCrossOwner = const Optional.absent(),
     this.ids = const [],
   });
+
+  /// Acknowledgement that this merge will combine two people belonging to another user, which cannot be undone. Required to commit such a merge.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  Optional<bool?> confirmCrossOwner;
 
   /// Person IDs to merge
   List<String> ids;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MergePersonDto &&
+    other.confirmCrossOwner == confirmCrossOwner &&
     _deepEquality.equals(other.ids, ids);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (confirmCrossOwner == null ? 0 : confirmCrossOwner!.hashCode) +
     (ids.hashCode);
 
   @override
-  String toString() => 'MergePersonDto[ids=$ids]';
+  String toString() => 'MergePersonDto[confirmCrossOwner=$confirmCrossOwner, ids=$ids]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.confirmCrossOwner.isPresent) {
+      final value = this.confirmCrossOwner.value;
+      json[r'confirmCrossOwner'] = value;
+    }
       json[r'ids'] = this.ids;
     return json;
   }
@@ -46,6 +62,7 @@ class MergePersonDto {
       final json = value.cast<String, dynamic>();
 
       return MergePersonDto(
+        confirmCrossOwner: json.containsKey(r'confirmCrossOwner') ? Optional.present(mapValueOfType<bool>(json, r'confirmCrossOwner')) : const Optional.absent(),
         ids: json[r'ids'] is Iterable
             ? (json[r'ids'] as Iterable).cast<String>().toList(growable: false)
             : const [],

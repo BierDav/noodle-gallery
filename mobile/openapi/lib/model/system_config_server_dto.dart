@@ -25,7 +25,7 @@ class SystemConfigServerDto {
   /// Login page message
   String loginPageMessage;
 
-  /// Allow merging people/faces across different owners and external libraries
+  /// Allow a people merge to combine two of another user's people, or two people in a shared space the actor cannot edit, into one (a destructive collapse). Re-points that only move a single person to another identity are always allowed. When off, such combining merges are blocked; when on, each still requires an explicit confirmation.
   bool mergePeopleAcrossOwners;
 
   /// Public users
