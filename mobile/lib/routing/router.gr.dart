@@ -1874,6 +1874,162 @@ class SharedLinkRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [SpaceAlbumDetailPage]
+class SpaceAlbumDetailRoute extends PageRouteInfo<SpaceAlbumDetailRouteArgs> {
+  SpaceAlbumDetailRoute({
+    Key? key,
+    required String spaceId,
+    required String albumId,
+    required bool canEdit,
+    List<PageRouteInfo>? children,
+  }) : super(
+         SpaceAlbumDetailRoute.name,
+         args: SpaceAlbumDetailRouteArgs(
+           key: key,
+           spaceId: spaceId,
+           albumId: albumId,
+           canEdit: canEdit,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'SpaceAlbumDetailRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<SpaceAlbumDetailRouteArgs>();
+      return SpaceAlbumDetailPage(
+        key: args.key,
+        spaceId: args.spaceId,
+        albumId: args.albumId,
+        canEdit: args.canEdit,
+      );
+    },
+  );
+}
+
+class SpaceAlbumDetailRouteArgs {
+  const SpaceAlbumDetailRouteArgs({
+    this.key,
+    required this.spaceId,
+    required this.albumId,
+    required this.canEdit,
+  });
+
+  final Key? key;
+
+  final String spaceId;
+
+  final String albumId;
+
+  final bool canEdit;
+
+  @override
+  String toString() {
+    return 'SpaceAlbumDetailRouteArgs{key: $key, spaceId: $spaceId, albumId: $albumId, canEdit: $canEdit}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! SpaceAlbumDetailRouteArgs) return false;
+    return key == other.key &&
+        spaceId == other.spaceId &&
+        albumId == other.albumId &&
+        canEdit == other.canEdit;
+  }
+
+  @override
+  int get hashCode =>
+      key.hashCode ^ spaceId.hashCode ^ albumId.hashCode ^ canEdit.hashCode;
+}
+
+/// generated route for
+/// [SpaceAlbumsPage]
+class SpaceAlbumsRoute extends PageRouteInfo<SpaceAlbumsRouteArgs> {
+  SpaceAlbumsRoute({
+    Key? key,
+    required String spaceId,
+    required bool canEdit,
+    void Function(String)? onToggle,
+    void Function(String)? onUnlink,
+    VoidCallback? onLink,
+    List<PageRouteInfo>? children,
+  }) : super(
+         SpaceAlbumsRoute.name,
+         args: SpaceAlbumsRouteArgs(
+           key: key,
+           spaceId: spaceId,
+           canEdit: canEdit,
+           onToggle: onToggle,
+           onUnlink: onUnlink,
+           onLink: onLink,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'SpaceAlbumsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<SpaceAlbumsRouteArgs>();
+      return SpaceAlbumsPage(
+        key: args.key,
+        spaceId: args.spaceId,
+        canEdit: args.canEdit,
+        onToggle: args.onToggle,
+        onUnlink: args.onUnlink,
+        onLink: args.onLink,
+      );
+    },
+  );
+}
+
+class SpaceAlbumsRouteArgs {
+  const SpaceAlbumsRouteArgs({
+    this.key,
+    required this.spaceId,
+    required this.canEdit,
+    this.onToggle,
+    this.onUnlink,
+    this.onLink,
+  });
+
+  final Key? key;
+
+  final String spaceId;
+
+  final bool canEdit;
+
+  final void Function(String)? onToggle;
+
+  final void Function(String)? onUnlink;
+
+  final VoidCallback? onLink;
+
+  @override
+  String toString() {
+    return 'SpaceAlbumsRouteArgs{key: $key, spaceId: $spaceId, canEdit: $canEdit, onToggle: $onToggle, onUnlink: $onUnlink, onLink: $onLink}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! SpaceAlbumsRouteArgs) return false;
+    return key == other.key &&
+        spaceId == other.spaceId &&
+        canEdit == other.canEdit &&
+        onLink == other.onLink;
+  }
+
+  @override
+  int get hashCode =>
+      key.hashCode ^ spaceId.hashCode ^ canEdit.hashCode ^ onLink.hashCode;
+}
+
+/// generated route for
 /// [SpaceDetailPage]
 class SpaceDetailRoute extends PageRouteInfo<SpaceDetailRouteArgs> {
   SpaceDetailRoute({
@@ -1918,6 +2074,82 @@ class SpaceDetailRouteArgs {
 
   @override
   int get hashCode => key.hashCode ^ spaceId.hashCode;
+}
+
+/// generated route for
+/// [SpaceLinkAlbumPage]
+class SpaceLinkAlbumRoute extends PageRouteInfo<SpaceLinkAlbumRouteArgs> {
+  SpaceLinkAlbumRoute({
+    Key? key,
+    required String spaceId,
+    required List<String> linkedAlbumIds,
+    void Function(List<String>)? onAlbumsPicked,
+    List<PageRouteInfo>? children,
+  }) : super(
+         SpaceLinkAlbumRoute.name,
+         args: SpaceLinkAlbumRouteArgs(
+           key: key,
+           spaceId: spaceId,
+           linkedAlbumIds: linkedAlbumIds,
+           onAlbumsPicked: onAlbumsPicked,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'SpaceLinkAlbumRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<SpaceLinkAlbumRouteArgs>();
+      return SpaceLinkAlbumPage(
+        key: args.key,
+        spaceId: args.spaceId,
+        linkedAlbumIds: args.linkedAlbumIds,
+        onAlbumsPicked: args.onAlbumsPicked,
+      );
+    },
+  );
+}
+
+class SpaceLinkAlbumRouteArgs {
+  const SpaceLinkAlbumRouteArgs({
+    this.key,
+    required this.spaceId,
+    required this.linkedAlbumIds,
+    this.onAlbumsPicked,
+  });
+
+  final Key? key;
+
+  final String spaceId;
+
+  final List<String> linkedAlbumIds;
+
+  final void Function(List<String>)? onAlbumsPicked;
+
+  @override
+  String toString() {
+    return 'SpaceLinkAlbumRouteArgs{key: $key, spaceId: $spaceId, linkedAlbumIds: $linkedAlbumIds, onAlbumsPicked: $onAlbumsPicked}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! SpaceLinkAlbumRouteArgs) return false;
+    return key == other.key &&
+        spaceId == other.spaceId &&
+        const ListEquality<String>().equals(
+          linkedAlbumIds,
+          other.linkedAlbumIds,
+        );
+  }
+
+  @override
+  int get hashCode =>
+      key.hashCode ^
+      spaceId.hashCode ^
+      const ListEquality<String>().hash(linkedAlbumIds);
 }
 
 /// generated route for

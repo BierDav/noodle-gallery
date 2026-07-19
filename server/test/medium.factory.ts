@@ -30,6 +30,7 @@ import { ConfigRepository } from 'src/repositories/config.repository';
 import { CronRepository } from 'src/repositories/cron.repository';
 import { CryptoRepository } from 'src/repositories/crypto.repository';
 import { DatabaseRepository } from 'src/repositories/database.repository';
+import { DownloadRepository } from 'src/repositories/download.repository';
 import { EmailRepository } from 'src/repositories/email.repository';
 import { EventRepository } from 'src/repositories/event.repository';
 import { FaceIdentityRepository } from 'src/repositories/face-identity.repository';
@@ -394,6 +395,39 @@ export class MediumTestContext<S extends BaseService = BaseService> {
       .executeTakeFirstOrThrow();
     return { spaceAsset: result, result };
   }
+
+  async newSharedSpaceAlbum(dto: {
+    spaceId: string;
+    albumId: string;
+    showInTimeline?: boolean;
+    addedById?: string | null;
+  }) {
+    const result = await this.database
+      .insertInto('shared_space_album')
+      .values({
+        spaceId: dto.spaceId,
+        albumId: dto.albumId,
+        showInTimeline: dto.showInTimeline ?? true,
+        addedById: dto.addedById ?? null,
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow();
+    return { spaceAlbum: result, result };
+  }
+
+  async newAlbumSpaceAsset(dto: { albumId: string; assetId: string; spaceId: string; addedById?: string | null }) {
+    const result = await this.database
+      .insertInto('album_space_asset')
+      .values({
+        albumId: dto.albumId,
+        assetId: dto.assetId,
+        spaceId: dto.spaceId,
+        addedById: dto.addedById ?? null,
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow();
+    return { albumSpaceAsset: result, result };
+  }
 }
 
 export class SyncTestContext extends MediumTestContext<SyncService> {
@@ -508,6 +542,7 @@ const newRealRepository = <T>(key: ClassConstructor<T>, db: Kysely<DB>): T => {
     case AssetRepository:
     case AssetEditRepository:
     case AssetJobRepository:
+    case DownloadRepository:
     case FaceIdentityRepository:
     case FaceRepairRepository:
     case IntegrityRepository:

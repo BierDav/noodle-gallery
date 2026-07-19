@@ -197,6 +197,8 @@ class ApiClient {
           return AlbumNameDto.fromJson(value);
         case 'AlbumResponseDto':
           return AlbumResponseDto.fromJson(value);
+        case 'AlbumSharedSpaceLinkResponseDto':
+          return AlbumSharedSpaceLinkResponseDto.fromJson(value);
         case 'AlbumStatisticsResponseDto':
           return AlbumStatisticsResponseDto.fromJson(value);
         case 'AlbumUserAddDto':
@@ -717,14 +719,20 @@ class ApiClient {
           return SharedLinksUpdate.fromJson(value);
         case 'SharedSpaceActivityResponseDto':
           return SharedSpaceActivityResponseDto.fromJson(value);
+        case 'SharedSpaceAlbumLinkUpdateDto':
+          return SharedSpaceAlbumLinkUpdateDto.fromJson(value);
         case 'SharedSpaceAssetAddDto':
           return SharedSpaceAssetAddDto.fromJson(value);
+        case 'SharedSpaceAssetLinkedAlbumDto':
+          return SharedSpaceAssetLinkedAlbumDto.fromJson(value);
         case 'SharedSpaceAssetRemoveDto':
           return SharedSpaceAssetRemoveDto.fromJson(value);
         case 'SharedSpaceCreateDto':
           return SharedSpaceCreateDto.fromJson(value);
         case 'SharedSpaceLibraryLinkDto':
           return SharedSpaceLibraryLinkDto.fromJson(value);
+        case 'SharedSpaceLinkedAlbumDto':
+          return SharedSpaceLinkedAlbumDto.fromJson(value);
         case 'SharedSpaceLinkedLibraryDto':
           return SharedSpaceLinkedLibraryDto.fromJson(value);
         case 'SharedSpaceMemberCreateDto':
@@ -859,6 +867,10 @@ class ApiClient {
           return SyncPersonV1.fromJson(value);
         case 'SyncRequestType':
           return SyncRequestTypeTypeTransformer().decode(value);
+        case 'SyncSharedSpaceAlbumLinkDeleteV1':
+          return SyncSharedSpaceAlbumLinkDeleteV1.fromJson(value);
+        case 'SyncSharedSpaceAlbumLinkV1':
+          return SyncSharedSpaceAlbumLinkV1.fromJson(value);
         case 'SyncSharedSpaceDeleteV1':
           return SyncSharedSpaceDeleteV1.fromJson(value);
         case 'SyncSharedSpaceLibraryDeleteV1':

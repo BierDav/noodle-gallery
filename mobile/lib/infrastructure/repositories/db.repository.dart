@@ -28,6 +28,9 @@ import 'package:immich_mobile/infrastructure/entities/remote_asset.entity.drift.
 import 'package:immich_mobile/infrastructure/entities/remote_asset_cloud_id.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/settings.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/shared_space.entity.dart';
+import 'package:immich_mobile/infrastructure/entities/shared_space_album.entity.dart';
+import 'package:immich_mobile/infrastructure/entities/shared_space_album_asset.entity.dart';
+import 'package:immich_mobile/infrastructure/entities/shared_space_album_link.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/shared_space_asset.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/shared_space_library.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/shared_space_member.entity.dart';
@@ -67,6 +70,9 @@ import 'package:sqlite_async/sqlite_async.dart';
     SharedSpaceAssetEntity,
     LibraryEntity,
     SharedSpaceLibraryEntity,
+    SharedSpaceAlbumEntity,
+    SharedSpaceAlbumLinkEntity,
+    SharedSpaceAlbumAssetEntity,
     MemoryEntity,
     MemoryAssetEntity,
     StackEntity,
@@ -130,7 +136,7 @@ class Drift extends $Drift {
   }
 
   @override
-  int get schemaVersion => 35;
+  int get schemaVersion => 36;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -357,6 +363,19 @@ class Drift extends $Drift {
               // are already at v34, so the fork's v31-v34 must stay put).
               from34To35: (m, v35) async {
                 await m.createIndex(v35.idxRemoteAssetUploaded);
+              },
+              // gallery-fork: shared-space album tables. Originally authored as the
+              // fork's v35, renumbered to v36 because upstream v3.0.2's uploaded_at
+              // index took v35 during the rebase (installed clients already ran the
+              // fork's v31-v34 and the upstream index as v35).
+              from35To36: (m, v36) async {
+                await m.createTable(v36.sharedSpaceAlbumEntity);
+                await m.createTable(v36.sharedSpaceAlbumLinkEntity);
+                await m.createTable(v36.sharedSpaceAlbumAssetEntity);
+                await m.createIndex(v36.idxSharedSpaceAlbumLinkSpace);
+                await m.createIndex(v36.idxSharedSpaceAlbumLinkAlbumSpace);
+                await m.createIndex(v36.idxSharedSpaceAlbumAssetAlbum);
+                await m.createIndex(v36.idxSharedSpaceAlbumAssetAssetAlbum);
               },
             ),
           ),

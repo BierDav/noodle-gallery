@@ -11,6 +11,7 @@
     clearFilters,
     createFilterState,
     getActiveFilterCount,
+    loadFilterCollapsed,
     type FilterPanelConfig,
     type FilterState,
   } from '$lib/components/filter-panel/filter-panel';
@@ -343,6 +344,9 @@
   };
 
   const hasActiveFilters = $derived(getActiveFilterCount(filters) > 0 || showSearchResults);
+
+  // Filter-panel collapse is driven here so a header filter button can reclaim the panel's space.
+  let filterCollapsed = $state(loadFilterCollapsed());
   const totalAssetCount = $derived(timelineManager?.assetCount ?? 0);
 
   const handleAddAllToCollection = () => {
@@ -554,6 +558,8 @@
     {#key showSearchResults ? `photos-search-${committedQuery.trim()}:${$lang}` : 'photos-browse'}
       <FilterPanel
         bind:filters
+        bind:collapsed={filterCollapsed}
+        externalToggle
         config={filterConfig}
         timeBuckets={smartFacetBuckets}
         storageKey="gallery-filter-visible-sections-photos"
@@ -585,6 +591,9 @@
         showGrouping={!showSearchResults && !assetMultiSelectManager.selectionActive}
         showFilters={hasActiveFilters}
         filters={photoFiltersBar}
+        showFilterButton={filterCollapsed && !isTimelineEmpty && !assetMultiSelectManager.selectionActive}
+        filterActive={getActiveFilterCount(filters) > 0}
+        onExpandFilters={() => (filterCollapsed = false)}
       />
       {#if showSearchResults}
         <SmartSearchResults
@@ -612,7 +621,12 @@
           withStacked
         >
           {#if authManager.preferences.memories.enabled && !hasActiveFilters}
-            <ImageCarousel {items} />
+            <!-- In month/year grouping the timeline renders large representative cards; add breathing
+                 room below the memories strip so those cards don't hug it. The wrapper's height feeds
+                 the timeline's measured topSectionHeight, so this shifts the cards down cleanly. -->
+            <div class={{ 'pb-8': timelineGrouping !== 'day' }}>
+              <ImageCarousel {items} />
+            </div>
           {/if}
           {#snippet empty()}
             <EmptyPlaceholder

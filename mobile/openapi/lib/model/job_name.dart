@@ -100,10 +100,13 @@ class JobName {
   static const sharedSpaceFaceMatchPage = JobName._(r'SharedSpaceFaceMatchPage');
   static const sharedSpaceFaceMatchFromBackfill = JobName._(r'SharedSpaceFaceMatchFromBackfill');
   static const sharedSpaceLibraryFaceSync = JobName._(r'SharedSpaceLibraryFaceSync');
+  static const sharedSpaceAlbumFaceSync = JobName._(r'SharedSpaceAlbumFaceSync');
   static const sharedSpaceIdentityReconciliation = JobName._(r'SharedSpaceIdentityReconciliation');
   static const sharedSpacePersonDedup = JobName._(r'SharedSpacePersonDedup');
   static const sharedSpacePersonMetadataBackfill = JobName._(r'SharedSpacePersonMetadataBackfill');
   static const sharedSpaceBulkAddAssets = JobName._(r'SharedSpaceBulkAddAssets');
+  static const sharedSpaceAlbumGrantReconcile = JobName._(r'SharedSpaceAlbumGrantReconcile');
+  static const sharedSpaceAlbumGrantReconcileSweep = JobName._(r'SharedSpaceAlbumGrantReconcileSweep');
   static const assetClassifyQueueAll = JobName._(r'AssetClassifyQueueAll');
   static const assetClassify = JobName._(r'AssetClassify');
 
@@ -186,10 +189,13 @@ class JobName {
     sharedSpaceFaceMatchPage,
     sharedSpaceFaceMatchFromBackfill,
     sharedSpaceLibraryFaceSync,
+    sharedSpaceAlbumFaceSync,
     sharedSpaceIdentityReconciliation,
     sharedSpacePersonDedup,
     sharedSpacePersonMetadataBackfill,
     sharedSpaceBulkAddAssets,
+    sharedSpaceAlbumGrantReconcile,
+    sharedSpaceAlbumGrantReconcileSweep,
     assetClassifyQueueAll,
     assetClassify,
   ];
@@ -307,10 +313,13 @@ class JobNameTypeTransformer {
         case r'SharedSpaceFaceMatchPage': return JobName.sharedSpaceFaceMatchPage;
         case r'SharedSpaceFaceMatchFromBackfill': return JobName.sharedSpaceFaceMatchFromBackfill;
         case r'SharedSpaceLibraryFaceSync': return JobName.sharedSpaceLibraryFaceSync;
+        case r'SharedSpaceAlbumFaceSync': return JobName.sharedSpaceAlbumFaceSync;
         case r'SharedSpaceIdentityReconciliation': return JobName.sharedSpaceIdentityReconciliation;
         case r'SharedSpacePersonDedup': return JobName.sharedSpacePersonDedup;
         case r'SharedSpacePersonMetadataBackfill': return JobName.sharedSpacePersonMetadataBackfill;
         case r'SharedSpaceBulkAddAssets': return JobName.sharedSpaceBulkAddAssets;
+        case r'SharedSpaceAlbumGrantReconcile': return JobName.sharedSpaceAlbumGrantReconcile;
+        case r'SharedSpaceAlbumGrantReconcileSweep': return JobName.sharedSpaceAlbumGrantReconcileSweep;
         case r'AssetClassifyQueueAll': return JobName.assetClassifyQueueAll;
         case r'AssetClassify': return JobName.assetClassify;
         default:
