@@ -266,7 +266,7 @@ class AssetResponseDto {
     if (this.duration != null) {
       json[r'duration'] = this.duration;
     } else {
-    //  json[r'duration'] = null;
+      json[r'duration'] = null;
     }
     if (this.exifInfo.isPresent) {
       final value = this.exifInfo.value;
@@ -278,7 +278,7 @@ class AssetResponseDto {
     if (this.height != null) {
       json[r'height'] = this.height;
     } else {
-    //  json[r'height'] = null;
+      json[r'height'] = null;
     }
       json[r'id'] = this.id;
       json[r'isArchived'] = this.isArchived;
@@ -329,7 +329,7 @@ class AssetResponseDto {
     if (this.thumbhash != null) {
       json[r'thumbhash'] = this.thumbhash;
     } else {
-    //  json[r'thumbhash'] = null;
+      json[r'thumbhash'] = null;
     }
       json[r'type'] = this.type;
       json[r'updatedAt'] = this.updatedAt.toUtc().toIso8601String();
@@ -337,7 +337,7 @@ class AssetResponseDto {
     if (this.width != null) {
       json[r'width'] = this.width;
     } else {
-    //  json[r'width'] = null;
+      json[r'width'] = null;
     }
     return json;
   }

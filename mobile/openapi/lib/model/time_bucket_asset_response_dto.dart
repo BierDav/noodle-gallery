@@ -188,16 +188,16 @@ class TimeBucketAssetResponseDto {
 
       return TimeBucketAssetResponseDto(
         city: json.containsKey(r'city') ? Optional.present(json[r'city'] is Iterable
-            ? (json[r'city'] as Iterable).cast<String>().toList(growable: false)
+            ? (json[r'city'] as Iterable).cast<String?>().toList(growable: false)
             : const []) : const Optional.absent(),
         country: json.containsKey(r'country') ? Optional.present(json[r'country'] is Iterable
-            ? (json[r'country'] as Iterable).cast<String>().toList(growable: false)
+            ? (json[r'country'] as Iterable).cast<String?>().toList(growable: false)
             : const []) : const Optional.absent(),
         createdAt: json[r'createdAt'] is Iterable
             ? (json[r'createdAt'] as Iterable).cast<String>().toList(growable: false)
             : const [],
         duration: json[r'duration'] is Iterable
-            ? (json[r'duration'] as Iterable).cast<int>().toList(growable: false)
+            ? (json[r'duration'] as Iterable).cast<int?>().toList(growable: false)
             : const [],
         fileCreatedAt: json[r'fileCreatedAt'] is Iterable
             ? (json[r'fileCreatedAt'] as Iterable).cast<String>().toList(growable: false)
@@ -215,22 +215,22 @@ class TimeBucketAssetResponseDto {
             ? (json[r'isTrashed'] as Iterable).cast<bool>().toList(growable: false)
             : const [],
         latitude: json.containsKey(r'latitude') ? Optional.present(json[r'latitude'] is Iterable
-            ? (json[r'latitude'] as Iterable).cast<num>().toList(growable: false)
+            ? (json[r'latitude'] as Iterable).cast<num?>().toList(growable: false)
             : const []) : const Optional.absent(),
         livePhotoVideoId: json[r'livePhotoVideoId'] is Iterable
-            ? (json[r'livePhotoVideoId'] as Iterable).cast<String>().toList(growable: false)
+            ? (json[r'livePhotoVideoId'] as Iterable).cast<String?>().toList(growable: false)
             : const [],
         localOffsetHours: json[r'localOffsetHours'] is Iterable
             ? (json[r'localOffsetHours'] as Iterable).cast<num>().toList(growable: false)
             : const [],
         longitude: json.containsKey(r'longitude') ? Optional.present(json[r'longitude'] is Iterable
-            ? (json[r'longitude'] as Iterable).cast<num>().toList(growable: false)
+            ? (json[r'longitude'] as Iterable).cast<num?>().toList(growable: false)
             : const []) : const Optional.absent(),
         ownerId: json[r'ownerId'] is Iterable
             ? (json[r'ownerId'] as Iterable).cast<String>().toList(growable: false)
             : const [],
         projectionType: json[r'projectionType'] is Iterable
-            ? (json[r'projectionType'] as Iterable).cast<String>().toList(growable: false)
+            ? (json[r'projectionType'] as Iterable).cast<String?>().toList(growable: false)
             : const [],
         ratio: json[r'ratio'] is Iterable
             ? (json[r'ratio'] as Iterable).cast<num>().toList(growable: false)
@@ -241,7 +241,7 @@ class TimeBucketAssetResponseDto {
             ).toList()
           :  const []) : const Optional.absent(),
         thumbhash: json[r'thumbhash'] is Iterable
-            ? (json[r'thumbhash'] as Iterable).cast<String>().toList(growable: false)
+            ? (json[r'thumbhash'] as Iterable).cast<String?>().toList(growable: false)
             : const [],
         visibility: AssetVisibility.listFromJson(json[r'visibility']),
       );

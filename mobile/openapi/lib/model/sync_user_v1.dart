@@ -77,7 +77,7 @@ class SyncUserV1 {
         ? this.deletedAt!.millisecondsSinceEpoch
         : this.deletedAt!.toUtc().toIso8601String();
     } else {
-    //  json[r'deletedAt'] = null;
+      json[r'deletedAt'] = null;
     }
       json[r'email'] = this.email;
       json[r'hasProfileImage'] = this.hasProfileImage;

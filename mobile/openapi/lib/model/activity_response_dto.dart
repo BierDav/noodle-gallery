@@ -64,7 +64,7 @@ class ActivityResponseDto {
     if (this.assetId != null) {
       json[r'assetId'] = this.assetId;
     } else {
-    //  json[r'assetId'] = null;
+      json[r'assetId'] = null;
     }
     if (this.comment.isPresent) {
       final value = this.comment.value;

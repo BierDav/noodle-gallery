@@ -158,7 +158,7 @@ class PersonResponseDto {
     if (this.birthDate != null) {
       json[r'birthDate'] = _dateFormatter.format(this.birthDate!);
     } else {
-    //  json[r'birthDate'] = null;
+      json[r'birthDate'] = null;
     }
     if (this.color.isPresent) {
       final value = this.color.value;
