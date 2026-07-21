@@ -345,10 +345,12 @@
   };
 
   $effect(() => {
-    if (videoPlayer) {
-      videoPlayer.muted = $videoViewerMuted;
-      videoPlayer.volume = $videoViewerVolume;
+    if (!videoPlayer) {
+      return;
     }
+
+    videoPlayer.muted = $videoViewerMuted;
+    videoPlayer.volume = $videoViewerVolume;
   });
 </script>
 

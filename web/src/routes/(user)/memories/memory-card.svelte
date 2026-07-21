@@ -88,7 +88,7 @@
 
       {#if item.memory.isSaved}
         <div
-          class="absolute start-2 top-2 z-10 flex size-7 items-center justify-center rounded-full bg-white/70 text-immich-primary shadow-sm backdrop-blur-sm dark:bg-gray-800/70"
+          class="absolute inset-s-2 top-2 z-10 flex size-7 items-center justify-center rounded-full bg-white/70 text-immich-primary shadow-sm backdrop-blur-sm dark:bg-gray-800/70"
           data-testid="memory-saved-indicator"
         >
           <Icon icon={mdiHeart} size="15" />
@@ -99,7 +99,7 @@
     <div class="mt-4">
       <div class="space-y-0.5">
         <p
-          class="line-clamp-2 w-full text-lg font-semibold leading-6 text-black group-hover:text-primary dark:text-white"
+          class="line-clamp-2 w-full text-lg/6 font-semibold text-black group-hover:text-primary dark:text-white"
           title={item.title}
         >
           {item.title}

@@ -93,7 +93,7 @@
           <section class="space-y-2" aria-labelledby={`memories-${group.key}`}>
             <h2
               id={`memories-${group.key}`}
-              class="px-5 text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+              class="px-5 text-xs font-medium tracking-wider text-gray-500 uppercase dark:text-gray-400"
             >
               {group.label}
             </h2>
