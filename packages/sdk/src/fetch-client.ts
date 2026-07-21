@@ -2680,6 +2680,8 @@ export type SharedSpaceMemberResponseDto = {
     userId: string;
 };
 export type SharedSpaceResponseDto = {
+    /** Number of linked albums */
+    albumCount?: number;
     /** Number of assets */
     assetCount?: number;
     /** Space color */
