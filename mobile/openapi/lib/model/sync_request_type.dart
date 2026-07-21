@@ -11,107 +11,68 @@
 part of openapi.api;
 
 /// Sync request type
-class SyncRequestType {
-  /// Instantiate a new enum with the provided [value].
-  const SyncRequestType._(this.value);
+enum SyncRequestType {
+  albumsV1._(r'AlbumsV1'),
+  albumsV2._(r'AlbumsV2'),
+  albumUsersV1._(r'AlbumUsersV1'),
+  albumToAssetsV1._(r'AlbumToAssetsV1'),
+  albumAssetsV1._(r'AlbumAssetsV1'),
+  albumAssetsV2._(r'AlbumAssetsV2'),
+  albumAssetExifsV1._(r'AlbumAssetExifsV1'),
+  assetsV1._(r'AssetsV1'),
+  assetsV2._(r'AssetsV2'),
+  assetExifsV1._(r'AssetExifsV1'),
+  assetEditsV1._(r'AssetEditsV1'),
+  assetMetadataV1._(r'AssetMetadataV1'),
+  assetOcrV1._(r'AssetOcrV1'),
+  authUsersV1._(r'AuthUsersV1'),
+  memoriesV1._(r'MemoriesV1'),
+  memoryToAssetsV1._(r'MemoryToAssetsV1'),
+  partnersV1._(r'PartnersV1'),
+  partnerAssetsV1._(r'PartnerAssetsV1'),
+  partnerAssetsV2._(r'PartnerAssetsV2'),
+  partnerAssetExifsV1._(r'PartnerAssetExifsV1'),
+  partnerStacksV1._(r'PartnerStacksV1'),
+  stacksV1._(r'StacksV1'),
+  usersV1._(r'UsersV1'),
+  peopleV1._(r'PeopleV1'),
+  assetFacesV1._(r'AssetFacesV1'),
+  assetFacesV2._(r'AssetFacesV2'),
+  userMetadataV1._(r'UserMetadataV1'),
+  sharedSpacesV1._(r'SharedSpacesV1'),
+  sharedSpaceMembersV1._(r'SharedSpaceMembersV1'),
+  sharedSpaceAssetsV1._(r'SharedSpaceAssetsV1'),
+  sharedSpaceAssetExifsV1._(r'SharedSpaceAssetExifsV1'),
+  sharedSpaceToAssetsV1._(r'SharedSpaceToAssetsV1'),
+  librariesV1._(r'LibrariesV1'),
+  libraryAssetsV1._(r'LibraryAssetsV1'),
+  libraryAssetExifsV1._(r'LibraryAssetExifsV1'),
+  sharedSpaceLibrariesV1._(r'SharedSpaceLibrariesV1'),
+  sharedSpaceAlbumsV1._(r'SharedSpaceAlbumsV1'),
+  sharedSpaceAlbumLinksV1._(r'SharedSpaceAlbumLinksV1'),
+  sharedSpaceAlbumToAssetsV1._(r'SharedSpaceAlbumToAssetsV1'),
+  sharedSpaceAlbumAssetsV1._(r'SharedSpaceAlbumAssetsV1'),
+  sharedSpaceAlbumAssetExifsV1._(r'SharedSpaceAlbumAssetExifsV1'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const SyncRequestType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const albumsV1 = SyncRequestType._(r'AlbumsV1');
-  static const albumsV2 = SyncRequestType._(r'AlbumsV2');
-  static const albumUsersV1 = SyncRequestType._(r'AlbumUsersV1');
-  static const albumToAssetsV1 = SyncRequestType._(r'AlbumToAssetsV1');
-  static const albumAssetsV1 = SyncRequestType._(r'AlbumAssetsV1');
-  static const albumAssetsV2 = SyncRequestType._(r'AlbumAssetsV2');
-  static const albumAssetExifsV1 = SyncRequestType._(r'AlbumAssetExifsV1');
-  static const assetsV1 = SyncRequestType._(r'AssetsV1');
-  static const assetsV2 = SyncRequestType._(r'AssetsV2');
-  static const assetExifsV1 = SyncRequestType._(r'AssetExifsV1');
-  static const assetEditsV1 = SyncRequestType._(r'AssetEditsV1');
-  static const assetMetadataV1 = SyncRequestType._(r'AssetMetadataV1');
-  static const assetOcrV1 = SyncRequestType._(r'AssetOcrV1');
-  static const authUsersV1 = SyncRequestType._(r'AuthUsersV1');
-  static const memoriesV1 = SyncRequestType._(r'MemoriesV1');
-  static const memoryToAssetsV1 = SyncRequestType._(r'MemoryToAssetsV1');
-  static const partnersV1 = SyncRequestType._(r'PartnersV1');
-  static const partnerAssetsV1 = SyncRequestType._(r'PartnerAssetsV1');
-  static const partnerAssetsV2 = SyncRequestType._(r'PartnerAssetsV2');
-  static const partnerAssetExifsV1 = SyncRequestType._(r'PartnerAssetExifsV1');
-  static const partnerStacksV1 = SyncRequestType._(r'PartnerStacksV1');
-  static const stacksV1 = SyncRequestType._(r'StacksV1');
-  static const usersV1 = SyncRequestType._(r'UsersV1');
-  static const peopleV1 = SyncRequestType._(r'PeopleV1');
-  static const assetFacesV1 = SyncRequestType._(r'AssetFacesV1');
-  static const assetFacesV2 = SyncRequestType._(r'AssetFacesV2');
-  static const userMetadataV1 = SyncRequestType._(r'UserMetadataV1');
-  static const sharedSpacesV1 = SyncRequestType._(r'SharedSpacesV1');
-  static const sharedSpaceMembersV1 = SyncRequestType._(r'SharedSpaceMembersV1');
-  static const sharedSpaceAssetsV1 = SyncRequestType._(r'SharedSpaceAssetsV1');
-  static const sharedSpaceAssetExifsV1 = SyncRequestType._(r'SharedSpaceAssetExifsV1');
-  static const sharedSpaceToAssetsV1 = SyncRequestType._(r'SharedSpaceToAssetsV1');
-  static const librariesV1 = SyncRequestType._(r'LibrariesV1');
-  static const libraryAssetsV1 = SyncRequestType._(r'LibraryAssetsV1');
-  static const libraryAssetExifsV1 = SyncRequestType._(r'LibraryAssetExifsV1');
-  static const sharedSpaceLibrariesV1 = SyncRequestType._(r'SharedSpaceLibrariesV1');
-  static const sharedSpaceAlbumsV1 = SyncRequestType._(r'SharedSpaceAlbumsV1');
-  static const sharedSpaceAlbumLinksV1 = SyncRequestType._(r'SharedSpaceAlbumLinksV1');
-  static const sharedSpaceAlbumToAssetsV1 = SyncRequestType._(r'SharedSpaceAlbumToAssetsV1');
-  static const sharedSpaceAlbumAssetsV1 = SyncRequestType._(r'SharedSpaceAlbumAssetsV1');
-  static const sharedSpaceAlbumAssetExifsV1 = SyncRequestType._(r'SharedSpaceAlbumAssetExifsV1');
-
-  /// List of all possible values in this [enum][SyncRequestType].
-  static const values = <SyncRequestType>[
-    albumsV1,
-    albumsV2,
-    albumUsersV1,
-    albumToAssetsV1,
-    albumAssetsV1,
-    albumAssetsV2,
-    albumAssetExifsV1,
-    assetsV1,
-    assetsV2,
-    assetExifsV1,
-    assetEditsV1,
-    assetMetadataV1,
-    assetOcrV1,
-    authUsersV1,
-    memoriesV1,
-    memoryToAssetsV1,
-    partnersV1,
-    partnerAssetsV1,
-    partnerAssetsV2,
-    partnerAssetExifsV1,
-    partnerStacksV1,
-    stacksV1,
-    usersV1,
-    peopleV1,
-    assetFacesV1,
-    assetFacesV2,
-    userMetadataV1,
-    sharedSpacesV1,
-    sharedSpaceMembersV1,
-    sharedSpaceAssetsV1,
-    sharedSpaceAssetExifsV1,
-    sharedSpaceToAssetsV1,
-    librariesV1,
-    libraryAssetsV1,
-    libraryAssetExifsV1,
-    sharedSpaceLibrariesV1,
-    sharedSpaceAlbumsV1,
-    sharedSpaceAlbumLinksV1,
-    sharedSpaceAlbumToAssetsV1,
-    sharedSpaceAlbumAssetsV1,
-    sharedSpaceAlbumAssetExifsV1,
-  ];
-
+  /// Returns the instance of [SyncRequestType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static SyncRequestType? fromJson(dynamic value) => SyncRequestTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [SyncRequestType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<SyncRequestType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <SyncRequestType>[];
     if (json is List && json.isNotEmpty) {
@@ -133,9 +94,11 @@ class SyncRequestTypeTypeTransformer {
 
   const SyncRequestTypeTypeTransformer._();
 
-  String encode(SyncRequestType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(SyncRequestType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a SyncRequestType.
+  /// Returns the instance of [SyncRequestType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -144,6 +107,9 @@ class SyncRequestTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   SyncRequestType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is SyncRequestType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'AlbumsV1': return SyncRequestType.albumsV1;
@@ -196,7 +162,7 @@ class SyncRequestTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [SyncRequestTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static SyncRequestTypeTypeTransformer? _instance;
 }
 

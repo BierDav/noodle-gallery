@@ -11,197 +11,113 @@
 part of openapi.api;
 
 /// Job name
-class JobName {
-  /// Instantiate a new enum with the provided [value].
-  const JobName._(this.value);
+enum JobName {
+  assetDelete._(r'AssetDelete'),
+  assetDeleteCheck._(r'AssetDeleteCheck'),
+  assetDetectFacesQueueAll._(r'AssetDetectFacesQueueAll'),
+  assetDetectFaces._(r'AssetDetectFaces'),
+  assetDetectDuplicatesQueueAll._(r'AssetDetectDuplicatesQueueAll'),
+  assetDetectDuplicates._(r'AssetDetectDuplicates'),
+  assetEditThumbnailGeneration._(r'AssetEditThumbnailGeneration'),
+  assetEncodeVideoQueueAll._(r'AssetEncodeVideoQueueAll'),
+  assetEncodeVideo._(r'AssetEncodeVideo'),
+  assetEmptyTrash._(r'AssetEmptyTrash'),
+  assetExtractMetadataQueueAll._(r'AssetExtractMetadataQueueAll'),
+  assetExtractMetadata._(r'AssetExtractMetadata'),
+  assetFileMigration._(r'AssetFileMigration'),
+  assetGenerateThumbnailsQueueAll._(r'AssetGenerateThumbnailsQueueAll'),
+  assetGenerateThumbnails._(r'AssetGenerateThumbnails'),
+  auditTableCleanup._(r'AuditTableCleanup'),
+  databaseBackup._(r'DatabaseBackup'),
+  facialRecognitionQueueAll._(r'FacialRecognitionQueueAll'),
+  facialRecognition._(r'FacialRecognition'),
+  faceIdentityBackfill._(r'FaceIdentityBackfill'),
+  faceIdentityMaintenanceAfterRecognition._(r'FaceIdentityMaintenanceAfterRecognition'),
+  fileDelete._(r'FileDelete'),
+  fileMigrationQueueAll._(r'FileMigrationQueueAll'),
+  libraryDeleteCheck._(r'LibraryDeleteCheck'),
+  libraryDelete._(r'LibraryDelete'),
+  libraryRemoveAsset._(r'LibraryRemoveAsset'),
+  libraryScanAssetsQueueAll._(r'LibraryScanAssetsQueueAll'),
+  librarySyncAssets._(r'LibrarySyncAssets'),
+  librarySyncFilesQueueAll._(r'LibrarySyncFilesQueueAll'),
+  librarySyncFiles._(r'LibrarySyncFiles'),
+  libraryScanQueueAll._(r'LibraryScanQueueAll'),
+  hlsSessionCleanup._(r'HlsSessionCleanup'),
+  memoryCleanup._(r'MemoryCleanup'),
+  memoryGenerate._(r'MemoryGenerate'),
+  notificationsCleanup._(r'NotificationsCleanup'),
+  notifyUserSignup._(r'NotifyUserSignup'),
+  notifyAlbumInvite._(r'NotifyAlbumInvite'),
+  notifyAlbumUpdate._(r'NotifyAlbumUpdate'),
+  userDelete._(r'UserDelete'),
+  userDeleteCheck._(r'UserDeleteCheck'),
+  userSyncUsage._(r'UserSyncUsage'),
+  personCleanup._(r'PersonCleanup'),
+  personFileMigration._(r'PersonFileMigration'),
+  personGenerateThumbnail._(r'PersonGenerateThumbnail'),
+  sessionCleanup._(r'SessionCleanup'),
+  sendMail._(r'SendMail'),
+  sidecarQueueAll._(r'SidecarQueueAll'),
+  sidecarCheck._(r'SidecarCheck'),
+  sidecarWrite._(r'SidecarWrite'),
+  smartSearchQueueAll._(r'SmartSearchQueueAll'),
+  smartSearch._(r'SmartSearch'),
+  storageTemplateMigration._(r'StorageTemplateMigration'),
+  storageTemplateMigrationSingle._(r'StorageTemplateMigrationSingle'),
+  tagCleanup._(r'TagCleanup'),
+  versionCheck._(r'VersionCheck'),
+  ocrQueueAll._(r'OcrQueueAll'),
+  ocr._(r'Ocr'),
+  petDetectionQueueAll._(r'PetDetectionQueueAll'),
+  petDetection._(r'PetDetection'),
+  workflowAssetTrigger._(r'WorkflowAssetTrigger'),
+  integrityUntrackedFilesQueueAll._(r'IntegrityUntrackedFilesQueueAll'),
+  integrityUntrackedFiles._(r'IntegrityUntrackedFiles'),
+  integrityUntrackedRefresh._(r'IntegrityUntrackedRefresh'),
+  integrityMissingFilesQueueAll._(r'IntegrityMissingFilesQueueAll'),
+  integrityMissingFiles._(r'IntegrityMissingFiles'),
+  integrityMissingFilesRefresh._(r'IntegrityMissingFilesRefresh'),
+  integrityChecksumFiles._(r'IntegrityChecksumFiles'),
+  integrityChecksumFilesRefresh._(r'IntegrityChecksumFilesRefresh'),
+  integrityDeleteReportType._(r'IntegrityDeleteReportType'),
+  integrityDeleteReports._(r'IntegrityDeleteReports'),
+  storageBackendMigrationQueueAll._(r'StorageBackendMigrationQueueAll'),
+  storageBackendMigrationSingle._(r'StorageBackendMigrationSingle'),
+  sharedSpaceFaceMatch._(r'SharedSpaceFaceMatch'),
+  sharedSpaceFaceMatchAll._(r'SharedSpaceFaceMatchAll'),
+  sharedSpaceFaceMatchPage._(r'SharedSpaceFaceMatchPage'),
+  sharedSpaceFaceMatchFromBackfill._(r'SharedSpaceFaceMatchFromBackfill'),
+  sharedSpaceLibraryFaceSync._(r'SharedSpaceLibraryFaceSync'),
+  sharedSpaceAlbumFaceSync._(r'SharedSpaceAlbumFaceSync'),
+  sharedSpaceIdentityReconciliation._(r'SharedSpaceIdentityReconciliation'),
+  sharedSpacePersonDedup._(r'SharedSpacePersonDedup'),
+  sharedSpacePersonMetadataBackfill._(r'SharedSpacePersonMetadataBackfill'),
+  sharedSpaceBulkAddAssets._(r'SharedSpaceBulkAddAssets'),
+  sharedSpaceAlbumGrantReconcile._(r'SharedSpaceAlbumGrantReconcile'),
+  sharedSpaceAlbumGrantReconcileSweep._(r'SharedSpaceAlbumGrantReconcileSweep'),
+  assetClassifyQueueAll._(r'AssetClassifyQueueAll'),
+  assetClassify._(r'AssetClassify'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const JobName._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const assetDelete = JobName._(r'AssetDelete');
-  static const assetDeleteCheck = JobName._(r'AssetDeleteCheck');
-  static const assetDetectFacesQueueAll = JobName._(r'AssetDetectFacesQueueAll');
-  static const assetDetectFaces = JobName._(r'AssetDetectFaces');
-  static const assetDetectDuplicatesQueueAll = JobName._(r'AssetDetectDuplicatesQueueAll');
-  static const assetDetectDuplicates = JobName._(r'AssetDetectDuplicates');
-  static const assetEditThumbnailGeneration = JobName._(r'AssetEditThumbnailGeneration');
-  static const assetEncodeVideoQueueAll = JobName._(r'AssetEncodeVideoQueueAll');
-  static const assetEncodeVideo = JobName._(r'AssetEncodeVideo');
-  static const assetEmptyTrash = JobName._(r'AssetEmptyTrash');
-  static const assetExtractMetadataQueueAll = JobName._(r'AssetExtractMetadataQueueAll');
-  static const assetExtractMetadata = JobName._(r'AssetExtractMetadata');
-  static const assetFileMigration = JobName._(r'AssetFileMigration');
-  static const assetGenerateThumbnailsQueueAll = JobName._(r'AssetGenerateThumbnailsQueueAll');
-  static const assetGenerateThumbnails = JobName._(r'AssetGenerateThumbnails');
-  static const auditTableCleanup = JobName._(r'AuditTableCleanup');
-  static const databaseBackup = JobName._(r'DatabaseBackup');
-  static const facialRecognitionQueueAll = JobName._(r'FacialRecognitionQueueAll');
-  static const facialRecognition = JobName._(r'FacialRecognition');
-  static const faceIdentityBackfill = JobName._(r'FaceIdentityBackfill');
-  static const faceIdentityMaintenanceAfterRecognition = JobName._(r'FaceIdentityMaintenanceAfterRecognition');
-  static const fileDelete = JobName._(r'FileDelete');
-  static const fileMigrationQueueAll = JobName._(r'FileMigrationQueueAll');
-  static const libraryDeleteCheck = JobName._(r'LibraryDeleteCheck');
-  static const libraryDelete = JobName._(r'LibraryDelete');
-  static const libraryRemoveAsset = JobName._(r'LibraryRemoveAsset');
-  static const libraryScanAssetsQueueAll = JobName._(r'LibraryScanAssetsQueueAll');
-  static const librarySyncAssets = JobName._(r'LibrarySyncAssets');
-  static const librarySyncFilesQueueAll = JobName._(r'LibrarySyncFilesQueueAll');
-  static const librarySyncFiles = JobName._(r'LibrarySyncFiles');
-  static const libraryScanQueueAll = JobName._(r'LibraryScanQueueAll');
-  static const hlsSessionCleanup = JobName._(r'HlsSessionCleanup');
-  static const memoryCleanup = JobName._(r'MemoryCleanup');
-  static const memoryGenerate = JobName._(r'MemoryGenerate');
-  static const notificationsCleanup = JobName._(r'NotificationsCleanup');
-  static const notifyUserSignup = JobName._(r'NotifyUserSignup');
-  static const notifyAlbumInvite = JobName._(r'NotifyAlbumInvite');
-  static const notifyAlbumUpdate = JobName._(r'NotifyAlbumUpdate');
-  static const userDelete = JobName._(r'UserDelete');
-  static const userDeleteCheck = JobName._(r'UserDeleteCheck');
-  static const userSyncUsage = JobName._(r'UserSyncUsage');
-  static const personCleanup = JobName._(r'PersonCleanup');
-  static const personFileMigration = JobName._(r'PersonFileMigration');
-  static const personGenerateThumbnail = JobName._(r'PersonGenerateThumbnail');
-  static const sessionCleanup = JobName._(r'SessionCleanup');
-  static const sendMail = JobName._(r'SendMail');
-  static const sidecarQueueAll = JobName._(r'SidecarQueueAll');
-  static const sidecarCheck = JobName._(r'SidecarCheck');
-  static const sidecarWrite = JobName._(r'SidecarWrite');
-  static const smartSearchQueueAll = JobName._(r'SmartSearchQueueAll');
-  static const smartSearch = JobName._(r'SmartSearch');
-  static const storageTemplateMigration = JobName._(r'StorageTemplateMigration');
-  static const storageTemplateMigrationSingle = JobName._(r'StorageTemplateMigrationSingle');
-  static const tagCleanup = JobName._(r'TagCleanup');
-  static const versionCheck = JobName._(r'VersionCheck');
-  static const ocrQueueAll = JobName._(r'OcrQueueAll');
-  static const ocr = JobName._(r'Ocr');
-  static const petDetectionQueueAll = JobName._(r'PetDetectionQueueAll');
-  static const petDetection = JobName._(r'PetDetection');
-  static const workflowAssetTrigger = JobName._(r'WorkflowAssetTrigger');
-  static const integrityUntrackedFilesQueueAll = JobName._(r'IntegrityUntrackedFilesQueueAll');
-  static const integrityUntrackedFiles = JobName._(r'IntegrityUntrackedFiles');
-  static const integrityUntrackedRefresh = JobName._(r'IntegrityUntrackedRefresh');
-  static const integrityMissingFilesQueueAll = JobName._(r'IntegrityMissingFilesQueueAll');
-  static const integrityMissingFiles = JobName._(r'IntegrityMissingFiles');
-  static const integrityMissingFilesRefresh = JobName._(r'IntegrityMissingFilesRefresh');
-  static const integrityChecksumFiles = JobName._(r'IntegrityChecksumFiles');
-  static const integrityChecksumFilesRefresh = JobName._(r'IntegrityChecksumFilesRefresh');
-  static const integrityDeleteReportType = JobName._(r'IntegrityDeleteReportType');
-  static const integrityDeleteReports = JobName._(r'IntegrityDeleteReports');
-  static const storageBackendMigrationQueueAll = JobName._(r'StorageBackendMigrationQueueAll');
-  static const storageBackendMigrationSingle = JobName._(r'StorageBackendMigrationSingle');
-  static const sharedSpaceFaceMatch = JobName._(r'SharedSpaceFaceMatch');
-  static const sharedSpaceFaceMatchAll = JobName._(r'SharedSpaceFaceMatchAll');
-  static const sharedSpaceFaceMatchPage = JobName._(r'SharedSpaceFaceMatchPage');
-  static const sharedSpaceFaceMatchFromBackfill = JobName._(r'SharedSpaceFaceMatchFromBackfill');
-  static const sharedSpaceLibraryFaceSync = JobName._(r'SharedSpaceLibraryFaceSync');
-  static const sharedSpaceAlbumFaceSync = JobName._(r'SharedSpaceAlbumFaceSync');
-  static const sharedSpaceIdentityReconciliation = JobName._(r'SharedSpaceIdentityReconciliation');
-  static const sharedSpacePersonDedup = JobName._(r'SharedSpacePersonDedup');
-  static const sharedSpacePersonMetadataBackfill = JobName._(r'SharedSpacePersonMetadataBackfill');
-  static const sharedSpaceBulkAddAssets = JobName._(r'SharedSpaceBulkAddAssets');
-  static const sharedSpaceAlbumGrantReconcile = JobName._(r'SharedSpaceAlbumGrantReconcile');
-  static const sharedSpaceAlbumGrantReconcileSweep = JobName._(r'SharedSpaceAlbumGrantReconcileSweep');
-  static const assetClassifyQueueAll = JobName._(r'AssetClassifyQueueAll');
-  static const assetClassify = JobName._(r'AssetClassify');
-
-  /// List of all possible values in this [enum][JobName].
-  static const values = <JobName>[
-    assetDelete,
-    assetDeleteCheck,
-    assetDetectFacesQueueAll,
-    assetDetectFaces,
-    assetDetectDuplicatesQueueAll,
-    assetDetectDuplicates,
-    assetEditThumbnailGeneration,
-    assetEncodeVideoQueueAll,
-    assetEncodeVideo,
-    assetEmptyTrash,
-    assetExtractMetadataQueueAll,
-    assetExtractMetadata,
-    assetFileMigration,
-    assetGenerateThumbnailsQueueAll,
-    assetGenerateThumbnails,
-    auditTableCleanup,
-    databaseBackup,
-    facialRecognitionQueueAll,
-    facialRecognition,
-    faceIdentityBackfill,
-    faceIdentityMaintenanceAfterRecognition,
-    fileDelete,
-    fileMigrationQueueAll,
-    libraryDeleteCheck,
-    libraryDelete,
-    libraryRemoveAsset,
-    libraryScanAssetsQueueAll,
-    librarySyncAssets,
-    librarySyncFilesQueueAll,
-    librarySyncFiles,
-    libraryScanQueueAll,
-    hlsSessionCleanup,
-    memoryCleanup,
-    memoryGenerate,
-    notificationsCleanup,
-    notifyUserSignup,
-    notifyAlbumInvite,
-    notifyAlbumUpdate,
-    userDelete,
-    userDeleteCheck,
-    userSyncUsage,
-    personCleanup,
-    personFileMigration,
-    personGenerateThumbnail,
-    sessionCleanup,
-    sendMail,
-    sidecarQueueAll,
-    sidecarCheck,
-    sidecarWrite,
-    smartSearchQueueAll,
-    smartSearch,
-    storageTemplateMigration,
-    storageTemplateMigrationSingle,
-    tagCleanup,
-    versionCheck,
-    ocrQueueAll,
-    ocr,
-    petDetectionQueueAll,
-    petDetection,
-    workflowAssetTrigger,
-    integrityUntrackedFilesQueueAll,
-    integrityUntrackedFiles,
-    integrityUntrackedRefresh,
-    integrityMissingFilesQueueAll,
-    integrityMissingFiles,
-    integrityMissingFilesRefresh,
-    integrityChecksumFiles,
-    integrityChecksumFilesRefresh,
-    integrityDeleteReportType,
-    integrityDeleteReports,
-    storageBackendMigrationQueueAll,
-    storageBackendMigrationSingle,
-    sharedSpaceFaceMatch,
-    sharedSpaceFaceMatchAll,
-    sharedSpaceFaceMatchPage,
-    sharedSpaceFaceMatchFromBackfill,
-    sharedSpaceLibraryFaceSync,
-    sharedSpaceAlbumFaceSync,
-    sharedSpaceIdentityReconciliation,
-    sharedSpacePersonDedup,
-    sharedSpacePersonMetadataBackfill,
-    sharedSpaceBulkAddAssets,
-    sharedSpaceAlbumGrantReconcile,
-    sharedSpaceAlbumGrantReconcileSweep,
-    assetClassifyQueueAll,
-    assetClassify,
-  ];
-
+  /// Returns the instance of [JobName] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static JobName? fromJson(dynamic value) => JobNameTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [JobName]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<JobName> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <JobName>[];
     if (json is List && json.isNotEmpty) {
@@ -223,9 +139,11 @@ class JobNameTypeTransformer {
 
   const JobNameTypeTransformer._();
 
-  String encode(JobName data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(JobName data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a JobName.
+  /// Returns the instance of [JobName] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -234,6 +152,9 @@ class JobNameTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   JobName? decode(dynamic data, {bool allowNull = true}) {
+    if (data is JobName) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'AssetDelete': return JobName.assetDelete;
@@ -331,7 +252,7 @@ class JobNameTypeTransformer {
     return null;
   }
 
-  /// Singleton [JobNameTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static JobNameTypeTransformer? _instance;
 }
 

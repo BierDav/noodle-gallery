@@ -11,29 +11,29 @@
 part of openapi.api;
 
 /// Memory type
-class MemoryType {
-  /// Instantiate a new enum with the provided [value].
-  const MemoryType._(this.value);
+enum MemoryType {
+  onThisDay._(r'on_this_day'),
+  rule._(r'rule'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const MemoryType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const onThisDay = MemoryType._(r'on_this_day');
-  static const rule = MemoryType._(r'rule');
-
-  /// List of all possible values in this [enum][MemoryType].
-  static const values = <MemoryType>[
-    onThisDay,
-    rule,
-  ];
-
+  /// Returns the instance of [MemoryType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static MemoryType? fromJson(dynamic value) => MemoryTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [MemoryType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<MemoryType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <MemoryType>[];
     if (json is List && json.isNotEmpty) {
@@ -55,9 +55,11 @@ class MemoryTypeTypeTransformer {
 
   const MemoryTypeTypeTransformer._();
 
-  String encode(MemoryType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(MemoryType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a MemoryType.
+  /// Returns the instance of [MemoryType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -66,6 +68,9 @@ class MemoryTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   MemoryType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is MemoryType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'on_this_day': return MemoryType.onThisDay;
@@ -79,7 +84,7 @@ class MemoryTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [MemoryTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static MemoryTypeTypeTransformer? _instance;
 }
 
