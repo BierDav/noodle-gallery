@@ -6517,6 +6517,15 @@
             }
           },
           {
+            "name": "description",
+            "required": false,
+            "in": "query",
+            "description": "Filter by description text",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "isFavorite",
             "required": false,
             "in": "query",
@@ -6557,6 +6566,24 @@
             "required": false,
             "in": "query",
             "description": "Camera model",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ocr",
+            "required": false,
+            "in": "query",
+            "description": "Filter by text recognised in the image",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "originalFileName",
+            "required": false,
+            "in": "query",
+            "description": "Filter by original file name",
             "schema": {
               "type": "string"
             }
