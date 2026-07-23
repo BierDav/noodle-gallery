@@ -433,7 +433,7 @@ export class SearchRepository {
     const personIds = options.personIds?.filter(Boolean) ?? [];
     const identityIds = options.identityIds?.filter(Boolean) ?? [];
 
-    let baseQuery = searchAssetBuilder(kysely, {
+    let baseQuery = searchAssetBuilderLegacy(kysely, {
       ...without(options, 'personIds', 'personMatchAny', 'identityIds', 'forceEmptyResult'),
       ratingIsMinimum: true,
     })
@@ -597,7 +597,7 @@ export class SearchRepository {
   private buildSmartFacetCandidateQuery(kysely: Kysely<DB>, options: SmartSearchFacetsOptions) {
     const hasDistanceThreshold = isActiveDistanceThreshold(options.maxDistance);
 
-    return searchAssetBuilder(kysely, {
+    return searchAssetBuilderLegacy(kysely, {
       ...without(
         options,
         'city',
@@ -1109,6 +1109,10 @@ export class SearchRepository {
     return res.map((row) => row.lensModel!);
   }
 
+  // ─── UPSTREAM SEARCH V3 — DORMANT ───────────────────────────────
+  // Not wired to any controller/service. The fork's live search runs on the legacy path
+  // (searchAssetBuilderLegacy). Do not call these V3 methods from fork code.
+  // Switch-over plan: docs/superpowers/specs/2026-07-23-search-v3-coexistence-design.md
   @GenerateSql(...searchMetadataV3Examples)
   searchMetadataV3(
     pagination: AssetSearchPaginationV3Options,
