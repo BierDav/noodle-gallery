@@ -43,9 +43,9 @@ import { AssetSearchBuilderOptions, AssetSearchBuilderV3Options } from 'src/repo
 import { DB } from 'src/schema';
 import { AssetExifTable } from 'src/schema/tables/asset-exif.table';
 import { AudioStreamInfo, VectorExtension, VideoFormat, VideoPacketInfo, VideoStreamInfo } from 'src/types';
+import { fromChecksum } from 'src/utils/request';
 import { spaceAssetPathBranches, spaceVisibilityGate } from 'src/utils/shared-space-album-scope';
 import { dateTruncUnitForTimeBucketSize } from 'src/utils/timeline-bucket';
-import { fromChecksum } from 'src/utils/request';
 
 export const getKyselyConfig = (connection: DatabaseConnectionParams): KyselyConfig => {
   return {
