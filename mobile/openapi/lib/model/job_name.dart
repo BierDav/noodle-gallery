@@ -96,6 +96,7 @@ enum JobName {
   sharedSpaceBulkAddAssets._(r'SharedSpaceBulkAddAssets'),
   sharedSpaceAlbumGrantReconcile._(r'SharedSpaceAlbumGrantReconcile'),
   sharedSpaceAlbumGrantReconcileSweep._(r'SharedSpaceAlbumGrantReconcileSweep'),
+  sharedSpaceIdentityReconciliationSweep._(r'SharedSpaceIdentityReconciliationSweep'),
   assetClassifyQueueAll._(r'AssetClassifyQueueAll'),
   assetClassify._(r'AssetClassify'),
   ;
@@ -241,6 +242,7 @@ class JobNameTypeTransformer {
         case r'SharedSpaceBulkAddAssets': return JobName.sharedSpaceBulkAddAssets;
         case r'SharedSpaceAlbumGrantReconcile': return JobName.sharedSpaceAlbumGrantReconcile;
         case r'SharedSpaceAlbumGrantReconcileSweep': return JobName.sharedSpaceAlbumGrantReconcileSweep;
+        case r'SharedSpaceIdentityReconciliationSweep': return JobName.sharedSpaceIdentityReconciliationSweep;
         case r'AssetClassifyQueueAll': return JobName.assetClassifyQueueAll;
         case r'AssetClassify': return JobName.assetClassify;
         default:
