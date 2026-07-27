@@ -29,6 +29,7 @@ class ServerFeaturesDto {
     required this.search,
     required this.sidecar,
     required this.smartSearch,
+    this.syncRequestTypes = const Optional.present(const []),
     required this.trash,
   });
 
@@ -80,6 +81,9 @@ class ServerFeaturesDto {
   /// Whether smart search is enabled
   bool smartSearch;
 
+  /// Sync stream request types this server accepts. Absent on servers that predate capability signalling; clients fall back to version-based gating.
+  Optional<List<String>?> syncRequestTypes;
+
   /// Whether trash feature is enabled
   bool trash;
 
@@ -101,6 +105,7 @@ class ServerFeaturesDto {
     other.search == search &&
     other.sidecar == sidecar &&
     other.smartSearch == smartSearch &&
+    _deepEquality.equals(other.syncRequestTypes, syncRequestTypes) &&
     other.trash == trash;
 
   @override
@@ -122,10 +127,11 @@ class ServerFeaturesDto {
     (search.hashCode) +
     (sidecar.hashCode) +
     (smartSearch.hashCode) +
+    (syncRequestTypes.hashCode) +
     (trash.hashCode);
 
   @override
-  String toString() => 'ServerFeaturesDto[configFile=$configFile, duplicateDetection=$duplicateDetection, email=$email, facialRecognition=$facialRecognition, importFaces=$importFaces, map=$map, oauth=$oauth, oauthAutoLaunch=$oauthAutoLaunch, ocr=$ocr, passwordLogin=$passwordLogin, peopleStatistics=$peopleStatistics, realtimeTranscoding=$realtimeTranscoding, reverseGeocoding=$reverseGeocoding, search=$search, sidecar=$sidecar, smartSearch=$smartSearch, trash=$trash]';
+  String toString() => 'ServerFeaturesDto[configFile=$configFile, duplicateDetection=$duplicateDetection, email=$email, facialRecognition=$facialRecognition, importFaces=$importFaces, map=$map, oauth=$oauth, oauthAutoLaunch=$oauthAutoLaunch, ocr=$ocr, passwordLogin=$passwordLogin, peopleStatistics=$peopleStatistics, realtimeTranscoding=$realtimeTranscoding, reverseGeocoding=$reverseGeocoding, search=$search, sidecar=$sidecar, smartSearch=$smartSearch, syncRequestTypes=$syncRequestTypes, trash=$trash]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -145,6 +151,10 @@ class ServerFeaturesDto {
       json[r'search'] = this.search;
       json[r'sidecar'] = this.sidecar;
       json[r'smartSearch'] = this.smartSearch;
+    if (this.syncRequestTypes.isPresent) {
+      final value = this.syncRequestTypes.value;
+      json[r'syncRequestTypes'] = value;
+    }
       json[r'trash'] = this.trash;
     return json;
   }
@@ -174,6 +184,9 @@ class ServerFeaturesDto {
         search: mapValueOfType<bool>(json, r'search')!,
         sidecar: mapValueOfType<bool>(json, r'sidecar')!,
         smartSearch: mapValueOfType<bool>(json, r'smartSearch')!,
+        syncRequestTypes: json.containsKey(r'syncRequestTypes') ? Optional.present(json[r'syncRequestTypes'] is Iterable
+            ? (json[r'syncRequestTypes'] as Iterable).cast<String>().toList(growable: false)
+            : const []) : const Optional.absent(),
         trash: mapValueOfType<bool>(json, r'trash')!,
       );
     }

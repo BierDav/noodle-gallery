@@ -34,7 +34,20 @@ class AlbumSelector extends ConsumerStatefulWidget {
   final AlbumSelectorCallback onAlbumSelected;
   final Function? onKeyboardExpanded;
 
-  const AlbumSelector({super.key, required this.onAlbumSelected, this.onKeyboardExpanded});
+  /// Fork hook: mirrors every search-text change (typing and clearing) to the host, so a
+  /// surface composing this selector next to other sections can filter them by the same query.
+  final ValueChanged<String>? onSearchChanged;
+
+  /// Fork hook: replaces the "Search albums" hint when the host's search covers more than albums.
+  final String? searchHint;
+
+  const AlbumSelector({
+    super.key,
+    required this.onAlbumSelected,
+    this.onKeyboardExpanded,
+    this.onSearchChanged,
+    this.searchHint,
+  });
 
   @override
   ConsumerState<AlbumSelector> createState() => _AlbumSelectorState();
@@ -67,6 +80,7 @@ class _AlbumSelectorState extends ConsumerState<AlbumSelector> {
     });
 
     searchController.addListener(() {
+      widget.onSearchChanged?.call(searchController.text);
       onSearch(searchController.text, filter.mode);
     });
 
@@ -196,6 +210,7 @@ class _AlbumSelectorState extends ConsumerState<AlbumSelector> {
             onSearch: onSearch,
             filterMode: filter.mode,
             onClearSearch: clearSearch,
+            hint: widget.searchHint,
           ),
           _QuickFilterButtonRow(
             filterMode: filter.mode,
@@ -382,6 +397,7 @@ class _SearchBar extends StatelessWidget {
     required this.onSearch,
     required this.filterMode,
     required this.onClearSearch,
+    this.hint,
   });
 
   final TextEditingController searchController;
@@ -389,6 +405,7 @@ class _SearchBar extends StatelessWidget {
   final void Function(String, QuickFilterMode) onSearch;
   final QuickFilterMode filterMode;
   final VoidCallback onClearSearch;
+  final String? hint;
 
   @override
   Widget build(BuildContext context) {
@@ -413,7 +430,7 @@ class _SearchBar extends StatelessWidget {
           child: SearchField(
             autofocus: false,
             contentPadding: const EdgeInsets.all(16),
-            hintText: 'search_albums'.tr(),
+            hintText: hint ?? 'search_albums'.tr(),
             prefixIcon: const Icon(Icons.search_rounded),
             suffixIcon: searchController.text.isNotEmpty
                 ? IconButton(icon: const Icon(Icons.clear_rounded), onPressed: onClearSearch)
