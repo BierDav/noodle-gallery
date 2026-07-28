@@ -331,6 +331,9 @@ class SearchApi {
   /// * [String] albumId:
   ///   Scope suggestions to a specific album
   ///
+  /// * [String] city:
+  ///   Filter by city
+  ///
   /// * [String] country:
   ///   Filter by country
   ///
@@ -351,6 +354,9 @@ class SearchApi {
   ///
   /// * [String] make:
   ///   Filter by camera make
+  ///
+  /// * [AssetTypeEnum] mediaType:
+  ///   Filter by asset type
   ///
   /// * [String] model:
   ///   Filter by camera model
@@ -378,7 +384,7 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include suggestions from shared spaces the user is a member of
-  Future<Response> getSearchSuggestionsWithHttpInfo(SearchSuggestionType type, { String? albumId, String? country, bool? includeNull, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, String? lensModel, String? make, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+  Future<Response> getSearchSuggestionsWithHttpInfo(SearchSuggestionType type, { String? albumId, String? city, String? country, bool? includeNull, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, String? lensModel, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/search/suggestions';
 
@@ -391,6 +397,9 @@ class SearchApi {
 
     if (albumId != null) {
       queryParams.addAll(_queryParams('', 'albumId', albumId));
+    }
+    if (city != null) {
+      queryParams.addAll(_queryParams('', 'city', city));
     }
     if (country != null) {
       queryParams.addAll(_queryParams('', 'country', country));
@@ -412,6 +421,9 @@ class SearchApi {
     }
     if (make != null) {
       queryParams.addAll(_queryParams('', 'make', make));
+    }
+    if (mediaType != null) {
+      queryParams.addAll(_queryParams('', 'mediaType', mediaType));
     }
     if (model != null) {
       queryParams.addAll(_queryParams('', 'model', model));
@@ -468,6 +480,9 @@ class SearchApi {
   /// * [String] albumId:
   ///   Scope suggestions to a specific album
   ///
+  /// * [String] city:
+  ///   Filter by city
+  ///
   /// * [String] country:
   ///   Filter by country
   ///
@@ -488,6 +503,9 @@ class SearchApi {
   ///
   /// * [String] make:
   ///   Filter by camera make
+  ///
+  /// * [AssetTypeEnum] mediaType:
+  ///   Filter by asset type
   ///
   /// * [String] model:
   ///   Filter by camera model
@@ -515,8 +533,8 @@ class SearchApi {
   ///
   /// * [bool] withSharedSpaces:
   ///   Include suggestions from shared spaces the user is a member of
-  Future<List<String>?> getSearchSuggestions(SearchSuggestionType type, { String? albumId, String? country, bool? includeNull, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, String? lensModel, String? make, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
-    final response = await getSearchSuggestionsWithHttpInfo(type, albumId: albumId, country: country, includeNull: includeNull, isFavorite: isFavorite, isInAlbum: isInAlbum, isNotInAlbum: isNotInAlbum, lensModel: lensModel, make: make, model: model, personIds: personIds, rating: rating, spaceId: spaceId, state: state, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
+  Future<List<String>?> getSearchSuggestions(SearchSuggestionType type, { String? albumId, String? city, String? country, bool? includeNull, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, String? lensModel, String? make, AssetTypeEnum? mediaType, String? model, List<String>? personIds, int? rating, String? spaceId, String? state, List<String>? tagIds, DateTime? takenAfter, DateTime? takenBefore, bool? withSharedSpaces, Future<void>? abortTrigger, }) async {
+    final response = await getSearchSuggestionsWithHttpInfo(type, albumId: albumId, city: city, country: country, includeNull: includeNull, isFavorite: isFavorite, isInAlbum: isInAlbum, isNotInAlbum: isNotInAlbum, lensModel: lensModel, make: make, mediaType: mediaType, model: model, personIds: personIds, rating: rating, spaceId: spaceId, state: state, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, withSharedSpaces: withSharedSpaces, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
