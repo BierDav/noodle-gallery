@@ -316,11 +316,6 @@ interface NetworkApi {
   fun getClientPointer(): Long
   fun setRequestHeaders(headers: Map<String, String>, serverUrls: List<String>, token: String?)
   fun getAppGroupId(): String
-  /**
-   * Rebuilds the shared native URLSession (iOS). Used on foreground resume to
-   * recover from the background-worker isolate orphaning the shared session.
-   */
-  fun recreateSession()
 
   companion object {
     /** The codec used by NetworkApi. */
@@ -442,22 +437,6 @@ interface NetworkApi {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
               listOf(api.getAppGroupId())
-            } catch (exception: Throwable) {
-              NetworkPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.immich_mobile.NetworkApi.recreateSession$separatedMessageChannelSuffix", codec)
-        if (api != null) {
-          channel.setMessageHandler { _, reply ->
-            val wrapped: List<Any?> = try {
-              api.recreateSession()
-              listOf(null)
             } catch (exception: Throwable) {
               NetworkPigeonUtils.wrapError(exception)
             }

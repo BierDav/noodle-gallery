@@ -289,9 +289,6 @@ protocol NetworkApi {
   func getClientPointer() throws -> Int64
   func setRequestHeaders(headers: [String: String], serverUrls: [String], token: String?) throws
   func getAppGroupId() throws -> String
-  /// Rebuilds the shared native URLSession (iOS). Used on foreground resume to
-  /// recover from the background-worker isolate orphaning the shared session.
-  func recreateSession() throws
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -404,21 +401,6 @@ class NetworkApiSetup {
       }
     } else {
       getAppGroupIdChannel.setMessageHandler(nil)
-    }
-    /// Rebuilds the shared native URLSession (iOS). Used on foreground resume to
-    /// recover from the background-worker isolate orphaning the shared session.
-    let recreateSessionChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.immich_mobile.NetworkApi.recreateSession\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
-    if let api = api {
-      recreateSessionChannel.setMessageHandler { _, reply in
-        do {
-          try api.recreateSession()
-          reply(wrapResult(nil))
-        } catch {
-          reply(wrapError(error))
-        }
-      }
-    } else {
-      recreateSessionChannel.setMessageHandler(nil)
     }
   }
 }

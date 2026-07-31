@@ -59,11 +59,11 @@ class DriftBackupOptionsPage extends ConsumerWidget {
 
           final backupNotifier = ref.read(driftBackupProvider.notifier);
           final backgroundSync = ref.read(backgroundSyncProvider);
-          unawaited(backupNotifier.stopBackup());
+          backupNotifier.stopForegroundBackup();
           unawaited(
             backgroundSync.syncRemote().then((success) {
               if (success) {
-                return backupNotifier.startBackup(currentUser.id);
+                return backupNotifier.startForegroundBackup(currentUser.id);
               } else {
                 Logger('DriftBackupOptionsPage').warning('Background sync failed, not starting backup');
               }
