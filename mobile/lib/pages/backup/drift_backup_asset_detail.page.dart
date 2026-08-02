@@ -8,7 +8,7 @@ import 'package:immich_mobile/extensions/theme_extensions.dart';
 import 'package:immich_mobile/extensions/translate_extensions.dart';
 import 'package:immich_mobile/pages/common/large_leading_tile.dart';
 import 'package:immich_mobile/presentation/widgets/images/thumbnail.widget.dart';
-import 'package:immich_mobile/providers/asset_viewer/scroll_to_date_notifier.provider.dart';
+import 'package:immich_mobile/providers/asset_viewer/scroll_to_asset_notifier.provider.dart';
 import 'package:immich_mobile/providers/backup/drift_backup.provider.dart';
 import 'package:immich_mobile/repositories/asset_media.repository.dart';
 import 'package:immich_mobile/routing/router.dart';
@@ -88,7 +88,7 @@ class DriftBackupAssetDetailPage extends ConsumerWidget {
                     onTap: () async {
                       await context.maybePop();
                       await context.navigateTo(const MainTimelineRoute());
-                      scrollToDateNotifierProvider.scrollToDate(asset.createdAt);
+                      scrollToAssetNotifierProvider.scrollToAsset(asset);
                     },
                   );
                 },
