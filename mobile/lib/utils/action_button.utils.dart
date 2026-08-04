@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/domain/models/album/album.model.dart';
 import 'package:immich_mobile/domain/models/asset/base_asset.model.dart';
@@ -32,7 +33,7 @@ import 'package:immich_mobile/presentation/widgets/action_buttons/trash_action_b
 import 'package:immich_mobile/presentation/widgets/action_buttons/unarchive_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/unstack_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/upload_action_button.widget.dart';
-import 'package:immich_mobile/providers/asset_viewer/scroll_to_asset_notifier.provider.dart';
+import 'package:immich_mobile/providers/asset_viewer/view_in_timeline_action.dart';
 import 'package:immich_mobile/routing/router.dart';
 
 class ActionButtonContext {
@@ -279,11 +280,17 @@ enum ActionButtonType {
         menuItem: menuItem,
         onPressed: buildContext == null
             ? null
-            : () async {
-                await buildContext.maybePop();
-                await buildContext.navigateTo(const MainTimelineRoute());
-                scrollToAssetNotifierProvider.scrollToAsset(context.asset);
-              },
+            // Everything is resolved off [buildContext] — the kebab menu's own context —
+            // rather than this menu item's: activating an item closes the menu, which
+            // tears the item's element down while the jump is still in flight.
+            : () => viewAssetInTimeline(
+                asset: context.asset,
+                read: ProviderScope.containerOf(buildContext, listen: false).read,
+                popViewer: () => buildContext.maybePop(),
+                // Activate the existing timeline tab without rebuilding it (a fresh
+                // TabShellRoute would reload the timeline to the top and discard the scroll).
+                goToTimeline: () => buildContext.navigateTo(const MainTimelineRoute()),
+              ),
       ),
       ActionButtonType.cast => CastActionButton(iconOnly: iconOnly, menuItem: menuItem),
     };
