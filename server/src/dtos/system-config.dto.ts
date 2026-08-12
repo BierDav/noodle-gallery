@@ -451,6 +451,13 @@ const SystemConfigTrashSchema = z
   })
   .meta({ id: 'SystemConfigTrashDto' });
 
+// Gallery-fork: opt-in accounting for server-generated files (thumbnails, transcodes).
+const SystemConfigStorageUsageSchema = z
+  .object({
+    includeDerivatives: configBool.describe('Include thumbnails and transcoded videos in storage usage'),
+  })
+  .meta({ id: 'SystemConfigStorageUsageDto' });
+
 const SystemConfigUserSchema = z
   .object({
     deleteDelay: z.int().min(1).describe('Delete delay'),
@@ -472,6 +479,8 @@ export const SystemConfigSchema = z
     reverseGeocoding: SystemConfigReverseGeocodingSchema,
     metadata: SystemConfigMetadataSchema,
     storageTemplate: SystemConfigStorageTemplateSchema,
+    // Gallery-fork: see SystemConfigStorageUsageSchema above.
+    storageUsage: SystemConfigStorageUsageSchema,
     job: SystemConfigJobSchema,
     image: SystemConfigImageSchema,
     trash: SystemConfigTrashSchema,

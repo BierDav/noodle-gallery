@@ -244,6 +244,10 @@ export type SystemConfig = {
       faceExclusion: ClassificationFaceExclusion;
     }>;
   };
+  // Gallery-fork: opt-in accounting for server-generated files (thumbnails, transcodes).
+  storageUsage: {
+    includeDerivatives: boolean;
+  };
   user: {
     deleteDelay: number;
   };
@@ -501,6 +505,11 @@ export const defaults = Object.freeze<SystemConfig>({
   classification: {
     enabled: true,
     categories: [],
+  },
+  // Gallery-fork: defaults to false, so out of the box storage usage matches upstream Immich
+  // and counts original files only.
+  storageUsage: {
+    includeDerivatives: false,
   },
   user: {
     deleteDelay: 7,
