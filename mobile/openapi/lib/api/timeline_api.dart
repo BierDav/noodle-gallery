@@ -59,6 +59,9 @@ class TimelineApi {
   ///
   /// * [String] key:
   ///
+  /// * [String] lensModel:
+  ///   Filter by camera lens model
+  ///
   /// * [String] make:
   ///   Filter by camera make
   ///
@@ -76,6 +79,9 @@ class TimelineApi {
   ///
   /// * [String] originalFileName:
   ///   Filter by original filename (substring, case/accent-insensitive)
+  ///
+  /// * [String] ownerId:
+  ///   Filter by asset owner (contributor). Narrows within the current scope and never widens it. This is NOT the same as userId, which selects whose timeline is being composed.
   ///
   /// * [String] personId:
   ///   Filter assets containing a specific person (face recognition)
@@ -96,6 +102,9 @@ class TimelineApi {
   ///
   /// * [List<String>] spacePersonIds:
   ///   Filter assets containing any of these shared space persons (multi-select)
+  ///
+  /// * [String] state:
+  ///   Filter by state/province name
   ///
   /// * [String] tagId:
   ///   Filter assets with a specific tag
@@ -129,7 +138,7 @@ class TimelineApi {
   ///
   /// * [bool] withStacked:
   ///   Include stacked assets in the response. When true, only primary assets from stacks are returned.
-  Future<Response> getTimeBucketWithHttpInfo(String timeBucket, { String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
+  Future<Response> getTimeBucketWithHttpInfo(String timeBucket, { String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? lensModel, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? ownerId, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? state, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/timeline/bucket';
 
@@ -173,6 +182,9 @@ class TimelineApi {
     if (key != null) {
       queryParams.addAll(_queryParams('', 'key', key));
     }
+    if (lensModel != null) {
+      queryParams.addAll(_queryParams('', 'lensModel', lensModel));
+    }
     if (make != null) {
       queryParams.addAll(_queryParams('', 'make', make));
     }
@@ -190,6 +202,9 @@ class TimelineApi {
     }
     if (originalFileName != null) {
       queryParams.addAll(_queryParams('', 'originalFileName', originalFileName));
+    }
+    if (ownerId != null) {
+      queryParams.addAll(_queryParams('', 'ownerId', ownerId));
     }
     if (personId != null) {
       queryParams.addAll(_queryParams('', 'personId', personId));
@@ -211,6 +226,9 @@ class TimelineApi {
     }
     if (spacePersonIds != null) {
       queryParams.addAll(_queryParams('multi', 'spacePersonIds', spacePersonIds));
+    }
+    if (state != null) {
+      queryParams.addAll(_queryParams('', 'state', state));
     }
     if (tagId != null) {
       queryParams.addAll(_queryParams('', 'tagId', tagId));
@@ -303,6 +321,9 @@ class TimelineApi {
   ///
   /// * [String] key:
   ///
+  /// * [String] lensModel:
+  ///   Filter by camera lens model
+  ///
   /// * [String] make:
   ///   Filter by camera make
   ///
@@ -320,6 +341,9 @@ class TimelineApi {
   ///
   /// * [String] originalFileName:
   ///   Filter by original filename (substring, case/accent-insensitive)
+  ///
+  /// * [String] ownerId:
+  ///   Filter by asset owner (contributor). Narrows within the current scope and never widens it. This is NOT the same as userId, which selects whose timeline is being composed.
   ///
   /// * [String] personId:
   ///   Filter assets containing a specific person (face recognition)
@@ -340,6 +364,9 @@ class TimelineApi {
   ///
   /// * [List<String>] spacePersonIds:
   ///   Filter assets containing any of these shared space persons (multi-select)
+  ///
+  /// * [String] state:
+  ///   Filter by state/province name
   ///
   /// * [String] tagId:
   ///   Filter assets with a specific tag
@@ -373,8 +400,8 @@ class TimelineApi {
   ///
   /// * [bool] withStacked:
   ///   Include stacked assets in the response. When true, only primary assets from stacks are returned.
-  Future<TimeBucketAssetResponseDto?> getTimeBucket(String timeBucket, { String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
-    final response = await getTimeBucketWithHttpInfo(timeBucket, albumId: albumId, bbox: bbox, bucketSize: bucketSize, city: city, country: country, description: description, isFavorite: isFavorite, isInAlbum: isInAlbum, isNotInAlbum: isNotInAlbum, isTrashed: isTrashed, key: key, make: make, model: model, ocr: ocr, order: order, orderBy: orderBy, originalFileName: originalFileName, personId: personId, personIds: personIds, rating: rating, slug: slug, spaceId: spaceId, spacePersonId: spacePersonId, spacePersonIds: spacePersonIds, tagId: tagId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, type: type, userId: userId, visibility: visibility, withCoordinates: withCoordinates, withPartners: withPartners, withSharedSpaces: withSharedSpaces, withStacked: withStacked, abortTrigger: abortTrigger,);
+  Future<TimeBucketAssetResponseDto?> getTimeBucket(String timeBucket, { String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? lensModel, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? ownerId, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? state, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
+    final response = await getTimeBucketWithHttpInfo(timeBucket, albumId: albumId, bbox: bbox, bucketSize: bucketSize, city: city, country: country, description: description, isFavorite: isFavorite, isInAlbum: isInAlbum, isNotInAlbum: isNotInAlbum, isTrashed: isTrashed, key: key, lensModel: lensModel, make: make, model: model, ocr: ocr, order: order, orderBy: orderBy, originalFileName: originalFileName, ownerId: ownerId, personId: personId, personIds: personIds, rating: rating, slug: slug, spaceId: spaceId, spacePersonId: spacePersonId, spacePersonIds: spacePersonIds, state: state, tagId: tagId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, type: type, userId: userId, visibility: visibility, withCoordinates: withCoordinates, withPartners: withPartners, withSharedSpaces: withSharedSpaces, withStacked: withStacked, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -431,6 +458,9 @@ class TimelineApi {
   ///
   /// * [String] key:
   ///
+  /// * [String] lensModel:
+  ///   Filter by camera lens model
+  ///
   /// * [String] make:
   ///   Filter by camera make
   ///
@@ -448,6 +478,9 @@ class TimelineApi {
   ///
   /// * [String] originalFileName:
   ///   Filter by original filename (substring, case/accent-insensitive)
+  ///
+  /// * [String] ownerId:
+  ///   Filter by asset owner (contributor). Narrows within the current scope and never widens it. This is NOT the same as userId, which selects whose timeline is being composed.
   ///
   /// * [String] personId:
   ///   Filter assets containing a specific person (face recognition)
@@ -468,6 +501,9 @@ class TimelineApi {
   ///
   /// * [List<String>] spacePersonIds:
   ///   Filter assets containing any of these shared space persons (multi-select)
+  ///
+  /// * [String] state:
+  ///   Filter by state/province name
   ///
   /// * [String] tagId:
   ///   Filter assets with a specific tag
@@ -501,7 +537,7 @@ class TimelineApi {
   ///
   /// * [bool] withStacked:
   ///   Include stacked assets in the response. When true, only primary assets from stacks are returned.
-  Future<Response> getTimeBucketCoversWithHttpInfo(List<String> timeBuckets, { String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
+  Future<Response> getTimeBucketCoversWithHttpInfo(List<String> timeBuckets, { String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? lensModel, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? ownerId, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? state, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/timeline/bucket-covers';
 
@@ -545,6 +581,9 @@ class TimelineApi {
     if (key != null) {
       queryParams.addAll(_queryParams('', 'key', key));
     }
+    if (lensModel != null) {
+      queryParams.addAll(_queryParams('', 'lensModel', lensModel));
+    }
     if (make != null) {
       queryParams.addAll(_queryParams('', 'make', make));
     }
@@ -562,6 +601,9 @@ class TimelineApi {
     }
     if (originalFileName != null) {
       queryParams.addAll(_queryParams('', 'originalFileName', originalFileName));
+    }
+    if (ownerId != null) {
+      queryParams.addAll(_queryParams('', 'ownerId', ownerId));
     }
     if (personId != null) {
       queryParams.addAll(_queryParams('', 'personId', personId));
@@ -583,6 +625,9 @@ class TimelineApi {
     }
     if (spacePersonIds != null) {
       queryParams.addAll(_queryParams('multi', 'spacePersonIds', spacePersonIds));
+    }
+    if (state != null) {
+      queryParams.addAll(_queryParams('', 'state', state));
     }
     if (tagId != null) {
       queryParams.addAll(_queryParams('', 'tagId', tagId));
@@ -675,6 +720,9 @@ class TimelineApi {
   ///
   /// * [String] key:
   ///
+  /// * [String] lensModel:
+  ///   Filter by camera lens model
+  ///
   /// * [String] make:
   ///   Filter by camera make
   ///
@@ -692,6 +740,9 @@ class TimelineApi {
   ///
   /// * [String] originalFileName:
   ///   Filter by original filename (substring, case/accent-insensitive)
+  ///
+  /// * [String] ownerId:
+  ///   Filter by asset owner (contributor). Narrows within the current scope and never widens it. This is NOT the same as userId, which selects whose timeline is being composed.
   ///
   /// * [String] personId:
   ///   Filter assets containing a specific person (face recognition)
@@ -712,6 +763,9 @@ class TimelineApi {
   ///
   /// * [List<String>] spacePersonIds:
   ///   Filter assets containing any of these shared space persons (multi-select)
+  ///
+  /// * [String] state:
+  ///   Filter by state/province name
   ///
   /// * [String] tagId:
   ///   Filter assets with a specific tag
@@ -745,8 +799,8 @@ class TimelineApi {
   ///
   /// * [bool] withStacked:
   ///   Include stacked assets in the response. When true, only primary assets from stacks are returned.
-  Future<List<TimeBucketCoverResponseDto>?> getTimeBucketCovers(List<String> timeBuckets, { String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
-    final response = await getTimeBucketCoversWithHttpInfo(timeBuckets, albumId: albumId, bbox: bbox, bucketSize: bucketSize, city: city, country: country, description: description, isFavorite: isFavorite, isInAlbum: isInAlbum, isNotInAlbum: isNotInAlbum, isTrashed: isTrashed, key: key, make: make, model: model, ocr: ocr, order: order, orderBy: orderBy, originalFileName: originalFileName, personId: personId, personIds: personIds, rating: rating, slug: slug, spaceId: spaceId, spacePersonId: spacePersonId, spacePersonIds: spacePersonIds, tagId: tagId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, type: type, userId: userId, visibility: visibility, withCoordinates: withCoordinates, withPartners: withPartners, withSharedSpaces: withSharedSpaces, withStacked: withStacked, abortTrigger: abortTrigger,);
+  Future<List<TimeBucketCoverResponseDto>?> getTimeBucketCovers(List<String> timeBuckets, { String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? lensModel, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? ownerId, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? state, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
+    final response = await getTimeBucketCoversWithHttpInfo(timeBuckets, albumId: albumId, bbox: bbox, bucketSize: bucketSize, city: city, country: country, description: description, isFavorite: isFavorite, isInAlbum: isInAlbum, isNotInAlbum: isNotInAlbum, isTrashed: isTrashed, key: key, lensModel: lensModel, make: make, model: model, ocr: ocr, order: order, orderBy: orderBy, originalFileName: originalFileName, ownerId: ownerId, personId: personId, personIds: personIds, rating: rating, slug: slug, spaceId: spaceId, spacePersonId: spacePersonId, spacePersonIds: spacePersonIds, state: state, tagId: tagId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, type: type, userId: userId, visibility: visibility, withCoordinates: withCoordinates, withPartners: withPartners, withSharedSpaces: withSharedSpaces, withStacked: withStacked, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -803,6 +857,9 @@ class TimelineApi {
   ///
   /// * [String] key:
   ///
+  /// * [String] lensModel:
+  ///   Filter by camera lens model
+  ///
   /// * [String] make:
   ///   Filter by camera make
   ///
@@ -820,6 +877,9 @@ class TimelineApi {
   ///
   /// * [String] originalFileName:
   ///   Filter by original filename (substring, case/accent-insensitive)
+  ///
+  /// * [String] ownerId:
+  ///   Filter by asset owner (contributor). Narrows within the current scope and never widens it. This is NOT the same as userId, which selects whose timeline is being composed.
   ///
   /// * [String] personId:
   ///   Filter assets containing a specific person (face recognition)
@@ -840,6 +900,9 @@ class TimelineApi {
   ///
   /// * [List<String>] spacePersonIds:
   ///   Filter assets containing any of these shared space persons (multi-select)
+  ///
+  /// * [String] state:
+  ///   Filter by state/province name
   ///
   /// * [String] tagId:
   ///   Filter assets with a specific tag
@@ -873,7 +936,7 @@ class TimelineApi {
   ///
   /// * [bool] withStacked:
   ///   Include stacked assets in the response. When true, only primary assets from stacks are returned.
-  Future<Response> getTimeBucketsWithHttpInfo({ String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
+  Future<Response> getTimeBucketsWithHttpInfo({ String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? lensModel, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? ownerId, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? state, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final apiPath = r'/timeline/buckets';
 
@@ -917,6 +980,9 @@ class TimelineApi {
     if (key != null) {
       queryParams.addAll(_queryParams('', 'key', key));
     }
+    if (lensModel != null) {
+      queryParams.addAll(_queryParams('', 'lensModel', lensModel));
+    }
     if (make != null) {
       queryParams.addAll(_queryParams('', 'make', make));
     }
@@ -934,6 +1000,9 @@ class TimelineApi {
     }
     if (originalFileName != null) {
       queryParams.addAll(_queryParams('', 'originalFileName', originalFileName));
+    }
+    if (ownerId != null) {
+      queryParams.addAll(_queryParams('', 'ownerId', ownerId));
     }
     if (personId != null) {
       queryParams.addAll(_queryParams('', 'personId', personId));
@@ -955,6 +1024,9 @@ class TimelineApi {
     }
     if (spacePersonIds != null) {
       queryParams.addAll(_queryParams('multi', 'spacePersonIds', spacePersonIds));
+    }
+    if (state != null) {
+      queryParams.addAll(_queryParams('', 'state', state));
     }
     if (tagId != null) {
       queryParams.addAll(_queryParams('', 'tagId', tagId));
@@ -1043,6 +1115,9 @@ class TimelineApi {
   ///
   /// * [String] key:
   ///
+  /// * [String] lensModel:
+  ///   Filter by camera lens model
+  ///
   /// * [String] make:
   ///   Filter by camera make
   ///
@@ -1060,6 +1135,9 @@ class TimelineApi {
   ///
   /// * [String] originalFileName:
   ///   Filter by original filename (substring, case/accent-insensitive)
+  ///
+  /// * [String] ownerId:
+  ///   Filter by asset owner (contributor). Narrows within the current scope and never widens it. This is NOT the same as userId, which selects whose timeline is being composed.
   ///
   /// * [String] personId:
   ///   Filter assets containing a specific person (face recognition)
@@ -1080,6 +1158,9 @@ class TimelineApi {
   ///
   /// * [List<String>] spacePersonIds:
   ///   Filter assets containing any of these shared space persons (multi-select)
+  ///
+  /// * [String] state:
+  ///   Filter by state/province name
   ///
   /// * [String] tagId:
   ///   Filter assets with a specific tag
@@ -1113,8 +1194,8 @@ class TimelineApi {
   ///
   /// * [bool] withStacked:
   ///   Include stacked assets in the response. When true, only primary assets from stacks are returned.
-  Future<List<TimeBucketsResponseDto>?> getTimeBuckets({ String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
-    final response = await getTimeBucketsWithHttpInfo(albumId: albumId, bbox: bbox, bucketSize: bucketSize, city: city, country: country, description: description, isFavorite: isFavorite, isInAlbum: isInAlbum, isNotInAlbum: isNotInAlbum, isTrashed: isTrashed, key: key, make: make, model: model, ocr: ocr, order: order, orderBy: orderBy, originalFileName: originalFileName, personId: personId, personIds: personIds, rating: rating, slug: slug, spaceId: spaceId, spacePersonId: spacePersonId, spacePersonIds: spacePersonIds, tagId: tagId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, type: type, userId: userId, visibility: visibility, withCoordinates: withCoordinates, withPartners: withPartners, withSharedSpaces: withSharedSpaces, withStacked: withStacked, abortTrigger: abortTrigger,);
+  Future<List<TimeBucketsResponseDto>?> getTimeBuckets({ String? albumId, String? bbox, TimeBucketSize? bucketSize, String? city, String? country, String? description, bool? isFavorite, bool? isInAlbum, bool? isNotInAlbum, bool? isTrashed, String? key, String? lensModel, String? make, String? model, String? ocr, AssetOrder? order, AssetOrderBy? orderBy, String? originalFileName, String? ownerId, String? personId, List<String>? personIds, int? rating, String? slug, String? spaceId, String? spacePersonId, List<String>? spacePersonIds, String? state, String? tagId, List<String>? tagIds, String? takenAfter, String? takenBefore, AssetTypeEnum? type, String? userId, AssetVisibility? visibility, bool? withCoordinates, bool? withPartners, bool? withSharedSpaces, bool? withStacked, Future<void>? abortTrigger, }) async {
+    final response = await getTimeBucketsWithHttpInfo(albumId: albumId, bbox: bbox, bucketSize: bucketSize, city: city, country: country, description: description, isFavorite: isFavorite, isInAlbum: isInAlbum, isNotInAlbum: isNotInAlbum, isTrashed: isTrashed, key: key, lensModel: lensModel, make: make, model: model, ocr: ocr, order: order, orderBy: orderBy, originalFileName: originalFileName, ownerId: ownerId, personId: personId, personIds: personIds, rating: rating, slug: slug, spaceId: spaceId, spacePersonId: spacePersonId, spacePersonIds: spacePersonIds, state: state, tagId: tagId, tagIds: tagIds, takenAfter: takenAfter, takenBefore: takenBefore, type: type, userId: userId, visibility: visibility, withCoordinates: withCoordinates, withPartners: withPartners, withSharedSpaces: withSharedSpaces, withStacked: withStacked, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

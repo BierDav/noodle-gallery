@@ -13,7 +13,7 @@ import {
   SearchOrderField,
   SearchOrderFieldSchema,
 } from 'src/enum';
-import { IsNotSiblingOf, isoDatetimeToDate, nonEmptyPartial, stringToBool } from 'src/validation';
+import { boundedTextFilter, IsNotSiblingOf, isoDatetimeToDate, nonEmptyPartial, stringToBool } from 'src/validation';
 import z from 'zod';
 
 const UUID_PATTERN = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
@@ -44,6 +44,10 @@ const BaseSearchSchema = z.object({
   make: z.string().nullable().optional().describe('Filter by camera make'),
   model: z.string().nullable().optional().describe('Filter by camera model'),
   lensModel: z.string().nullable().optional().describe('Filter by lens model'),
+  ownerId: z
+    .uuidv4()
+    .optional()
+    .describe('Filter by asset owner (contributor). Narrows within the current scope; never widens it.'),
   isNotInAlbum: z.boolean().optional().describe('Filter assets not in any album'),
   isInAlbum: z.boolean().optional().describe('Filter assets in at least one album'),
   personIds: z.array(ScopedPersonTokenSchema).optional().describe('Filter by person IDs'),
@@ -63,7 +67,7 @@ const BaseSearchSchema = z.object({
         .updated('v3', 'Using -1 as a rating is no longer valid.')
         .getExtensions(),
     }),
-  ocr: z.string().optional().describe('Filter by OCR text content'),
+  ocr: boundedTextFilter().optional().describe('Filter by OCR text content'),
   spaceId: z.uuidv4().optional().describe('Shared space ID to filter by'),
   spacePersonIds: z.array(z.uuidv4()).optional().describe('Shared space person IDs to filter by'),
   withSharedSpaces: z.boolean().optional().describe('Include shared spaces the user is a member of'),
@@ -87,9 +91,9 @@ const LargeAssetSearchSchema = BaseSearchWithResultsSchema.extend({
 
 const MetadataSearchSchema = RandomSearchSchema.extend({
   id: z.uuidv4().optional().describe('Filter by asset ID'),
-  description: z.string().trim().optional().describe('Filter by description text'),
+  description: boundedTextFilter(z.string().trim()).optional().describe('Filter by description text'),
   checksum: z.string().optional().describe('Filter by file checksum'),
-  originalFileName: z.string().trim().optional().describe('Filter by original file name'),
+  originalFileName: boundedTextFilter(z.string().trim()).optional().describe('Filter by original file name'),
   originalPath: z.string().optional().describe('Filter by original file path'),
   previewPath: z.string().optional().describe('Filter by preview file path'),
   thumbnailPath: z.string().optional().describe('Filter by thumbnail file path'),
@@ -99,7 +103,7 @@ const MetadataSearchSchema = RandomSearchSchema.extend({
 }).meta({ id: 'MetadataSearchDto' });
 
 const StatisticsSearchSchema = BaseSearchSchema.extend({
-  description: z.string().trim().optional().describe('Filter by description text'),
+  description: boundedTextFilter(z.string().trim()).optional().describe('Filter by description text'),
 }).meta({ id: 'StatisticsSearchDto' });
 
 const SmartSearchSchema = BaseSearchWithResultsSchema.extend({
@@ -195,6 +199,10 @@ const SearchSuggestionRequestBaseSchema = z.object({
   make: z.string().optional().describe('Filter by camera make'),
   model: z.string().optional().describe('Filter by camera model'),
   lensModel: z.string().optional().describe('Filter by lens model'),
+  // Contributor filter, not an ownership scope: it narrows within whatever scope the request
+  // already resolved (see FilterSuggestionFilterOptions.ownerId). Without a field here the
+  // ZodValidationPipe would silently strip it and the suggestion lists would not narrow.
+  ownerId: z.uuidv4().optional().describe('Filter by asset owner (contributor)'),
   mediaType: AssetTypeSchema.optional().describe('Filter by asset type'),
   takenAfter: isoDatetimeToDate.optional().describe('Filter suggestions by taken date (after)'),
   takenBefore: isoDatetimeToDate.optional().describe('Filter suggestions by taken date (before)'),
@@ -281,9 +289,13 @@ const FilterSuggestionsRequestBaseSchema = z.object({
     .optional()
     .describe('Filter by person IDs'),
   country: z.string().optional().describe('Filter by country'),
+  state: z.string().optional().describe('Filter by state/province'),
   city: z.string().optional().describe('Filter by city'),
   make: z.string().optional().describe('Filter by camera make'),
   model: z.string().optional().describe('Filter by camera model'),
+  lensModel: z.string().optional().describe('Filter by lens model'),
+  // See SearchSuggestionRequestBaseSchema.ownerId — a narrowing contributor filter, never a scope.
+  ownerId: z.uuidv4().optional().describe('Filter by asset owner (contributor)'),
   tagIds: z
     .preprocess((v) => (v === undefined ? undefined : Array.isArray(v) ? v : [v]), z.array(z.uuidv4()))
     .optional()

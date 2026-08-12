@@ -29,6 +29,7 @@ class ServerFeaturesDto {
     required this.search,
     required this.sidecar,
     required this.smartSearch,
+    required this.smartSearchHasCutoff,
     this.syncRequestTypes = const Optional.present(const []),
     required this.trash,
   });
@@ -81,6 +82,9 @@ class ServerFeaturesDto {
   /// Whether smart search is enabled
   bool smartSearch;
 
+  /// Whether smart search has an active relevance cutoff (clip.maxDistance)
+  bool smartSearchHasCutoff;
+
   /// Sync stream request types this server accepts. Absent on servers that predate capability signalling; clients fall back to version-based gating.
   Optional<List<String>?> syncRequestTypes;
 
@@ -105,6 +109,7 @@ class ServerFeaturesDto {
     other.search == search &&
     other.sidecar == sidecar &&
     other.smartSearch == smartSearch &&
+    other.smartSearchHasCutoff == smartSearchHasCutoff &&
     _deepEquality.equals(other.syncRequestTypes, syncRequestTypes) &&
     other.trash == trash;
 
@@ -127,11 +132,12 @@ class ServerFeaturesDto {
     (search.hashCode) +
     (sidecar.hashCode) +
     (smartSearch.hashCode) +
+    (smartSearchHasCutoff.hashCode) +
     (syncRequestTypes.hashCode) +
     (trash.hashCode);
 
   @override
-  String toString() => 'ServerFeaturesDto[configFile=$configFile, duplicateDetection=$duplicateDetection, email=$email, facialRecognition=$facialRecognition, importFaces=$importFaces, map=$map, oauth=$oauth, oauthAutoLaunch=$oauthAutoLaunch, ocr=$ocr, passwordLogin=$passwordLogin, peopleStatistics=$peopleStatistics, realtimeTranscoding=$realtimeTranscoding, reverseGeocoding=$reverseGeocoding, search=$search, sidecar=$sidecar, smartSearch=$smartSearch, syncRequestTypes=$syncRequestTypes, trash=$trash]';
+  String toString() => 'ServerFeaturesDto[configFile=$configFile, duplicateDetection=$duplicateDetection, email=$email, facialRecognition=$facialRecognition, importFaces=$importFaces, map=$map, oauth=$oauth, oauthAutoLaunch=$oauthAutoLaunch, ocr=$ocr, passwordLogin=$passwordLogin, peopleStatistics=$peopleStatistics, realtimeTranscoding=$realtimeTranscoding, reverseGeocoding=$reverseGeocoding, search=$search, sidecar=$sidecar, smartSearch=$smartSearch, smartSearchHasCutoff=$smartSearchHasCutoff, syncRequestTypes=$syncRequestTypes, trash=$trash]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -151,6 +157,7 @@ class ServerFeaturesDto {
       json[r'search'] = this.search;
       json[r'sidecar'] = this.sidecar;
       json[r'smartSearch'] = this.smartSearch;
+      json[r'smartSearchHasCutoff'] = this.smartSearchHasCutoff;
     if (this.syncRequestTypes.isPresent) {
       final value = this.syncRequestTypes.value;
       json[r'syncRequestTypes'] = value;
@@ -184,6 +191,7 @@ class ServerFeaturesDto {
         search: mapValueOfType<bool>(json, r'search')!,
         sidecar: mapValueOfType<bool>(json, r'sidecar')!,
         smartSearch: mapValueOfType<bool>(json, r'smartSearch')!,
+        smartSearchHasCutoff: mapValueOfType<bool>(json, r'smartSearchHasCutoff')!,
         syncRequestTypes: json.containsKey(r'syncRequestTypes') ? Optional.present(json[r'syncRequestTypes'] is Iterable
             ? (json[r'syncRequestTypes'] as Iterable).cast<String>().toList(growable: false)
             : const []) : const Optional.absent(),
@@ -251,6 +259,7 @@ class ServerFeaturesDto {
     'search',
     'sidecar',
     'smartSearch',
+    'smartSearchHasCutoff',
     'trash',
   };
 }

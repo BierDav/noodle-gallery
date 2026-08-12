@@ -29,6 +29,7 @@ class RandomSearchDto {
     this.make = const Optional.absent(),
     this.model = const Optional.absent(),
     this.ocr = const Optional.absent(),
+    this.ownerId = const Optional.absent(),
     this.personIds = const Optional.present(const []),
     this.rating = const Optional.absent(),
     this.size = const Optional.absent(),
@@ -152,6 +153,15 @@ class RandomSearchDto {
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
   Optional<String?> ocr;
+
+  /// Filter by asset owner (contributor). Narrows within the current scope; never widens it.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  Optional<String?> ownerId;
 
   /// Filter by person IDs
   Optional<List<String>?> personIds;
@@ -325,6 +335,7 @@ class RandomSearchDto {
     other.make == make &&
     other.model == model &&
     other.ocr == ocr &&
+    other.ownerId == ownerId &&
     _deepEquality.equals(other.personIds, personIds) &&
     other.rating == rating &&
     other.size == size &&
@@ -365,6 +376,7 @@ class RandomSearchDto {
     (make == null ? 0 : make!.hashCode) +
     (model == null ? 0 : model!.hashCode) +
     (ocr == null ? 0 : ocr!.hashCode) +
+    (ownerId == null ? 0 : ownerId!.hashCode) +
     (personIds.hashCode) +
     (rating == null ? 0 : rating!.hashCode) +
     (size == null ? 0 : size!.hashCode) +
@@ -387,7 +399,7 @@ class RandomSearchDto {
     (withStacked == null ? 0 : withStacked!.hashCode);
 
   @override
-  String toString() => 'RandomSearchDto[albumIds=$albumIds, city=$city, country=$country, createdAfter=$createdAfter, createdBefore=$createdBefore, isEncoded=$isEncoded, isFavorite=$isFavorite, isInAlbum=$isInAlbum, isMotion=$isMotion, isNotInAlbum=$isNotInAlbum, isOffline=$isOffline, lensModel=$lensModel, libraryId=$libraryId, make=$make, model=$model, ocr=$ocr, personIds=$personIds, rating=$rating, size=$size, spaceId=$spaceId, spacePersonIds=$spacePersonIds, state=$state, tagIds=$tagIds, takenAfter=$takenAfter, takenBefore=$takenBefore, trashedAfter=$trashedAfter, trashedBefore=$trashedBefore, type=$type, updatedAfter=$updatedAfter, updatedBefore=$updatedBefore, visibility=$visibility, withDeleted=$withDeleted, withExif=$withExif, withPeople=$withPeople, withSharedSpaces=$withSharedSpaces, withStacked=$withStacked]';
+  String toString() => 'RandomSearchDto[albumIds=$albumIds, city=$city, country=$country, createdAfter=$createdAfter, createdBefore=$createdBefore, isEncoded=$isEncoded, isFavorite=$isFavorite, isInAlbum=$isInAlbum, isMotion=$isMotion, isNotInAlbum=$isNotInAlbum, isOffline=$isOffline, lensModel=$lensModel, libraryId=$libraryId, make=$make, model=$model, ocr=$ocr, ownerId=$ownerId, personIds=$personIds, rating=$rating, size=$size, spaceId=$spaceId, spacePersonIds=$spacePersonIds, state=$state, tagIds=$tagIds, takenAfter=$takenAfter, takenBefore=$takenBefore, trashedAfter=$trashedAfter, trashedBefore=$trashedBefore, type=$type, updatedAfter=$updatedAfter, updatedBefore=$updatedBefore, visibility=$visibility, withDeleted=$withDeleted, withExif=$withExif, withPeople=$withPeople, withSharedSpaces=$withSharedSpaces, withStacked=$withStacked]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -458,6 +470,10 @@ class RandomSearchDto {
     if (this.ocr.isPresent) {
       final value = this.ocr.value;
       json[r'ocr'] = value;
+    }
+    if (this.ownerId.isPresent) {
+      final value = this.ownerId.value;
+      json[r'ownerId'] = value;
     }
     if (this.personIds.isPresent) {
       final value = this.personIds.value;
@@ -581,6 +597,7 @@ class RandomSearchDto {
         make: json.containsKey(r'make') ? Optional.present(mapValueOfType<String>(json, r'make')) : const Optional.absent(),
         model: json.containsKey(r'model') ? Optional.present(mapValueOfType<String>(json, r'model')) : const Optional.absent(),
         ocr: json.containsKey(r'ocr') ? Optional.present(mapValueOfType<String>(json, r'ocr')) : const Optional.absent(),
+        ownerId: json.containsKey(r'ownerId') ? Optional.present(mapValueOfType<String>(json, r'ownerId')) : const Optional.absent(),
         personIds: json.containsKey(r'personIds') ? Optional.present(json[r'personIds'] is Iterable
             ? (json[r'personIds'] as Iterable).cast<String>().toList(growable: false)
             : const []) : const Optional.absent(),

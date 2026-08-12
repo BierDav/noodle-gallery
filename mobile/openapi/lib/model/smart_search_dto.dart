@@ -31,6 +31,7 @@ class SmartSearchDto {
     this.model = const Optional.absent(),
     this.ocr = const Optional.absent(),
     this.order = const Optional.absent(),
+    this.ownerId = const Optional.absent(),
     this.page = const Optional.absent(),
     this.personIds = const Optional.present(const []),
     this.query = const Optional.absent(),
@@ -172,6 +173,15 @@ class SmartSearchDto {
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
   Optional<AssetOrder?> order;
+
+  /// Filter by asset owner (contributor). Narrows within the current scope; never widens it.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  Optional<String?> ownerId;
 
   /// Page number
   ///
@@ -359,6 +369,7 @@ class SmartSearchDto {
     other.model == model &&
     other.ocr == ocr &&
     other.order == order &&
+    other.ownerId == ownerId &&
     other.page == page &&
     _deepEquality.equals(other.personIds, personIds) &&
     other.query == query &&
@@ -402,6 +413,7 @@ class SmartSearchDto {
     (model == null ? 0 : model!.hashCode) +
     (ocr == null ? 0 : ocr!.hashCode) +
     (order == null ? 0 : order!.hashCode) +
+    (ownerId == null ? 0 : ownerId!.hashCode) +
     (page == null ? 0 : page!.hashCode) +
     (personIds.hashCode) +
     (query == null ? 0 : query!.hashCode) +
@@ -425,7 +437,7 @@ class SmartSearchDto {
     (withSharedSpaces == null ? 0 : withSharedSpaces!.hashCode);
 
   @override
-  String toString() => 'SmartSearchDto[albumIds=$albumIds, city=$city, country=$country, createdAfter=$createdAfter, createdBefore=$createdBefore, isEncoded=$isEncoded, isFavorite=$isFavorite, isInAlbum=$isInAlbum, isMotion=$isMotion, isNotInAlbum=$isNotInAlbum, isOffline=$isOffline, language=$language, lensModel=$lensModel, libraryId=$libraryId, make=$make, model=$model, ocr=$ocr, order=$order, page=$page, personIds=$personIds, query=$query, queryAssetId=$queryAssetId, rating=$rating, size=$size, spaceId=$spaceId, spacePersonIds=$spacePersonIds, state=$state, tagIds=$tagIds, takenAfter=$takenAfter, takenBefore=$takenBefore, trashedAfter=$trashedAfter, trashedBefore=$trashedBefore, type=$type, updatedAfter=$updatedAfter, updatedBefore=$updatedBefore, visibility=$visibility, withDeleted=$withDeleted, withExif=$withExif, withSharedSpaces=$withSharedSpaces]';
+  String toString() => 'SmartSearchDto[albumIds=$albumIds, city=$city, country=$country, createdAfter=$createdAfter, createdBefore=$createdBefore, isEncoded=$isEncoded, isFavorite=$isFavorite, isInAlbum=$isInAlbum, isMotion=$isMotion, isNotInAlbum=$isNotInAlbum, isOffline=$isOffline, language=$language, lensModel=$lensModel, libraryId=$libraryId, make=$make, model=$model, ocr=$ocr, order=$order, ownerId=$ownerId, page=$page, personIds=$personIds, query=$query, queryAssetId=$queryAssetId, rating=$rating, size=$size, spaceId=$spaceId, spacePersonIds=$spacePersonIds, state=$state, tagIds=$tagIds, takenAfter=$takenAfter, takenBefore=$takenBefore, trashedAfter=$trashedAfter, trashedBefore=$trashedBefore, type=$type, updatedAfter=$updatedAfter, updatedBefore=$updatedBefore, visibility=$visibility, withDeleted=$withDeleted, withExif=$withExif, withSharedSpaces=$withSharedSpaces]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -504,6 +516,10 @@ class SmartSearchDto {
     if (this.order.isPresent) {
       final value = this.order.value;
       json[r'order'] = value;
+    }
+    if (this.ownerId.isPresent) {
+      final value = this.ownerId.value;
+      json[r'ownerId'] = value;
     }
     if (this.page.isPresent) {
       final value = this.page.value;
@@ -633,6 +649,7 @@ class SmartSearchDto {
         model: json.containsKey(r'model') ? Optional.present(mapValueOfType<String>(json, r'model')) : const Optional.absent(),
         ocr: json.containsKey(r'ocr') ? Optional.present(mapValueOfType<String>(json, r'ocr')) : const Optional.absent(),
         order: json.containsKey(r'order') ? Optional.present(AssetOrder.fromJson(json[r'order'])) : const Optional.absent(),
+        ownerId: json.containsKey(r'ownerId') ? Optional.present(mapValueOfType<String>(json, r'ownerId')) : const Optional.absent(),
         page: json.containsKey(r'page') ? Optional.present(json[r'page'] == null ? null : int.parse('${json[r'page']}')) : const Optional.absent(),
         personIds: json.containsKey(r'personIds') ? Optional.present(json[r'personIds'] is Iterable
             ? (json[r'personIds'] as Iterable).cast<String>().toList(growable: false)

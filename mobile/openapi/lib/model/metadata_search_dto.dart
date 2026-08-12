@@ -36,6 +36,7 @@ class MetadataSearchDto {
     this.order = const Optional.absent(),
     this.originalFileName = const Optional.absent(),
     this.originalPath = const Optional.absent(),
+    this.ownerId = const Optional.absent(),
     this.page = const Optional.absent(),
     this.personIds = const Optional.present(const []),
     this.previewPath = const Optional.absent(),
@@ -224,6 +225,15 @@ class MetadataSearchDto {
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
   Optional<String?> originalPath;
+
+  /// Filter by asset owner (contributor). Narrows within the current scope; never widens it.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  Optional<String?> ownerId;
 
   /// Page number
   ///
@@ -434,6 +444,7 @@ class MetadataSearchDto {
     other.order == order &&
     other.originalFileName == originalFileName &&
     other.originalPath == originalPath &&
+    other.ownerId == ownerId &&
     other.page == page &&
     _deepEquality.equals(other.personIds, personIds) &&
     other.previewPath == previewPath &&
@@ -484,6 +495,7 @@ class MetadataSearchDto {
     (order == null ? 0 : order!.hashCode) +
     (originalFileName == null ? 0 : originalFileName!.hashCode) +
     (originalPath == null ? 0 : originalPath!.hashCode) +
+    (ownerId == null ? 0 : ownerId!.hashCode) +
     (page == null ? 0 : page!.hashCode) +
     (personIds.hashCode) +
     (previewPath == null ? 0 : previewPath!.hashCode) +
@@ -509,7 +521,7 @@ class MetadataSearchDto {
     (withStacked == null ? 0 : withStacked!.hashCode);
 
   @override
-  String toString() => 'MetadataSearchDto[albumIds=$albumIds, checksum=$checksum, city=$city, country=$country, createdAfter=$createdAfter, createdBefore=$createdBefore, description=$description, encodedVideoPath=$encodedVideoPath, id=$id, isEncoded=$isEncoded, isFavorite=$isFavorite, isInAlbum=$isInAlbum, isMotion=$isMotion, isNotInAlbum=$isNotInAlbum, isOffline=$isOffline, lensModel=$lensModel, libraryId=$libraryId, make=$make, model=$model, ocr=$ocr, order=$order, originalFileName=$originalFileName, originalPath=$originalPath, page=$page, personIds=$personIds, previewPath=$previewPath, rating=$rating, size=$size, spaceId=$spaceId, spacePersonIds=$spacePersonIds, state=$state, tagIds=$tagIds, takenAfter=$takenAfter, takenBefore=$takenBefore, thumbnailPath=$thumbnailPath, trashedAfter=$trashedAfter, trashedBefore=$trashedBefore, type=$type, updatedAfter=$updatedAfter, updatedBefore=$updatedBefore, visibility=$visibility, withDeleted=$withDeleted, withExif=$withExif, withPeople=$withPeople, withSharedSpaces=$withSharedSpaces, withStacked=$withStacked]';
+  String toString() => 'MetadataSearchDto[albumIds=$albumIds, checksum=$checksum, city=$city, country=$country, createdAfter=$createdAfter, createdBefore=$createdBefore, description=$description, encodedVideoPath=$encodedVideoPath, id=$id, isEncoded=$isEncoded, isFavorite=$isFavorite, isInAlbum=$isInAlbum, isMotion=$isMotion, isNotInAlbum=$isNotInAlbum, isOffline=$isOffline, lensModel=$lensModel, libraryId=$libraryId, make=$make, model=$model, ocr=$ocr, order=$order, originalFileName=$originalFileName, originalPath=$originalPath, ownerId=$ownerId, page=$page, personIds=$personIds, previewPath=$previewPath, rating=$rating, size=$size, spaceId=$spaceId, spacePersonIds=$spacePersonIds, state=$state, tagIds=$tagIds, takenAfter=$takenAfter, takenBefore=$takenBefore, thumbnailPath=$thumbnailPath, trashedAfter=$trashedAfter, trashedBefore=$trashedBefore, type=$type, updatedAfter=$updatedAfter, updatedBefore=$updatedBefore, visibility=$visibility, withDeleted=$withDeleted, withExif=$withExif, withPeople=$withPeople, withSharedSpaces=$withSharedSpaces, withStacked=$withStacked]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -608,6 +620,10 @@ class MetadataSearchDto {
     if (this.originalPath.isPresent) {
       final value = this.originalPath.value;
       json[r'originalPath'] = value;
+    }
+    if (this.ownerId.isPresent) {
+      final value = this.ownerId.value;
+      json[r'ownerId'] = value;
     }
     if (this.page.isPresent) {
       final value = this.page.value;
@@ -750,6 +766,7 @@ class MetadataSearchDto {
         order: json.containsKey(r'order') ? Optional.present(AssetOrder.fromJson(json[r'order'])) : const Optional.absent(),
         originalFileName: json.containsKey(r'originalFileName') ? Optional.present(mapValueOfType<String>(json, r'originalFileName')) : const Optional.absent(),
         originalPath: json.containsKey(r'originalPath') ? Optional.present(mapValueOfType<String>(json, r'originalPath')) : const Optional.absent(),
+        ownerId: json.containsKey(r'ownerId') ? Optional.present(mapValueOfType<String>(json, r'ownerId')) : const Optional.absent(),
         page: json.containsKey(r'page') ? Optional.present(json[r'page'] == null ? null : int.parse('${json[r'page']}')) : const Optional.absent(),
         personIds: json.containsKey(r'personIds') ? Optional.present(json[r'personIds'] is Iterable
             ? (json[r'personIds'] as Iterable).cast<String>().toList(growable: false)

@@ -7312,6 +7312,17 @@
         "operationId": "getFilteredMapMarkers",
         "parameters": [
           {
+            "name": "albumId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by album",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
             "name": "city",
             "required": false,
             "in": "query",
@@ -7333,7 +7344,7 @@
             "name": "description",
             "required": false,
             "in": "query",
-            "description": "Filter by description text",
+            "description": "Filter by asset description (substring, case/accent-insensitive)",
             "schema": {
               "type": "string"
             }
@@ -7366,6 +7377,15 @@
             }
           },
           {
+            "name": "lensModel",
+            "required": false,
+            "in": "query",
+            "description": "Camera lens model",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "make",
             "required": false,
             "in": "query",
@@ -7387,7 +7407,7 @@
             "name": "ocr",
             "required": false,
             "in": "query",
-            "description": "Filter by text recognised in the image",
+            "description": "Filter by OCR text content (substring, case/accent-insensitive)",
             "schema": {
               "type": "string"
             }
@@ -7396,8 +7416,19 @@
             "name": "originalFileName",
             "required": false,
             "in": "query",
-            "description": "Filter by original file name",
+            "description": "Filter by original filename (substring, case/accent-insensitive)",
             "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ownerId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by asset owner (contributor). Narrows within the current scope; never widens it.",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
               "type": "string"
             }
           },
@@ -7434,6 +7465,15 @@
             "schema": {
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "required": false,
+            "in": "query",
+            "description": "Filter by state/province",
+            "schema": {
               "type": "string"
             }
           },
@@ -12502,6 +12542,17 @@
             }
           },
           {
+            "name": "ownerId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by asset owner (contributor). Narrows within the current scope; never widens it.",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
             "name": "personIds",
             "required": false,
             "in": "query",
@@ -13347,6 +13398,17 @@
             }
           },
           {
+            "name": "ownerId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by asset owner (contributor)",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
             "name": "personIds",
             "required": false,
             "in": "query",
@@ -13557,6 +13619,15 @@
             }
           },
           {
+            "name": "lensModel",
+            "required": false,
+            "in": "query",
+            "description": "Filter by lens model",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "make",
             "required": false,
             "in": "query",
@@ -13580,6 +13651,17 @@
             "in": "query",
             "description": "Filter by camera model",
             "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ownerId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by asset owner (contributor)",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
               "type": "string"
             }
           },
@@ -13616,6 +13698,15 @@
             "schema": {
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "required": false,
+            "in": "query",
+            "description": "Filter by state/province",
+            "schema": {
               "type": "string"
             }
           },
@@ -20577,6 +20668,15 @@
             }
           },
           {
+            "name": "lensModel",
+            "required": false,
+            "in": "query",
+            "description": "Filter by camera lens model",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "make",
             "required": false,
             "in": "query",
@@ -20627,6 +20727,17 @@
             "in": "query",
             "description": "Filter by original filename (substring, case/accent-insensitive)",
             "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ownerId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by asset owner (contributor). Narrows within the current scope and never widens it. This is NOT the same as userId, which selects whose timeline is being composed.",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
               "type": "string"
             }
           },
@@ -20708,6 +20819,15 @@
                 "format": "uuid",
                 "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
               }
+            }
+          },
+          {
+            "name": "state",
+            "required": false,
+            "in": "query",
+            "description": "Filter by state/province name",
+            "schema": {
+              "type": "string"
             }
           },
           {
@@ -20978,6 +21098,15 @@
             }
           },
           {
+            "name": "lensModel",
+            "required": false,
+            "in": "query",
+            "description": "Filter by camera lens model",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "make",
             "required": false,
             "in": "query",
@@ -21028,6 +21157,17 @@
             "in": "query",
             "description": "Filter by original filename (substring, case/accent-insensitive)",
             "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ownerId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by asset owner (contributor). Narrows within the current scope and never widens it. This is NOT the same as userId, which selects whose timeline is being composed.",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
               "type": "string"
             }
           },
@@ -21109,6 +21249,15 @@
                 "format": "uuid",
                 "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
               }
+            }
+          },
+          {
+            "name": "state",
+            "required": false,
+            "in": "query",
+            "description": "Filter by state/province name",
+            "schema": {
+              "type": "string"
             }
           },
           {
@@ -21384,6 +21533,15 @@
             }
           },
           {
+            "name": "lensModel",
+            "required": false,
+            "in": "query",
+            "description": "Filter by camera lens model",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "make",
             "required": false,
             "in": "query",
@@ -21434,6 +21592,17 @@
             "in": "query",
             "description": "Filter by original filename (substring, case/accent-insensitive)",
             "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ownerId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by asset owner (contributor). Narrows within the current scope and never widens it. This is NOT the same as userId, which selects whose timeline is being composed.",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
               "type": "string"
             }
           },
@@ -21515,6 +21684,15 @@
                 "format": "uuid",
                 "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$"
               }
+            }
+          },
+          {
+            "name": "state",
+            "required": false,
+            "in": "query",
+            "description": "Filter by state/province name",
+            "schema": {
+              "type": "string"
             }
           },
           {
@@ -28949,6 +29127,12 @@
             "description": "Filter by original file path",
             "type": "string"
           },
+          "ownerId": {
+            "description": "Filter by asset owner (contributor). Narrows within the current scope; never widens it.",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+            "type": "string"
+          },
           "page": {
             "description": "Page number",
             "maximum": 9007199254740991,
@@ -31065,6 +31249,12 @@
             "description": "Filter by OCR text content",
             "type": "string"
           },
+          "ownerId": {
+            "description": "Filter by asset owner (contributor). Narrows within the current scope; never widens it.",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+            "type": "string"
+          },
           "personIds": {
             "description": "Filter by person IDs",
             "items": {
@@ -31879,6 +32069,10 @@
             "description": "Whether smart search is enabled",
             "type": "boolean"
           },
+          "smartSearchHasCutoff": {
+            "description": "Whether smart search has an active relevance cutoff (clip.maxDistance)",
+            "type": "boolean"
+          },
           "syncRequestTypes": {
             "description": "Sync stream request types this server accepts. Absent on servers that predate capability signalling; clients fall back to version-based gating.",
             "items": {
@@ -31908,6 +32102,7 @@
           "search",
           "sidecar",
           "smartSearch",
+          "smartSearchHasCutoff",
           "trash"
         ],
         "type": "object"
@@ -33472,6 +33667,12 @@
             "$ref": "#/components/schemas/AssetOrder",
             "description": "Sort order (omit for relevance)"
           },
+          "ownerId": {
+            "description": "Filter by asset owner (contributor). Narrows within the current scope; never widens it.",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+            "type": "string"
+          },
           "page": {
             "description": "Page number",
             "maximum": 9007199254740991,
@@ -34018,6 +34219,12 @@
           },
           "ocr": {
             "description": "Filter by OCR text content",
+            "type": "string"
+          },
+          "ownerId": {
+            "description": "Filter by asset owner (contributor). Narrows within the current scope; never widens it.",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
             "type": "string"
           },
           "personIds": {
