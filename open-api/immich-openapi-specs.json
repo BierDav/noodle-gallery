@@ -614,6 +614,819 @@
         ]
       }
     },
+    "/admin/face-repair/decline": {
+      "delete": {
+        "operationId": "removeFaceRepairDeclines",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaceRepairDeclineRemoveRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairDeclineRemovedDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Remove face-repair declines",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      },
+      "get": {
+        "operationId": "getFaceRepairDeclines",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairDeclineListDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "List face-repair declines",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      },
+      "post": {
+        "operationId": "declineFaceRepair",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaceRepairDeclineRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairDeclineCreatedDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Decline flagged faces / dismiss flagged persons",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/faces/{assetFaceId}/thumbnail": {
+      "get": {
+        "operationId": "getFaceRepairFaceThumbnail",
+        "parameters": [
+          {
+            "name": "assetFaceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "format": "binary",
+                  "type": "string"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Get an admin face-repair face thumbnail",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/owner/{ownerId}/people": {
+      "get": {
+        "operationId": "getFaceRepairOwnerPeople",
+        "parameters": [
+          {
+            "name": "ownerId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "maximum": 9007199254740991,
+              "default": 0,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairOwnerPeopleResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Search an owner's people for the move-to-chosen-person picker",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createFaceRepairOwnerPerson",
+        "parameters": [
+          {
+            "name": "ownerId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaceRepairOwnerPersonCreateRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairOwnerPersonCreatedResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Create a person under an owner for the move-to-chosen-person picker",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/person/{personId}": {
+      "get": {
+        "operationId": "getFaceRepairPersonMetadata",
+        "parameters": [
+          {
+            "name": "personId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairPersonMetadataResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Get a person for manual review",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/resolutions": {
+      "get": {
+        "operationId": "getFaceRepairResolutions",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "minimum": 1,
+              "maximum": 9007199254740991,
+              "default": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "required": false,
+            "in": "query",
+            "description": "Number of resolutions per page",
+            "schema": {
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairResolutionsListDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "List face-repair resolutions (negative verdicts from both engines)",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/resolutions/remove": {
+      "post": {
+        "operationId": "removeFaceRepairResolutions",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaceRepairResolutionsRemoveRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairResolutionsRemovedDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Remove face-repair resolutions (undo)",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/resolve": {
+      "post": {
+        "operationId": "resolveFaces",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaceRepairResolveRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairResolveResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Resolve reviewed faces",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/scan": {
+      "post": {
+        "operationId": "triggerScan",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaceRepairScanTriggerRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairScanTriggerResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Trigger a face-repair scan",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/scan/defaults": {
+      "get": {
+        "operationId": "getFaceRepairScanDefaults",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairScanDefaultsDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Get effective face-repair scan defaults",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/scan/latest": {
+      "get": {
+        "operationId": "getLatestScan",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Get the latest face-repair scan",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/scan/person/{personId}": {
+      "get": {
+        "operationId": "getFaceRepairPersonFaces",
+        "parameters": [
+          {
+            "name": "personId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairPersonFacesDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Get a person's flagged faces for review",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/scan/person/{personId}/cluster-faces": {
+      "post": {
+        "operationId": "getFaceRepairClusterFaces",
+        "parameters": [
+          {
+            "name": "personId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaceRepairClusterFacesRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairClusterFacesResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "List a person's cluster faces (paginated, excluding the supplied flagged ids)",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
+    "/admin/face-repair/unconfirm": {
+      "post": {
+        "operationId": "unconfirmFaceRepairFaces",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaceRepairUnconfirmRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceRepairResolutionsRemovedDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Un-confirm human-placed faces so a re-scan may flag them again",
+        "tags": [
+          "Faces"
+        ],
+        "x-immich-admin-only": true,
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          }
+        ]
+      }
+    },
     "/admin/integrity/report": {
       "get": {
         "description": "Get all flagged items by integrity report type",
@@ -9947,6 +10760,363 @@
         "x-immich-state": "Deprecated"
       }
     },
+    "/people/{id}/face-suggestions": {
+      "get": {
+        "description": "Retrieve near-miss unassigned faces suggested for this person, best match first.",
+        "operationId": "getPersonFaceSuggestions",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "minimum": 1,
+              "maximum": 9007199254740991,
+              "default": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "size",
+            "required": false,
+            "in": "query",
+            "description": "Number of suggestions per page",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonFaceSuggestionPageResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Get face suggestions for a person",
+        "tags": [
+          "People"
+        ],
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          },
+          {
+            "version": "v1",
+            "state": "Beta"
+          }
+        ],
+        "x-immich-permission": "person.update",
+        "x-immich-state": "Beta"
+      }
+    },
+    "/people/{id}/face-suggestions/{assetFaceId}/confirm": {
+      "post": {
+        "description": "Assign the suggested face to the person. Idempotent — the response reports whether it acted.",
+        "operationId": "confirmPersonFaceSuggestion",
+        "parameters": [
+          {
+            "name": "assetFaceId",
+            "required": true,
+            "in": "path",
+            "description": "Unassigned asset face ID being reviewed",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Person ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceSuggestionActionResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Confirm a face suggestion",
+        "tags": [
+          "People"
+        ],
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          },
+          {
+            "version": "v1",
+            "state": "Beta"
+          }
+        ],
+        "x-immich-permission": "person.update",
+        "x-immich-state": "Beta"
+      }
+    },
+    "/people/{id}/face-suggestions/{assetFaceId}/dismiss": {
+      "post": {
+        "description": "Compatibility alias for rejecting this suggestion. The face stays unassigned. Idempotent — the response reports whether it acted.",
+        "operationId": "dismissPersonFaceSuggestion",
+        "parameters": [
+          {
+            "name": "assetFaceId",
+            "required": true,
+            "in": "path",
+            "description": "Unassigned asset face ID being reviewed",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Person ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceSuggestionActionResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Dismiss a face suggestion",
+        "tags": [
+          "People"
+        ],
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          },
+          {
+            "version": "v1",
+            "state": "Beta"
+          }
+        ],
+        "x-immich-permission": "person.update",
+        "x-immich-state": "Beta"
+      }
+    },
+    "/people/{id}/face-suggestions/{assetFaceId}/ignore": {
+      "post": {
+        "description": "Ignore this suggestion for the person. The face stays unassigned. Idempotent — the response reports whether it acted.",
+        "operationId": "ignorePersonFaceSuggestion",
+        "parameters": [
+          {
+            "name": "assetFaceId",
+            "required": true,
+            "in": "path",
+            "description": "Unassigned asset face ID being reviewed",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Person ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceSuggestionActionResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Ignore a face suggestion",
+        "tags": [
+          "People"
+        ],
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          },
+          {
+            "version": "v1",
+            "state": "Beta"
+          }
+        ],
+        "x-immich-permission": "person.update",
+        "x-immich-state": "Beta"
+      }
+    },
+    "/people/{id}/face-suggestions/{assetFaceId}/reject": {
+      "post": {
+        "description": "Reject this suggestion for the person. The face stays unassigned. Idempotent — the response reports whether it acted.",
+        "operationId": "rejectPersonFaceSuggestion",
+        "parameters": [
+          {
+            "name": "assetFaceId",
+            "required": true,
+            "in": "path",
+            "description": "Unassigned asset face ID being reviewed",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Person ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceSuggestionActionResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Reject a face suggestion",
+        "tags": [
+          "People"
+        ],
+        "x-immich-history": [
+          {
+            "version": "v1",
+            "state": "Added"
+          },
+          {
+            "version": "v1",
+            "state": "Beta"
+          }
+        ],
+        "x-immich-permission": "person.update",
+        "x-immich-state": "Beta"
+      }
+    },
     "/people/{id}/faces": {
       "get": {
         "description": "Retrieve detected face crops for a person.",
@@ -16572,6 +17742,419 @@
         ],
         "x-immich-permission": "sharedSpace.read",
         "x-immich-state": "Beta"
+      }
+    },
+    "/shared-spaces/{id}/people/{personId}/face-suggestions": {
+      "get": {
+        "description": "Retrieve near-miss unassigned faces suggested for this space person, best match first.",
+        "operationId": "getSpacePersonFaceSuggestions",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Shared space ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "minimum": 1,
+              "maximum": 9007199254740991,
+              "default": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "personId",
+            "required": true,
+            "in": "path",
+            "description": "Space person ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "size",
+            "required": false,
+            "in": "query",
+            "description": "Number of suggestions per page",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonFaceSuggestionPageResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Get face suggestions for a person in a shared space",
+        "tags": [
+          "Shared Spaces"
+        ],
+        "x-immich-history": [
+          {
+            "version": "v2",
+            "state": "Added"
+          },
+          {
+            "version": "v2",
+            "state": "Stable"
+          }
+        ],
+        "x-immich-permission": "sharedSpace.read",
+        "x-immich-state": "Stable"
+      }
+    },
+    "/shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/confirm": {
+      "post": {
+        "description": "Assign the suggested face to the space person. Idempotent — the response reports whether it acted.",
+        "operationId": "confirmSpacePersonFaceSuggestion",
+        "parameters": [
+          {
+            "name": "assetFaceId",
+            "required": true,
+            "in": "path",
+            "description": "Unassigned asset face ID being reviewed",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Shared space ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "personId",
+            "required": true,
+            "in": "path",
+            "description": "Space person ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceSuggestionActionResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Confirm a face suggestion for a person in a shared space",
+        "tags": [
+          "Shared Spaces"
+        ],
+        "x-immich-history": [
+          {
+            "version": "v2",
+            "state": "Added"
+          },
+          {
+            "version": "v2",
+            "state": "Stable"
+          }
+        ],
+        "x-immich-permission": "sharedSpace.update",
+        "x-immich-state": "Stable"
+      }
+    },
+    "/shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/dismiss": {
+      "post": {
+        "description": "Compatibility alias for rejecting this suggestion for the space person. The face stays unassigned. Idempotent — the response reports whether it acted.",
+        "operationId": "dismissSpacePersonFaceSuggestion",
+        "parameters": [
+          {
+            "name": "assetFaceId",
+            "required": true,
+            "in": "path",
+            "description": "Unassigned asset face ID being reviewed",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Shared space ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "personId",
+            "required": true,
+            "in": "path",
+            "description": "Space person ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceSuggestionActionResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Dismiss a face suggestion for a person in a shared space",
+        "tags": [
+          "Shared Spaces"
+        ],
+        "x-immich-history": [
+          {
+            "version": "v2",
+            "state": "Added"
+          },
+          {
+            "version": "v2",
+            "state": "Stable"
+          }
+        ],
+        "x-immich-permission": "sharedSpace.update",
+        "x-immich-state": "Stable"
+      }
+    },
+    "/shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/ignore": {
+      "post": {
+        "description": "Ignore this suggestion for the space person. The face stays unassigned. Idempotent — the response reports whether it acted.",
+        "operationId": "ignoreSpacePersonFaceSuggestion",
+        "parameters": [
+          {
+            "name": "assetFaceId",
+            "required": true,
+            "in": "path",
+            "description": "Unassigned asset face ID being reviewed",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Shared space ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "personId",
+            "required": true,
+            "in": "path",
+            "description": "Space person ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceSuggestionActionResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Ignore a face suggestion for a person in a shared space",
+        "tags": [
+          "Shared Spaces"
+        ],
+        "x-immich-history": [
+          {
+            "version": "v2",
+            "state": "Added"
+          },
+          {
+            "version": "v2",
+            "state": "Stable"
+          }
+        ],
+        "x-immich-permission": "sharedSpace.update",
+        "x-immich-state": "Stable"
+      }
+    },
+    "/shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/reject": {
+      "post": {
+        "description": "Reject this suggestion for the space person. The face stays unassigned. Idempotent — the response reports whether it acted.",
+        "operationId": "rejectSpacePersonFaceSuggestion",
+        "parameters": [
+          {
+            "name": "assetFaceId",
+            "required": true,
+            "in": "path",
+            "description": "Unassigned asset face ID being reviewed",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "Shared space ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          },
+          {
+            "name": "personId",
+            "required": true,
+            "in": "path",
+            "description": "Space person ID",
+            "schema": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaceSuggestionActionResponseDto"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "cookie": []
+          },
+          {
+            "api_key": []
+          }
+        ],
+        "summary": "Reject a face suggestion for a person in a shared space",
+        "tags": [
+          "Shared Spaces"
+        ],
+        "x-immich-history": [
+          {
+            "version": "v2",
+            "state": "Added"
+          },
+          {
+            "version": "v2",
+            "state": "Stable"
+          }
+        ],
+        "x-immich-permission": "sharedSpace.update",
+        "x-immich-state": "Stable"
       }
     },
     "/shared-spaces/{id}/people/{personId}/faces": {
@@ -24975,6 +26558,369 @@
         ],
         "type": "object"
       },
+      "FaceRepairClusterFacesRequestDto": {
+        "properties": {
+          "excludeFaceIds": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            },
+            "maxItems": 25000,
+            "type": "array"
+          },
+          "page": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "size": {
+            "maximum": 200,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "page",
+          "size"
+        ],
+        "type": "object"
+      },
+      "FaceRepairClusterFacesResponseDto": {
+        "properties": {
+          "faces": {
+            "items": {
+              "properties": {
+                "assetFaceId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "assetFaceId"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "hasMore": {
+            "type": "boolean"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "faces",
+          "hasMore",
+          "total"
+        ],
+        "type": "object"
+      },
+      "FaceRepairDeclineCreatedDto": {
+        "properties": {
+          "created": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "created"
+        ],
+        "type": "object"
+      },
+      "FaceRepairDeclineListDto": {
+        "properties": {
+          "declines": {
+            "items": {
+              "properties": {
+                "assetFaceId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "createdAt": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "personId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "personName": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "personThumbnailFaceId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "suspectedOwnerId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "suspectedOwnerName": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "suspectedOwnerThumbnailFaceId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "type",
+                "assetFaceId",
+                "suspectedOwnerId",
+                "suspectedOwnerName",
+                "suspectedOwnerThumbnailFaceId",
+                "personId",
+                "personName",
+                "personThumbnailFaceId",
+                "createdAt"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "declines"
+        ],
+        "type": "object"
+      },
+      "FaceRepairDeclineRemoveRequestDto": {
+        "properties": {
+          "faces": {
+            "items": {
+              "properties": {
+                "assetFaceId": {
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+                  "type": "string"
+                },
+                "suspectedOwnerId": {
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "assetFaceId",
+                "suspectedOwnerId"
+              ],
+              "type": "object"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "ids": {
+            "items": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "FaceRepairDeclineRemovedDto": {
+        "properties": {
+          "removed": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "removed"
+        ],
+        "type": "object"
+      },
+      "FaceRepairDeclineRequestDto": {
+        "properties": {
+          "faces": {
+            "items": {
+              "properties": {
+                "assetFaceId": {
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+                  "type": "string"
+                },
+                "suspectedOwnerId": {
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "assetFaceId",
+                "suspectedOwnerId"
+              ],
+              "type": "object"
+            },
+            "maxItems": 1000,
+            "type": "array"
+          },
+          "persons": {
+            "items": {
+              "properties": {
+                "personId": {
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+                  "type": "string"
+                },
+                "suspectedOwnerIds": {
+                  "items": {
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+                    "type": "string"
+                  },
+                  "maxItems": 1000,
+                  "type": "array"
+                }
+              },
+              "required": [
+                "personId",
+                "suspectedOwnerIds"
+              ],
+              "type": "object"
+            },
+            "maxItems": 1000,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "FaceRepairOwnerPeopleResponseDto": {
+        "properties": {
+          "hasMore": {
+            "type": "boolean"
+          },
+          "people": {
+            "items": {
+              "properties": {
+                "faceCount": {
+                  "type": "number"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "thumbnailFaceId": {
+                  "nullable": true,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "faceCount",
+                "thumbnailFaceId"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "total": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "hasMore",
+          "people",
+          "total"
+        ],
+        "type": "object"
+      },
+      "FaceRepairOwnerPersonCreateRequestDto": {
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "FaceRepairOwnerPersonCreatedResponseDto": {
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "FaceRepairPersonFacesDto": {
+        "properties": {
+          "flaggedFaces": {
+            "items": {
+              "properties": {
+                "assetFaceId": {
+                  "type": "string"
+                },
+                "suspectedOwnerId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "assetFaceId",
+                "suspectedOwnerId"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "personId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "flaggedFaces",
+          "personId"
+        ],
+        "type": "object"
+      },
+      "FaceRepairPersonMetadataResponseDto": {
+        "properties": {
+          "faceCount": {
+            "type": "number"
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "ownerId": {
+            "type": "string"
+          },
+          "thumbnailFaceId": {
+            "nullable": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "faceCount",
+          "id",
+          "name",
+          "ownerId",
+          "thumbnailFaceId"
+        ],
+        "type": "object"
+      },
       "FaceRepairRequestDto": {
         "properties": {
           "dryRun": {
@@ -25026,6 +26972,263 @@
         },
         "type": "object"
       },
+      "FaceRepairResolutionsListDto": {
+        "properties": {
+          "resolutions": {
+            "items": {
+              "properties": {
+                "actorId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "actorName": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "assetFaceId": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "personId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "personName": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "personThumbnailFaceId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "spaceName": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "spacePersonId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "spacePersonName": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "spacePersonThumbnailFaceId": {
+                  "nullable": true,
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "assetFaceId",
+                "status",
+                "source",
+                "personId",
+                "personName",
+                "personThumbnailFaceId",
+                "spacePersonId",
+                "spacePersonName",
+                "spacePersonThumbnailFaceId",
+                "spaceName",
+                "actorId",
+                "actorName",
+                "createdAt"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "total": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "resolutions",
+          "total"
+        ],
+        "type": "object"
+      },
+      "FaceRepairResolutionsRemoveRequestDto": {
+        "additionalProperties": false,
+        "properties": {
+          "clusterMuteIds": {
+            "items": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "type": "string"
+            },
+            "maxItems": 25000,
+            "minItems": 1,
+            "type": "array"
+          },
+          "verdictIds": {
+            "items": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "type": "string"
+            },
+            "maxItems": 25000,
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "FaceRepairResolutionsRemovedDto": {
+        "properties": {
+          "removed": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "removed"
+        ],
+        "type": "object"
+      },
+      "FaceRepairResolveRequestDto": {
+        "properties": {
+          "detach": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            },
+            "maxItems": 25000,
+            "type": "array"
+          },
+          "entireCluster": {
+            "properties": {
+              "destinationPersonId": {
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "destinationPersonId"
+            ],
+            "type": "object"
+          },
+          "lock": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            },
+            "maxItems": 25000,
+            "type": "array"
+          },
+          "moveToPerson": {
+            "default": [],
+            "items": {
+              "properties": {
+                "destinationPersonId": {
+                  "format": "uuid",
+                  "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+                  "type": "string"
+                },
+                "faceIds": {
+                  "items": {
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+                    "type": "string"
+                  },
+                  "maxItems": 25000,
+                  "minItems": 1,
+                  "type": "array"
+                },
+                "lock": {
+                  "default": false,
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "destinationPersonId",
+                "faceIds"
+              ],
+              "type": "object"
+            },
+            "maxItems": 1000,
+            "type": "array"
+          },
+          "personId": {
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+            "type": "string"
+          },
+          "stay": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            },
+            "maxItems": 25000,
+            "type": "array"
+          },
+          "unknown": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+              "type": "string"
+            },
+            "maxItems": 25000,
+            "type": "array"
+          }
+        },
+        "required": [
+          "personId"
+        ],
+        "type": "object"
+      },
+      "FaceRepairResolveResponseDto": {
+        "properties": {
+          "declined": {
+            "type": "number"
+          },
+          "detached": {
+            "type": "number"
+          },
+          "locked": {
+            "type": "number"
+          },
+          "moved": {
+            "type": "number"
+          },
+          "skipped": {
+            "type": "number"
+          },
+          "unknown": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "declined",
+          "detached",
+          "locked",
+          "moved",
+          "skipped",
+          "unknown"
+        ],
+        "type": "object"
+      },
       "FaceRepairResponseDto": {
         "properties": {
           "dryRun": {
@@ -25033,16 +27236,16 @@
           },
           "executed": {
             "properties": {
-              "requeued": {
+              "moved": {
                 "type": "number"
               },
-              "unassigned": {
+              "skipped": {
                 "type": "number"
               }
             },
             "required": [
-              "unassigned",
-              "requeued"
+              "moved",
+              "skipped"
             ],
             "type": "object"
           },
@@ -25166,6 +27369,135 @@
         ],
         "type": "object"
       },
+      "FaceRepairScanDefaultsDto": {
+        "properties": {
+          "maxDistance": {
+            "type": "number"
+          },
+          "maxFlaggedFraction": {
+            "type": "number"
+          },
+          "minFaces": {
+            "maximum": 9007199254740991,
+            "minimum": -9007199254740991,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "maxDistance",
+          "maxFlaggedFraction",
+          "minFaces"
+        ],
+        "type": "object"
+      },
+      "FaceRepairScanTriggerRequestDto": {
+        "properties": {
+          "params": {
+            "properties": {
+              "largeClusterThreshold": {
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "maxAttributionDistance": {
+                "exclusiveMinimum": true,
+                "maximum": 2,
+                "minimum": 0,
+                "type": "number"
+              },
+              "maxDistance": {
+                "exclusiveMinimum": true,
+                "maximum": 2,
+                "minimum": 0,
+                "type": "number"
+              },
+              "maxFlaggedFraction": {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "number"
+              },
+              "minFaces": {
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "voteMargin": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "voteWindow": {
+                "maximum": 9007199254740991,
+                "minimum": 1,
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "FaceRepairScanTriggerResponseDto": {
+        "properties": {
+          "scanId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "scanId"
+        ],
+        "type": "object"
+      },
+      "FaceRepairUnconfirmRequestDto": {
+        "properties": {
+          "assetFaceIds": {
+            "items": {
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+              "type": "string"
+            },
+            "maxItems": 25000,
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "assetFaceIds"
+        ],
+        "type": "object"
+      },
+      "FaceSuggestionActionResponseDto": {
+        "properties": {
+          "acted": {
+            "description": "Whether the call changed anything. False when the suggestion was already resolved.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "acted"
+        ],
+        "type": "object"
+      },
+      "FaceSuggestionConfig": {
+        "properties": {
+          "enabled": {
+            "description": "Whether face suggestions are enabled",
+            "type": "boolean"
+          },
+          "maxDistance": {
+            "description": "Maximum embedding distance for a face to be surfaced as a suggestion on a named person",
+            "format": "double",
+            "maximum": 2,
+            "minimum": 0.1,
+            "type": "number"
+          }
+        },
+        "required": [
+          "enabled",
+          "maxDistance"
+        ],
+        "type": "object"
+      },
       "FacialRecognitionConfig": {
         "properties": {
           "enabled": {
@@ -25196,6 +27528,9 @@
             "description": "Name of the model to use",
             "minLength": 1,
             "type": "string"
+          },
+          "suggestions": {
+            "$ref": "#/components/schemas/FaceSuggestionConfig"
           }
         },
         "required": [
@@ -25203,7 +27538,8 @@
           "maxDistance",
           "minFaces",
           "minScore",
-          "modelName"
+          "modelName",
+          "suggestions"
         ],
         "type": "object"
       },
@@ -25460,6 +27796,12 @@
           "FacialRecognition",
           "FaceIdentityBackfill",
           "FaceIdentityMaintenanceAfterRecognition",
+          "FaceRepairScan",
+          "FaceSuggestionMaintenance",
+          "PersonSuggestionScanQueueAll",
+          "PersonSuggestionScan",
+          "SpacePersonSuggestionScanQueueAll",
+          "SpacePersonSuggestionScan",
           "FileDelete",
           "FileMigrationQueueAll",
           "LibraryDeleteCheck",
@@ -26075,6 +28417,7 @@
           "integrity-untracked-files-delete-all",
           "integrity-checksum-mismatch-delete-all",
           "face-identity-backfill",
+          "face-suggestion-maintenance",
           "shared-space-person-metadata-backfill"
         ],
         "type": "string"
@@ -27689,6 +30032,101 @@
           "imageHeight",
           "imageWidth",
           "isRepresentative"
+        ],
+        "type": "object"
+      },
+      "PersonFaceSuggestionPageResponseDto": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PersonFaceSuggestionResponseDto"
+            },
+            "type": "array"
+          },
+          "total": {
+            "description": "Total in-band pending suggestions for this person",
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ],
+        "type": "object"
+      },
+      "PersonFaceSuggestionResponseDto": {
+        "properties": {
+          "assetFaceId": {
+            "description": "Unassigned asset face ID",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+            "type": "string"
+          },
+          "assetId": {
+            "description": "Asset ID containing the candidate face",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$",
+            "type": "string"
+          },
+          "boundingBoxX1": {
+            "description": "Bounding box X1 coordinate",
+            "maximum": 9007199254740991,
+            "minimum": -9007199254740991,
+            "type": "integer"
+          },
+          "boundingBoxX2": {
+            "description": "Bounding box X2 coordinate",
+            "maximum": 9007199254740991,
+            "minimum": -9007199254740991,
+            "type": "integer"
+          },
+          "boundingBoxY1": {
+            "description": "Bounding box Y1 coordinate",
+            "maximum": 9007199254740991,
+            "minimum": -9007199254740991,
+            "type": "integer"
+          },
+          "boundingBoxY2": {
+            "description": "Bounding box Y2 coordinate",
+            "maximum": 9007199254740991,
+            "minimum": -9007199254740991,
+            "type": "integer"
+          },
+          "distance": {
+            "description": "Embedding distance to the person",
+            "format": "double",
+            "type": "number"
+          },
+          "fileCreatedAt": {
+            "description": "Asset creation date",
+            "format": "date-time",
+            "type": "string"
+          },
+          "imageHeight": {
+            "description": "Image height in pixels",
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "imageWidth": {
+            "description": "Image width in pixels",
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "assetFaceId",
+          "assetId",
+          "boundingBoxX1",
+          "boundingBoxX2",
+          "boundingBoxY1",
+          "boundingBoxY2",
+          "distance",
+          "imageHeight",
+          "imageWidth"
         ],
         "type": "object"
       },

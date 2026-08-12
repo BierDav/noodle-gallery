@@ -182,6 +182,80 @@ class SharedSpacesApi {
     }
   }
 
+  /// Confirm a face suggestion for a person in a shared space
+  ///
+  /// Assign the suggested face to the space person. Idempotent — the response reports whether it acted.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] assetFaceId (required):
+  ///   Unassigned asset face ID being reviewed
+  ///
+  /// * [String] id (required):
+  ///   Shared space ID
+  ///
+  /// * [String] personId (required):
+  ///   Space person ID
+  Future<Response> confirmSpacePersonFaceSuggestionWithHttpInfo(String assetFaceId, String id, String personId, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final apiPath = r'/shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/confirm'
+      .replaceAll('{assetFaceId}', assetFaceId)
+      .replaceAll('{id}', id)
+      .replaceAll('{personId}', personId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      apiPath,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Confirm a face suggestion for a person in a shared space
+  ///
+  /// Assign the suggested face to the space person. Idempotent — the response reports whether it acted.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] assetFaceId (required):
+  ///   Unassigned asset face ID being reviewed
+  ///
+  /// * [String] id (required):
+  ///   Shared space ID
+  ///
+  /// * [String] personId (required):
+  ///   Space person ID
+  Future<FaceSuggestionActionResponseDto?> confirmSpacePersonFaceSuggestion(String assetFaceId, String id, String personId, { Future<void>? abortTrigger, }) async {
+    final response = await confirmSpacePersonFaceSuggestionWithHttpInfo(assetFaceId, id, personId, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'FaceSuggestionActionResponseDto',) as FaceSuggestionActionResponseDto;
+    
+    }
+    return null;
+  }
+
   /// Create a shared space
   ///
   /// Create a new shared space for collaborative asset management.
@@ -397,6 +471,80 @@ class SharedSpacesApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Dismiss a face suggestion for a person in a shared space
+  ///
+  /// Compatibility alias for rejecting this suggestion for the space person. The face stays unassigned. Idempotent — the response reports whether it acted.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] assetFaceId (required):
+  ///   Unassigned asset face ID being reviewed
+  ///
+  /// * [String] id (required):
+  ///   Shared space ID
+  ///
+  /// * [String] personId (required):
+  ///   Space person ID
+  Future<Response> dismissSpacePersonFaceSuggestionWithHttpInfo(String assetFaceId, String id, String personId, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final apiPath = r'/shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/dismiss'
+      .replaceAll('{assetFaceId}', assetFaceId)
+      .replaceAll('{id}', id)
+      .replaceAll('{personId}', personId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      apiPath,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Dismiss a face suggestion for a person in a shared space
+  ///
+  /// Compatibility alias for rejecting this suggestion for the space person. The face stays unassigned. Idempotent — the response reports whether it acted.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] assetFaceId (required):
+  ///   Unassigned asset face ID being reviewed
+  ///
+  /// * [String] id (required):
+  ///   Shared space ID
+  ///
+  /// * [String] personId (required):
+  ///   Space person ID
+  Future<FaceSuggestionActionResponseDto?> dismissSpacePersonFaceSuggestion(String assetFaceId, String id, String personId, { Future<void>? abortTrigger, }) async {
+    final response = await dismissSpacePersonFaceSuggestionWithHttpInfo(assetFaceId, id, personId, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'FaceSuggestionActionResponseDto',) as FaceSuggestionActionResponseDto;
+    
+    }
+    return null;
   }
 
   /// Get all shared spaces
@@ -1303,6 +1451,92 @@ class SharedSpacesApi {
     return null;
   }
 
+  /// Get face suggestions for a person in a shared space
+  ///
+  /// Retrieve near-miss unassigned faces suggested for this space person, best match first.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] id (required):
+  ///   Shared space ID
+  ///
+  /// * [String] personId (required):
+  ///   Space person ID
+  ///
+  /// * [int] page:
+  ///   Page number
+  ///
+  /// * [int] size:
+  ///   Number of suggestions per page
+  Future<Response> getSpacePersonFaceSuggestionsWithHttpInfo(String id, String personId, { int? page, int? size, Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final apiPath = r'/shared-spaces/{id}/people/{personId}/face-suggestions'
+      .replaceAll('{id}', id)
+      .replaceAll('{personId}', personId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    if (page != null) {
+      queryParams.addAll(_queryParams('', 'page', page));
+    }
+    if (size != null) {
+      queryParams.addAll(_queryParams('', 'size', size));
+    }
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      apiPath,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get face suggestions for a person in a shared space
+  ///
+  /// Retrieve near-miss unassigned faces suggested for this space person, best match first.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] id (required):
+  ///   Shared space ID
+  ///
+  /// * [String] personId (required):
+  ///   Space person ID
+  ///
+  /// * [int] page:
+  ///   Page number
+  ///
+  /// * [int] size:
+  ///   Number of suggestions per page
+  Future<PersonFaceSuggestionPageResponseDto?> getSpacePersonFaceSuggestions(String id, String personId, { int? page, int? size, Future<void>? abortTrigger, }) async {
+    final response = await getSpacePersonFaceSuggestionsWithHttpInfo(id, personId, page: page, size: size, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PersonFaceSuggestionPageResponseDto',) as PersonFaceSuggestionPageResponseDto;
+    
+    }
+    return null;
+  }
+
   /// Get space person face thumbnail
   ///
   /// Retrieve an exact face-crop thumbnail for a person in a shared space.
@@ -1579,6 +1813,80 @@ class SharedSpacesApi {
     return null;
   }
 
+  /// Ignore a face suggestion for a person in a shared space
+  ///
+  /// Ignore this suggestion for the space person. The face stays unassigned. Idempotent — the response reports whether it acted.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] assetFaceId (required):
+  ///   Unassigned asset face ID being reviewed
+  ///
+  /// * [String] id (required):
+  ///   Shared space ID
+  ///
+  /// * [String] personId (required):
+  ///   Space person ID
+  Future<Response> ignoreSpacePersonFaceSuggestionWithHttpInfo(String assetFaceId, String id, String personId, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final apiPath = r'/shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/ignore'
+      .replaceAll('{assetFaceId}', assetFaceId)
+      .replaceAll('{id}', id)
+      .replaceAll('{personId}', personId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      apiPath,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Ignore a face suggestion for a person in a shared space
+  ///
+  /// Ignore this suggestion for the space person. The face stays unassigned. Idempotent — the response reports whether it acted.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] assetFaceId (required):
+  ///   Unassigned asset face ID being reviewed
+  ///
+  /// * [String] id (required):
+  ///   Shared space ID
+  ///
+  /// * [String] personId (required):
+  ///   Space person ID
+  Future<FaceSuggestionActionResponseDto?> ignoreSpacePersonFaceSuggestion(String assetFaceId, String id, String personId, { Future<void>? abortTrigger, }) async {
+    final response = await ignoreSpacePersonFaceSuggestionWithHttpInfo(assetFaceId, id, personId, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'FaceSuggestionActionResponseDto',) as FaceSuggestionActionResponseDto;
+    
+    }
+    return null;
+  }
+
   /// Link an album to a shared space
   ///
   /// Link an album so its photos appear in the space. Requires space editor/owner and album owner/editor.
@@ -1795,6 +2103,80 @@ class SharedSpacesApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Reject a face suggestion for a person in a shared space
+  ///
+  /// Reject this suggestion for the space person. The face stays unassigned. Idempotent — the response reports whether it acted.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] assetFaceId (required):
+  ///   Unassigned asset face ID being reviewed
+  ///
+  /// * [String] id (required):
+  ///   Shared space ID
+  ///
+  /// * [String] personId (required):
+  ///   Space person ID
+  Future<Response> rejectSpacePersonFaceSuggestionWithHttpInfo(String assetFaceId, String id, String personId, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final apiPath = r'/shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/reject'
+      .replaceAll('{assetFaceId}', assetFaceId)
+      .replaceAll('{id}', id)
+      .replaceAll('{personId}', personId);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      apiPath,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Reject a face suggestion for a person in a shared space
+  ///
+  /// Reject this suggestion for the space person. The face stays unassigned. Idempotent — the response reports whether it acted.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] assetFaceId (required):
+  ///   Unassigned asset face ID being reviewed
+  ///
+  /// * [String] id (required):
+  ///   Shared space ID
+  ///
+  /// * [String] personId (required):
+  ///   Space person ID
+  Future<FaceSuggestionActionResponseDto?> rejectSpacePersonFaceSuggestion(String assetFaceId, String id, String personId, { Future<void>? abortTrigger, }) async {
+    final response = await rejectSpacePersonFaceSuggestionWithHttpInfo(assetFaceId, id, personId, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'FaceSuggestionActionResponseDto',) as FaceSuggestionActionResponseDto;
+    
+    }
+    return null;
   }
 
   /// Remove assets from a shared space

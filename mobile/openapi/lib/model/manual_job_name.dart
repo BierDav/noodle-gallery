@@ -28,6 +28,7 @@ enum ManualJobName {
   integrityUntrackedFilesDeleteAll._(r'integrity-untracked-files-delete-all'),
   integrityChecksumMismatchDeleteAll._(r'integrity-checksum-mismatch-delete-all'),
   faceIdentityBackfill._(r'face-identity-backfill'),
+  faceSuggestionMaintenance._(r'face-suggestion-maintenance'),
   sharedSpacePersonMetadataBackfill._(r'shared-space-person-metadata-backfill'),
   ;
 
@@ -104,6 +105,7 @@ class ManualJobNameTypeTransformer {
         case r'integrity-untracked-files-delete-all': return ManualJobName.integrityUntrackedFilesDeleteAll;
         case r'integrity-checksum-mismatch-delete-all': return ManualJobName.integrityChecksumMismatchDeleteAll;
         case r'face-identity-backfill': return ManualJobName.faceIdentityBackfill;
+        case r'face-suggestion-maintenance': return ManualJobName.faceSuggestionMaintenance;
         case r'shared-space-person-metadata-backfill': return ManualJobName.sharedSpacePersonMetadataBackfill;
         default:
           if (!allowNull) {

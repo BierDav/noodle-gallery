@@ -33,6 +33,12 @@ enum JobName {
   facialRecognition._(r'FacialRecognition'),
   faceIdentityBackfill._(r'FaceIdentityBackfill'),
   faceIdentityMaintenanceAfterRecognition._(r'FaceIdentityMaintenanceAfterRecognition'),
+  faceRepairScan._(r'FaceRepairScan'),
+  faceSuggestionMaintenance._(r'FaceSuggestionMaintenance'),
+  personSuggestionScanQueueAll._(r'PersonSuggestionScanQueueAll'),
+  personSuggestionScan._(r'PersonSuggestionScan'),
+  spacePersonSuggestionScanQueueAll._(r'SpacePersonSuggestionScanQueueAll'),
+  spacePersonSuggestionScan._(r'SpacePersonSuggestionScan'),
   fileDelete._(r'FileDelete'),
   fileMigrationQueueAll._(r'FileMigrationQueueAll'),
   libraryDeleteCheck._(r'LibraryDeleteCheck'),
@@ -179,6 +185,12 @@ class JobNameTypeTransformer {
         case r'FacialRecognition': return JobName.facialRecognition;
         case r'FaceIdentityBackfill': return JobName.faceIdentityBackfill;
         case r'FaceIdentityMaintenanceAfterRecognition': return JobName.faceIdentityMaintenanceAfterRecognition;
+        case r'FaceRepairScan': return JobName.faceRepairScan;
+        case r'FaceSuggestionMaintenance': return JobName.faceSuggestionMaintenance;
+        case r'PersonSuggestionScanQueueAll': return JobName.personSuggestionScanQueueAll;
+        case r'PersonSuggestionScan': return JobName.personSuggestionScan;
+        case r'SpacePersonSuggestionScanQueueAll': return JobName.spacePersonSuggestionScanQueueAll;
+        case r'SpacePersonSuggestionScan': return JobName.spacePersonSuggestionScan;
         case r'FileDelete': return JobName.fileDelete;
         case r'FileMigrationQueueAll': return JobName.fileMigrationQueueAll;
         case r'LibraryDeleteCheck': return JobName.libraryDeleteCheck;

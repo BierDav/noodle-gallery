@@ -34,6 +34,9 @@ import { DownloadRepository } from 'src/repositories/download.repository';
 import { EmailRepository } from 'src/repositories/email.repository';
 import { EventRepository } from 'src/repositories/event.repository';
 import { FaceIdentityRepository } from 'src/repositories/face-identity.repository';
+import { FacePersonVerdictRepository } from 'src/repositories/face-person-verdict.repository';
+import { FaceRepairDeclineRepository } from 'src/repositories/face-repair-decline.repository';
+import { FaceRepairScanRepository } from 'src/repositories/face-repair-scan.repository';
 import { FaceRepairRepository } from 'src/repositories/face-repair.repository';
 import { IntegrityRepository } from 'src/repositories/integrity.repository';
 import { JobRepository } from 'src/repositories/job.repository';
@@ -118,6 +121,15 @@ export class MediumTestContext<S extends BaseService = BaseService> {
     this.sutDeps = this.makeDeps(options);
     this.sut = new Service(...this.sutDeps);
     this.database = options.database;
+  }
+
+  // Slice 13 (fork isolation): the suggestion engine now lives in FaceSuggestionService, a sibling of
+  // PersonService rather than a member of it. Cross-flow medium tests that exercise both a
+  // PersonService/FaceSuggestionService call and its consequence on the other need a second service
+  // sharing the EXACT SAME dependency instances as `sut` — same mocked JobRepository/SystemMetadataRepository
+  // config, same real repositories backed by the same DB — not a second, independently-configured context.
+  getService<T extends BaseService>(Service: ClassConstructor<T>): T {
+    return new Service(...this.sutDeps);
   }
 
   private makeDeps(options: MediumTestOptions) {
@@ -544,7 +556,10 @@ const newRealRepository = <T>(key: ClassConstructor<T>, db: Kysely<DB>): T => {
     case AssetJobRepository:
     case DownloadRepository:
     case FaceIdentityRepository:
+    case FaceRepairDeclineRepository:
     case FaceRepairRepository:
+    case FaceRepairScanRepository:
+    case FacePersonVerdictRepository:
     case IntegrityRepository:
     case MemoryRepository:
     case NotificationRepository:
@@ -622,6 +637,7 @@ const newMockRepository = <T>(key: ClassConstructor<T>) => {
     case ConfigRepository:
     case CryptoRepository:
     case FaceIdentityRepository:
+    case FacePersonVerdictRepository:
     case MemoryRepository:
     case IntegrityRepository:
     case NotificationRepository:

@@ -171,10 +171,26 @@ Class | Method | HTTP request | Description
 *DuplicatesApi* | [**getAssetDuplicates**](doc//DuplicatesApi.md#getassetduplicates) | **GET** /duplicates | Retrieve duplicates
 *DuplicatesApi* | [**resolveDuplicates**](doc//DuplicatesApi.md#resolveduplicates) | **POST** /duplicates/resolve | Resolve duplicate groups
 *FacesApi* | [**createFace**](doc//FacesApi.md#createface) | **POST** /faces | Create a face
+*FacesApi* | [**createFaceRepairOwnerPerson**](doc//FacesApi.md#createfacerepairownerperson) | **POST** /admin/face-repair/owner/{ownerId}/people | Create a person under an owner for the move-to-chosen-person picker
+*FacesApi* | [**declineFaceRepair**](doc//FacesApi.md#declinefacerepair) | **POST** /admin/face-repair/decline | Decline flagged faces / dismiss flagged persons
 *FacesApi* | [**deleteFace**](doc//FacesApi.md#deleteface) | **DELETE** /faces/{id} | Delete a face
+*FacesApi* | [**getFaceRepairClusterFaces**](doc//FacesApi.md#getfacerepairclusterfaces) | **POST** /admin/face-repair/scan/person/{personId}/cluster-faces | List a person's cluster faces (paginated, excluding the supplied flagged ids)
+*FacesApi* | [**getFaceRepairDeclines**](doc//FacesApi.md#getfacerepairdeclines) | **GET** /admin/face-repair/decline | List face-repair declines
+*FacesApi* | [**getFaceRepairFaceThumbnail**](doc//FacesApi.md#getfacerepairfacethumbnail) | **GET** /admin/face-repair/faces/{assetFaceId}/thumbnail | Get an admin face-repair face thumbnail
+*FacesApi* | [**getFaceRepairOwnerPeople**](doc//FacesApi.md#getfacerepairownerpeople) | **GET** /admin/face-repair/owner/{ownerId}/people | Search an owner's people for the move-to-chosen-person picker
+*FacesApi* | [**getFaceRepairPersonFaces**](doc//FacesApi.md#getfacerepairpersonfaces) | **GET** /admin/face-repair/scan/person/{personId} | Get a person's flagged faces for review
+*FacesApi* | [**getFaceRepairPersonMetadata**](doc//FacesApi.md#getfacerepairpersonmetadata) | **GET** /admin/face-repair/person/{personId} | Get a person for manual review
+*FacesApi* | [**getFaceRepairResolutions**](doc//FacesApi.md#getfacerepairresolutions) | **GET** /admin/face-repair/resolutions | List face-repair resolutions (negative verdicts from both engines)
+*FacesApi* | [**getFaceRepairScanDefaults**](doc//FacesApi.md#getfacerepairscandefaults) | **GET** /admin/face-repair/scan/defaults | Get effective face-repair scan defaults
 *FacesApi* | [**getFaces**](doc//FacesApi.md#getfaces) | **GET** /faces | Retrieve faces for asset
+*FacesApi* | [**getLatestScan**](doc//FacesApi.md#getlatestscan) | **GET** /admin/face-repair/scan/latest | Get the latest face-repair scan
 *FacesApi* | [**reassignFacesById**](doc//FacesApi.md#reassignfacesbyid) | **PUT** /faces/{id} | Re-assign a face to another person
+*FacesApi* | [**removeFaceRepairDeclines**](doc//FacesApi.md#removefacerepairdeclines) | **DELETE** /admin/face-repair/decline | Remove face-repair declines
+*FacesApi* | [**removeFaceRepairResolutions**](doc//FacesApi.md#removefacerepairresolutions) | **POST** /admin/face-repair/resolutions/remove | Remove face-repair resolutions (undo)
+*FacesApi* | [**resolveFaces**](doc//FacesApi.md#resolvefaces) | **POST** /admin/face-repair/resolve | Resolve reviewed faces
 *FacesApi* | [**runFaceRepair**](doc//FacesApi.md#runfacerepair) | **POST** /admin/face-repair | Run face re-attribution repair
+*FacesApi* | [**triggerScan**](doc//FacesApi.md#triggerscan) | **POST** /admin/face-repair/scan | Trigger a face-repair scan
+*FacesApi* | [**unconfirmFaceRepairFaces**](doc//FacesApi.md#unconfirmfacerepairfaces) | **POST** /admin/face-repair/unconfirm | Un-confirm human-placed faces so a re-scan may flag them again
 *GalleryMapApi* | [**getFilteredMapMarkers**](doc//GalleryMapApi.md#getfilteredmapmarkers) | **GET** /gallery/map/markers | Get filtered map markers
 *JobsApi* | [**createJob**](doc//JobsApi.md#createjob) | **POST** /jobs | Create a manual job
 *JobsApi* | [**getQueuesLegacy**](doc//JobsApi.md#getqueueslegacy) | **GET** /jobs | Retrieve queue counts and status
@@ -220,21 +236,26 @@ Class | Method | HTTP request | Description
 *PartnersApi* | [**getPartners**](doc//PartnersApi.md#getpartners) | **GET** /partners | Retrieve partners
 *PartnersApi* | [**removePartner**](doc//PartnersApi.md#removepartner) | **DELETE** /partners/{id} | Remove a partner
 *PartnersApi* | [**updatePartner**](doc//PartnersApi.md#updatepartner) | **PUT** /partners/{id} | Update a partner
+*PeopleApi* | [**confirmPersonFaceSuggestion**](doc//PeopleApi.md#confirmpersonfacesuggestion) | **POST** /people/{id}/face-suggestions/{assetFaceId}/confirm | Confirm a face suggestion
 *PeopleApi* | [**createPerson**](doc//PeopleApi.md#createperson) | **POST** /people | Create a person
 *PeopleApi* | [**deletePeople**](doc//PeopleApi.md#deletepeople) | **DELETE** /people | Delete people
 *PeopleApi* | [**deletePerson**](doc//PeopleApi.md#deleteperson) | **DELETE** /people/{id} | Delete person
 *PeopleApi* | [**detachScopedPerson**](doc//PeopleApi.md#detachscopedperson) | **POST** /people/detach-profile | Detach a scoped person profile
+*PeopleApi* | [**dismissPersonFaceSuggestion**](doc//PeopleApi.md#dismisspersonfacesuggestion) | **POST** /people/{id}/face-suggestions/{assetFaceId}/dismiss | Dismiss a face suggestion
 *PeopleApi* | [**getAllPeople**](doc//PeopleApi.md#getallpeople) | **GET** /people | Get all people
 *PeopleApi* | [**getPeopleFaceStatistics**](doc//PeopleApi.md#getpeoplefacestatistics) | **GET** /people/face-statistics | Get people face statistics
 *PeopleApi* | [**getPeopleStatistics**](doc//PeopleApi.md#getpeoplestatistics) | **GET** /people/statistics | Get people statistics
 *PeopleApi* | [**getPerson**](doc//PeopleApi.md#getperson) | **GET** /people/{id} | Get a person
+*PeopleApi* | [**getPersonFaceSuggestions**](doc//PeopleApi.md#getpersonfacesuggestions) | **GET** /people/{id}/face-suggestions | Get face suggestions for a person
 *PeopleApi* | [**getPersonFaceThumbnail**](doc//PeopleApi.md#getpersonfacethumbnail) | **GET** /people/{id}/faces/{faceId}/thumbnail | Get person face thumbnail
 *PeopleApi* | [**getPersonFaces**](doc//PeopleApi.md#getpersonfaces) | **GET** /people/{id}/faces | Get person faces
 *PeopleApi* | [**getPersonStatistics**](doc//PeopleApi.md#getpersonstatistics) | **GET** /people/{id}/statistics | Get person statistics
 *PeopleApi* | [**getPersonThumbnail**](doc//PeopleApi.md#getpersonthumbnail) | **GET** /people/{id}/thumbnail | Get person thumbnail
+*PeopleApi* | [**ignorePersonFaceSuggestion**](doc//PeopleApi.md#ignorepersonfacesuggestion) | **POST** /people/{id}/face-suggestions/{assetFaceId}/ignore | Ignore a face suggestion
 *PeopleApi* | [**mergePerson**](doc//PeopleApi.md#mergeperson) | **POST** /people/{id}/merge | Merge people
 *PeopleApi* | [**mergeScopedPeople**](doc//PeopleApi.md#mergescopedpeople) | **POST** /people/same-person | Merge scoped people by identity
 *PeopleApi* | [**reassignFaces**](doc//PeopleApi.md#reassignfaces) | **PUT** /people/{id}/reassign | Reassign faces
+*PeopleApi* | [**rejectPersonFaceSuggestion**](doc//PeopleApi.md#rejectpersonfacesuggestion) | **POST** /people/{id}/face-suggestions/{assetFaceId}/reject | Reject a face suggestion
 *PeopleApi* | [**updatePeople**](doc//PeopleApi.md#updatepeople) | **PUT** /people | Update people
 *PeopleApi* | [**updatePerson**](doc//PeopleApi.md#updateperson) | **PUT** /people/{id} | Update person
 *PeopleApi* | [**updateRepresentativeFace**](doc//PeopleApi.md#updaterepresentativeface) | **PUT** /people/{id}/representative-face | Update representative face
@@ -293,10 +314,12 @@ Class | Method | HTTP request | Description
 *SharedSpacesApi* | [**addAssets**](doc//SharedSpacesApi.md#addassets) | **POST** /shared-spaces/{id}/assets | Add assets to a shared space
 *SharedSpacesApi* | [**addMember**](doc//SharedSpacesApi.md#addmember) | **POST** /shared-spaces/{id}/members | Add a member to a shared space
 *SharedSpacesApi* | [**bulkAddAssets**](doc//SharedSpacesApi.md#bulkaddassets) | **POST** /shared-spaces/{id}/assets/bulk-add | Add all user assets to a shared space
+*SharedSpacesApi* | [**confirmSpacePersonFaceSuggestion**](doc//SharedSpacesApi.md#confirmspacepersonfacesuggestion) | **POST** /shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/confirm | Confirm a face suggestion for a person in a shared space
 *SharedSpacesApi* | [**createSpace**](doc//SharedSpacesApi.md#createspace) | **POST** /shared-spaces | Create a shared space
 *SharedSpacesApi* | [**deduplicateSpacePeople**](doc//SharedSpacesApi.md#deduplicatespacepeople) | **POST** /shared-spaces/{id}/people/deduplicate | Deduplicate people in a shared space
 *SharedSpacesApi* | [**deleteSpacePerson**](doc//SharedSpacesApi.md#deletespaceperson) | **DELETE** /shared-spaces/{id}/people/{personId} | Delete a person from a shared space
 *SharedSpacesApi* | [**deleteSpacePersonAlias**](doc//SharedSpacesApi.md#deletespacepersonalias) | **DELETE** /shared-spaces/{id}/people/{personId}/alias | Delete a person alias in a shared space
+*SharedSpacesApi* | [**dismissSpacePersonFaceSuggestion**](doc//SharedSpacesApi.md#dismissspacepersonfacesuggestion) | **POST** /shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/dismiss | Dismiss a face suggestion for a person in a shared space
 *SharedSpacesApi* | [**getAllSpaces**](doc//SharedSpacesApi.md#getallspaces) | **GET** /shared-spaces | Get all shared spaces
 *SharedSpacesApi* | [**getMembers**](doc//SharedSpacesApi.md#getmembers) | **GET** /shared-spaces/{id}/members | Get members of a shared space
 *SharedSpacesApi* | [**getSharedSpaceAlbums**](doc//SharedSpacesApi.md#getsharedspacealbums) | **GET** /shared-spaces/{id}/albums | List albums linked to a shared space
@@ -309,14 +332,17 @@ Class | Method | HTTP request | Description
 *SharedSpacesApi* | [**getSpacePeopleStatistics**](doc//SharedSpacesApi.md#getspacepeoplestatistics) | **GET** /shared-spaces/{id}/people/statistics | Get people statistics in a shared space
 *SharedSpacesApi* | [**getSpacePerson**](doc//SharedSpacesApi.md#getspaceperson) | **GET** /shared-spaces/{id}/people/{personId} | Get a person in a shared space
 *SharedSpacesApi* | [**getSpacePersonAssets**](doc//SharedSpacesApi.md#getspacepersonassets) | **GET** /shared-spaces/{id}/people/{personId}/assets | Get assets for a person in a shared space
+*SharedSpacesApi* | [**getSpacePersonFaceSuggestions**](doc//SharedSpacesApi.md#getspacepersonfacesuggestions) | **GET** /shared-spaces/{id}/people/{personId}/face-suggestions | Get face suggestions for a person in a shared space
 *SharedSpacesApi* | [**getSpacePersonFaceThumbnail**](doc//SharedSpacesApi.md#getspacepersonfacethumbnail) | **GET** /shared-spaces/{id}/people/{personId}/faces/{faceId}/thumbnail | Get space person face thumbnail
 *SharedSpacesApi* | [**getSpacePersonFaces**](doc//SharedSpacesApi.md#getspacepersonfaces) | **GET** /shared-spaces/{id}/people/{personId}/faces | Get space person faces
 *SharedSpacesApi* | [**getSpacePersonStatistics**](doc//SharedSpacesApi.md#getspacepersonstatistics) | **GET** /shared-spaces/{id}/people/{personId}/statistics | Get space person statistics
 *SharedSpacesApi* | [**getSpacePersonThumbnail**](doc//SharedSpacesApi.md#getspacepersonthumbnail) | **GET** /shared-spaces/{id}/people/{personId}/thumbnail | Get a space person thumbnail
+*SharedSpacesApi* | [**ignoreSpacePersonFaceSuggestion**](doc//SharedSpacesApi.md#ignorespacepersonfacesuggestion) | **POST** /shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/ignore | Ignore a face suggestion for a person in a shared space
 *SharedSpacesApi* | [**linkAlbum**](doc//SharedSpacesApi.md#linkalbum) | **PUT** /shared-spaces/{id}/albums/{albumId} | Link an album to a shared space
 *SharedSpacesApi* | [**linkLibrary**](doc//SharedSpacesApi.md#linklibrary) | **PUT** /shared-spaces/{id}/libraries | Link a library to a shared space
 *SharedSpacesApi* | [**markSpaceViewed**](doc//SharedSpacesApi.md#markspaceviewed) | **PATCH** /shared-spaces/{id}/view | Mark space as viewed
 *SharedSpacesApi* | [**mergeSpacePeople**](doc//SharedSpacesApi.md#mergespacepeople) | **POST** /shared-spaces/{id}/people/{personId}/merge | Merge people in a shared space
+*SharedSpacesApi* | [**rejectSpacePersonFaceSuggestion**](doc//SharedSpacesApi.md#rejectspacepersonfacesuggestion) | **POST** /shared-spaces/{id}/people/{personId}/face-suggestions/{assetFaceId}/reject | Reject a face suggestion for a person in a shared space
 *SharedSpacesApi* | [**removeAssets**](doc//SharedSpacesApi.md#removeassets) | **DELETE** /shared-spaces/{id}/assets | Remove assets from a shared space
 *SharedSpacesApi* | [**removeMember**](doc//SharedSpacesApi.md#removemember) | **DELETE** /shared-spaces/{id}/members/{userId} | Remove a member from a shared space
 *SharedSpacesApi* | [**removeSpace**](doc//SharedSpacesApi.md#removespace) | **DELETE** /shared-spaces/{id} | Delete a shared space
@@ -521,7 +547,33 @@ Class | Method | HTTP request | Description
  - [EmailNotificationsUpdate](doc//EmailNotificationsUpdate.md)
  - [ExifResponseDto](doc//ExifResponseDto.md)
  - [FaceDto](doc//FaceDto.md)
+ - [FaceRepairClusterFacesRequestDto](doc//FaceRepairClusterFacesRequestDto.md)
+ - [FaceRepairClusterFacesResponseDto](doc//FaceRepairClusterFacesResponseDto.md)
+ - [FaceRepairClusterFacesResponseDtoFacesInner](doc//FaceRepairClusterFacesResponseDtoFacesInner.md)
+ - [FaceRepairDeclineCreatedDto](doc//FaceRepairDeclineCreatedDto.md)
+ - [FaceRepairDeclineListDto](doc//FaceRepairDeclineListDto.md)
+ - [FaceRepairDeclineListDtoDeclinesInner](doc//FaceRepairDeclineListDtoDeclinesInner.md)
+ - [FaceRepairDeclineRemoveRequestDto](doc//FaceRepairDeclineRemoveRequestDto.md)
+ - [FaceRepairDeclineRemoveRequestDtoFacesInner](doc//FaceRepairDeclineRemoveRequestDtoFacesInner.md)
+ - [FaceRepairDeclineRemovedDto](doc//FaceRepairDeclineRemovedDto.md)
+ - [FaceRepairDeclineRequestDto](doc//FaceRepairDeclineRequestDto.md)
+ - [FaceRepairDeclineRequestDtoPersonsInner](doc//FaceRepairDeclineRequestDtoPersonsInner.md)
+ - [FaceRepairOwnerPeopleResponseDto](doc//FaceRepairOwnerPeopleResponseDto.md)
+ - [FaceRepairOwnerPeopleResponseDtoPeopleInner](doc//FaceRepairOwnerPeopleResponseDtoPeopleInner.md)
+ - [FaceRepairOwnerPersonCreateRequestDto](doc//FaceRepairOwnerPersonCreateRequestDto.md)
+ - [FaceRepairOwnerPersonCreatedResponseDto](doc//FaceRepairOwnerPersonCreatedResponseDto.md)
+ - [FaceRepairPersonFacesDto](doc//FaceRepairPersonFacesDto.md)
+ - [FaceRepairPersonFacesDtoFlaggedFacesInner](doc//FaceRepairPersonFacesDtoFlaggedFacesInner.md)
+ - [FaceRepairPersonMetadataResponseDto](doc//FaceRepairPersonMetadataResponseDto.md)
  - [FaceRepairRequestDto](doc//FaceRepairRequestDto.md)
+ - [FaceRepairResolutionsListDto](doc//FaceRepairResolutionsListDto.md)
+ - [FaceRepairResolutionsListDtoResolutionsInner](doc//FaceRepairResolutionsListDtoResolutionsInner.md)
+ - [FaceRepairResolutionsRemoveRequestDto](doc//FaceRepairResolutionsRemoveRequestDto.md)
+ - [FaceRepairResolutionsRemovedDto](doc//FaceRepairResolutionsRemovedDto.md)
+ - [FaceRepairResolveRequestDto](doc//FaceRepairResolveRequestDto.md)
+ - [FaceRepairResolveRequestDtoEntireCluster](doc//FaceRepairResolveRequestDtoEntireCluster.md)
+ - [FaceRepairResolveRequestDtoMoveToPersonInner](doc//FaceRepairResolveRequestDtoMoveToPersonInner.md)
+ - [FaceRepairResolveResponseDto](doc//FaceRepairResolveResponseDto.md)
  - [FaceRepairResponseDto](doc//FaceRepairResponseDto.md)
  - [FaceRepairResponseDtoExecuted](doc//FaceRepairResponseDtoExecuted.md)
  - [FaceRepairResponseDtoReport](doc//FaceRepairResponseDtoReport.md)
@@ -529,6 +581,13 @@ Class | Method | HTTP request | Description
  - [FaceRepairResponseDtoReportPersonsInnerSuspectedOwnersInner](doc//FaceRepairResponseDtoReportPersonsInnerSuspectedOwnersInner.md)
  - [FaceRepairResponseDtoReportTotals](doc//FaceRepairResponseDtoReportTotals.md)
  - [FaceRepairResponseDtoReportTotalsReviewOnlyByReason](doc//FaceRepairResponseDtoReportTotalsReviewOnlyByReason.md)
+ - [FaceRepairScanDefaultsDto](doc//FaceRepairScanDefaultsDto.md)
+ - [FaceRepairScanTriggerRequestDto](doc//FaceRepairScanTriggerRequestDto.md)
+ - [FaceRepairScanTriggerRequestDtoParams](doc//FaceRepairScanTriggerRequestDtoParams.md)
+ - [FaceRepairScanTriggerResponseDto](doc//FaceRepairScanTriggerResponseDto.md)
+ - [FaceRepairUnconfirmRequestDto](doc//FaceRepairUnconfirmRequestDto.md)
+ - [FaceSuggestionActionResponseDto](doc//FaceSuggestionActionResponseDto.md)
+ - [FaceSuggestionConfig](doc//FaceSuggestionConfig.md)
  - [FacialRecognitionConfig](doc//FacialRecognitionConfig.md)
  - [FilterSuggestionsPersonDto](doc//FilterSuggestionsPersonDto.md)
  - [FilterSuggestionsResponseDto](doc//FilterSuggestionsResponseDto.md)
@@ -608,6 +667,8 @@ Class | Method | HTTP request | Description
  - [PersonCreateDto](doc//PersonCreateDto.md)
  - [PersonFacePageResponseDto](doc//PersonFacePageResponseDto.md)
  - [PersonFaceResponseDto](doc//PersonFaceResponseDto.md)
+ - [PersonFaceSuggestionPageResponseDto](doc//PersonFaceSuggestionPageResponseDto.md)
+ - [PersonFaceSuggestionResponseDto](doc//PersonFaceSuggestionResponseDto.md)
  - [PersonResponseDto](doc//PersonResponseDto.md)
  - [PersonStatisticsResponseDto](doc//PersonStatisticsResponseDto.md)
  - [PersonUpdateDto](doc//PersonUpdateDto.md)

@@ -99,6 +99,10 @@ export type SystemConfig = {
       minScore: number;
       minFaces: number;
       maxDistance: number;
+      suggestions: {
+        enabled: boolean;
+        maxDistance: number;
+      };
     };
     ocr: {
       enabled: boolean;
@@ -346,6 +350,10 @@ export const defaults = Object.freeze<SystemConfig>({
       minScore: 0.7,
       maxDistance: 0.5,
       minFaces: 3,
+      suggestions: {
+        enabled: true,
+        maxDistance: 0.7,
+      },
     },
     ocr: {
       enabled: true,

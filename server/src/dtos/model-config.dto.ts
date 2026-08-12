@@ -29,6 +29,18 @@ export const DuplicateDetectionConfigSchema = TaskConfigSchema.extend({
     .describe('Maximum distance threshold for duplicate detection'),
 }).meta({ id: 'DuplicateDetectionConfig' });
 
+export const FaceSuggestionConfigSchema = z
+  .object({
+    enabled: z.boolean().describe('Whether face suggestions are enabled'),
+    maxDistance: z
+      .number()
+      .meta({ format: 'double' })
+      .min(0.1)
+      .max(2)
+      .describe('Maximum embedding distance for a face to be surfaced as a suggestion on a named person'),
+  })
+  .meta({ id: 'FaceSuggestionConfig' });
+
 export const FacialRecognitionConfigSchema = ModelConfigSchema.extend({
   minScore: z
     .number()
@@ -43,6 +55,7 @@ export const FacialRecognitionConfigSchema = ModelConfigSchema.extend({
     .max(2)
     .describe('Maximum distance threshold for face recognition'),
   minFaces: z.int().min(1).describe('Minimum number of faces required for recognition'),
+  suggestions: FaceSuggestionConfigSchema,
 }).meta({ id: 'FacialRecognitionConfig' });
 
 export const PetDetectionConfigSchema = ModelConfigSchema.extend({
