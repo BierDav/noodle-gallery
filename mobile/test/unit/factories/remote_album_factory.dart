@@ -18,9 +18,11 @@ class RemoteAlbumFactory {
     int assetCount = 0,
     String? ownerName,
     bool isShared = false,
+    AlbumUserRole? currentUserRole,
   }) {
     id = TestUtils.uuid(id);
     return RemoteAlbum(
+      currentUserRole: currentUserRole,
       id: id,
       name: name ?? 'remote_album_$id',
       ownerId: TestUtils.uuid(ownerId),

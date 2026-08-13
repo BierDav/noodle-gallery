@@ -148,6 +148,9 @@ class _CollectionPickerState extends ConsumerState<CollectionPicker> {
           onKeyboardExpanded: widget.onKeyboardExpanded,
           onSearchChanged: (query) => setState(() => _searchQuery = query),
           searchHint: 'search_albums_and_spaces'.t(context: context),
+          // A viewer-role album is a dead target: the server rejects the whole request on the
+          // album id, so the sheet could only report a generic error.
+          writableOnly: true,
           sliverAfterSearch: SliverToBoxAdapter(
             child: SpaceCollectionSection(
               onTargetSelected: _addToTarget,
