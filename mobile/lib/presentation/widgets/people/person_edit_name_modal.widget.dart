@@ -33,6 +33,7 @@ class _DriftPersonNameEditFormState extends ConsumerState<DriftPersonNameEditFor
       if (result != 0) {
         ref.invalidate(driftGetAllPeopleProvider);
         ref.invalidate(driftGetAllPeopleWithSharedSpacesProvider);
+        ref.invalidate(driftSpacePeopleProvider);
         context.pop<String>(newName);
       }
     } catch (error) {

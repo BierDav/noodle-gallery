@@ -2271,6 +2271,70 @@ class SpaceMembersRouteArgs {
 }
 
 /// generated route for
+/// [SpacePeoplePage]
+class SpacePeopleRoute extends PageRouteInfo<SpacePeopleRouteArgs> {
+  SpacePeopleRoute({
+    Key? key,
+    required String spaceId,
+    required bool canEdit,
+    List<PageRouteInfo>? children,
+  }) : super(
+         SpacePeopleRoute.name,
+         args: SpacePeopleRouteArgs(
+           key: key,
+           spaceId: spaceId,
+           canEdit: canEdit,
+         ),
+         initialChildren: children,
+       );
+
+  static const String name = 'SpacePeopleRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<SpacePeopleRouteArgs>();
+      return SpacePeoplePage(
+        key: args.key,
+        spaceId: args.spaceId,
+        canEdit: args.canEdit,
+      );
+    },
+  );
+}
+
+class SpacePeopleRouteArgs {
+  const SpacePeopleRouteArgs({
+    this.key,
+    required this.spaceId,
+    required this.canEdit,
+  });
+
+  final Key? key;
+
+  final String spaceId;
+
+  final bool canEdit;
+
+  @override
+  String toString() {
+    return 'SpacePeopleRouteArgs{key: $key, spaceId: $spaceId, canEdit: $canEdit}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! SpacePeopleRouteArgs) return false;
+    return key == other.key &&
+        spaceId == other.spaceId &&
+        canEdit == other.canEdit;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ spaceId.hashCode ^ canEdit.hashCode;
+}
+
+/// generated route for
 /// [SpacesPage]
 class SpacesRoute extends PageRouteInfo<void> {
   const SpacesRoute({List<PageRouteInfo>? children})
