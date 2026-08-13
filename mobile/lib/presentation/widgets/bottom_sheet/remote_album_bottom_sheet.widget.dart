@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/domain/models/album/album.model.dart';
-import 'package:immich_mobile/extensions/translate_extensions.dart';
 import 'package:immich_mobile/presentation/actions/action.widget.dart';
 import 'package:immich_mobile/presentation/actions/favorite.action.dart';
 import 'package:immich_mobile/presentation/actions/timeline.action.dart';
@@ -20,13 +19,11 @@ import 'package:immich_mobile/presentation/widgets/action_buttons/share_link_act
 import 'package:immich_mobile/presentation/widgets/action_buttons/stack_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/trash_action_button.widget.dart';
 import 'package:immich_mobile/presentation/widgets/action_buttons/unstack_action_button.widget.dart';
-import 'package:immich_mobile/presentation/widgets/album/album_selector.widget.dart';
 import 'package:immich_mobile/presentation/widgets/bottom_sheet/base_bottom_sheet.widget.dart';
-import 'package:immich_mobile/providers/infrastructure/action.provider.dart';
+import 'package:immich_mobile/presentation/widgets/collection/collection_picker.widget.dart';
 import 'package:immich_mobile/providers/server_info.provider.dart';
 import 'package:immich_mobile/providers/timeline/multiselect.provider.dart';
 import 'package:immich_mobile/providers/user.provider.dart';
-import 'package:immich_mobile/widgets/common/immich_toast.dart';
 
 class RemoteAlbumBottomSheet extends ConsumerStatefulWidget {
   final RemoteAlbum album;
@@ -56,30 +53,6 @@ class _RemoteAlbumBottomSheetState extends ConsumerState<RemoteAlbumBottomSheet>
     final multiselect = ref.watch(multiSelectProvider);
     final isTrashEnable = ref.watch(serverInfoProvider.select((state) => state.serverFeatures.trash));
     final ownsAlbum = ref.watch(currentUserProvider)?.id == widget.album.ownerId;
-
-    Future<void> addToAlbum(RemoteAlbum album) async {
-      final result = await ref.read(actionProvider.notifier).addToAlbum(ActionSource.timeline, album);
-
-      if (!context.mounted) {
-        return;
-      }
-
-      if (!result.success) {
-        ImmichToast.show(
-          context: context,
-          msg: 'scaffold_body_error_occurred'.t(context: context),
-          toastType: ToastType.error,
-        );
-        return;
-      }
-
-      ImmichToast.show(
-        context: context,
-        msg: result.count == 0
-            ? 'add_to_album_bottom_sheet_already_exists'.t(context: context, args: {"album": album.name})
-            : 'add_to_album_bottom_sheet_added'.t(context: context, args: {"album": album.name}),
-      );
-    }
 
     Future<void> onKeyboardExpand() {
       return sheetController.animateTo(0.85, duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
@@ -120,9 +93,9 @@ class _RemoteAlbumBottomSheetState extends ConsumerState<RemoteAlbumBottomSheet>
         if (ownsAlbum && multiselect.selectedAssets.length == 1)
           SetAlbumCoverActionButton(source: ActionSource.timeline, albumId: widget.album.id),
       ],
-      slivers: ownsAlbum
-          ? [const AddToAlbumHeader(), AlbumSelector(onAlbumSelected: addToAlbum, onKeyboardExpanded: onKeyboardExpand)]
-          : null,
+      // #965: the same picker the main timeline offers, so a space album is reachable from
+      // inside an album too — not only from the timeline.
+      slivers: ownsAlbum ? [CollectionPicker(onKeyboardExpanded: onKeyboardExpand)] : null,
     );
   }
 }
