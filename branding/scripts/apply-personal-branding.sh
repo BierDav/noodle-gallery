@@ -106,3 +106,29 @@ content = content.replace(
 with open(widget, "w") as f:
     f.write(content)
 PYEOF
+
+# In-app logo/wordmark: same personal mark + "Noodle Gallery" lockup as the
+# web patch's top-bar wordmark (gallery-logo-inline-{light,dark}.svg in the
+# brand kit — the two SVGs below are byte-identical copies of those), reused
+# for the three places the mobile app actually renders a logo asset rather
+# than the launcher icon:
+#   - immich-logo.png: splash screen, login form, profile avatar, loading
+#     indicator (immich_logo.dart and its direct AssetImage call sites).
+#   - immich-logo-inline-{dark,light}.svg: the top app bar wordmark
+#     (immich_sliver_app_bar.dart), picked by theme at runtime.
+#   - immich-text-{dark,light}.png: the profile/about dialog wordmark
+#     (app_bar_dialog.dart). Rendered from the same inline SVGs -- the org's
+#     own immich-text-*.png and immich-logo-inline-*.png are already
+#     byte-identical for the same reason.
+# immich-logo-inline-{dark,light}.png, immich-logo-w-bg*.png,
+# immich-splash*.png, immich-logo-android-adaptive-icon.png, immich-logo.svg
+# and immich-logo.json aren't referenced anywhere in mobile/lib and are left
+# alone -- flutter_launcher_icons/flutter_native_splash (their only
+# consumers, via pubspec.yaml) never run in this pipeline.
+logo_assets="branding/assets-personal/mobile/logo"
+
+cp "$logo_assets/immich-logo.png" mobile/assets/immich-logo.png
+cp "$logo_assets/immich-logo-inline-dark.svg" mobile/assets/immich-logo-inline-dark.svg
+cp "$logo_assets/immich-logo-inline-light.svg" mobile/assets/immich-logo-inline-light.svg
+cp "$logo_assets/immich-text-dark.png" mobile/assets/immich-text-dark.png
+cp "$logo_assets/immich-text-light.png" mobile/assets/immich-text-light.png

@@ -95,7 +95,7 @@ source of merge conflicts. A new file with nothing for a rebase to collide
 with sidesteps that entirely. The `build` job runs it right after the org's
 `apply-branding` action.
 
-It currently does four things:
+It currently does five things:
 
 1. Renames the Android home-screen label from "Noodle Gallery" to "Noodle"
    (only the `<application>` tag's label — the share-intent and view-intent
@@ -157,6 +157,26 @@ It currently does four things:
    # download it, then decompress with fontTools (needs the `brotli` extra):
    python3 -c "from fontTools.ttLib.woff2 import decompress; decompress('in.woff2', 'GoogleSansFlex-Variable.ttf')"
    ```
+5. Swaps the three in-app logo assets the mobile app actually renders (as
+   opposed to the launcher icon, which is `flutter build`-time only and
+   already covered by step 2): `immich-logo.png` (splash screen, login form,
+   profile avatar, loading indicator), `immich-logo-inline-{dark,light}.svg`
+   (the top app bar wordmark, picked by theme), and `immich-text-{dark,light}.png`
+   (the profile/about dialog wordmark). All five source files at
+   `branding/assets-personal/mobile/logo/` are pre-rendered, same reasoning
+   as the launcher icon and font. The two SVGs are byte-identical copies of
+   the web patch's own `gallery-logo-inline-{light,dark}.svg`; the three
+   PNGs are rendered from the same wordmark. This was the one piece of the
+   overlay that got left out when the script was first written — a local
+   smoke-test build proved the swap looked right, but the swap itself never
+   made it out of that one-off build into the checked-in script, so every
+   real release was missing it until this was noticed and fixed.
+   `immich-logo-inline-{dark,light}.png`, `immich-logo-w-bg*.png`,
+   `immich-splash*.png`, `immich-logo-android-adaptive-icon.png`,
+   `immich-logo.svg` and `immich-logo.json` are intentionally untouched —
+   nothing in `mobile/lib` reads them; their only consumers are
+   `flutter_launcher_icons`/`flutter_native_splash` via `pubspec.yaml`,
+   neither of which this pipeline ever runs.
 
 Add more personal overrides (splash screen, other screens' typography) to
 this same script as they come up; it only ever needs to exist on
