@@ -21,19 +21,43 @@ sideloadable Android APK that Obtainium auto-installs.
     still new), the PR is still there for manual resolution — the next
     scheduled run picks back up once it's fixed.
   - **Clean rebase**: pushes `quickme-branding` and hands off to `build`.
-- `build` job: applies fork branding, builds a release APK signed with the
-  `PERSONAL_*` keystore secrets (falls back to Flutter's non-portable debug
-  key if they're unset — see below), and publishes it as a GitHub Release
-  tagged `personal-mobile-<version>-<code>`, marked `--latest`.
+- `build` job: applies the org's fork branding, then the personal branding
+  overlay (see below), builds a release APK signed with the `PERSONAL_*`
+  keystore secrets (falls back to Flutter's non-portable debug key if
+  they're unset — see below), and publishes it as a GitHub Release tagged
+  `personal-mobile-<version>-<code>`, marked `--latest`.
+- `on-failure` job: runs whenever `rebase` or `build` genuinely fails (not
+  on the ordinary no-op/conflict paths, which have their own handling
+  above). Opens an issue linking the failed run and assigns it to Copilot's
+  coding agent via the same `.github/actions/assign-copilot` mechanism, so a
+  broken pipeline gets looked at even between checks.
 
 ## The `quickme-branding` bookmark
 
-A single jj commit, based directly on the `release` tag, carrying the
-personal patch (currently just the pipeline's smoke-test change: the Android
-app label). Every scheduled run rebases this one bookmark onto wherever
-`release` has moved to. To add more personal changes, commit them on top of
-`quickme-branding` locally and push; the workflow only ever moves the
-bookmark forward relative to `release`, it doesn't touch your commits.
+A jj commit (or short stack of commits), based directly on the `release`
+tag, carrying personal patches. Every scheduled run rebases this bookmark
+onto wherever `release` has moved to. To add more personal changes, commit
+them on top of `quickme-branding` locally and push; the workflow only ever
+moves the bookmark forward relative to `release`, it doesn't touch your
+commits. It currently carries one thing:
+`branding/scripts/apply-personal-branding.sh`.
+
+## Personal branding overlay
+
+`branding/scripts/apply-personal-branding.sh` is a deliberately separate
+script from the org's `branding/scripts/apply-branding.sh` — the org script
+is shared/upstream-owned and this fork rebases onto `open-noodle/gallery`
+regularly, so any personal preference living inside it would be a permanent
+source of merge conflicts. A new file with nothing for a rebase to collide
+with sidesteps that entirely. The `build` job runs it right after the org's
+`apply-branding` action.
+
+Currently it does one thing: renames the Android home-screen label from
+"Noodle Gallery" to "Noodle" (only the `<application>` tag's label — the
+share-intent and view-intent filter labels elsewhere in the manifest are
+untouched). Add more personal overrides (icon, colors, splash) to this same
+script as they come up; it only ever needs to exist on `quickme-branding`,
+never on `main`.
 
 ## Signing
 
@@ -71,14 +95,16 @@ Add the app in Obtainium with:
   here, so this is mostly informational): the asset is named
   `gallery-personal-<version>-<code>.apk`.
 
-## Conflict handling caveat
+## Copilot handoff caveat
 
-The GraphQL `suggestedActors` + `replaceActorsForAssignable` calls used to
-assign Copilot are the documented mechanism for assigning a bot that isn't a
-repo collaborator, but this corner of GitHub's API is young — if GitHub
-changes it, the workflow step fails open (logs a warning, leaves the PR
+`.github/actions/assign-copilot` (used for both the conflict PR and the
+`on-failure` issue) looks Copilot up as a `suggestedActors` GraphQL "actor"
+and assigns it via `replaceActorsForAssignable` — the documented mechanism
+for assigning a bot that isn't a repo collaborator, since the REST assignees
+endpoint can't target it. This corner of GitHub's API is young — if GitHub
+changes it, the step fails open (logs a warning, leaves the issue/PR
 unassigned) rather than failing the run. Check the Actions log for
-`::warning::` lines after any conflicted rebase.
+`::warning::` lines after any conflicted rebase or pipeline failure.
 
 ## Re-enabling other workflows
 

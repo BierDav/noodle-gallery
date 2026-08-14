@@ -5,12 +5,15 @@ name: Personal Mobile Pipeline
 #
 #   1. Poll for the fork's `release` tag moving (upstream open-noodle/gallery
 #      moves it on every "Release Gallery Server" run).
-#   2. Use jj to rebase the `personal/mobile-branding` bookmark (a small
-#      personal patch on top of the last release) onto the new tag.
+#   2. Use jj to rebase the `quickme-branding` bookmark (a small personal
+#      patch on top of the last release) onto the new tag.
 #   3. On a clean rebase: build a debug-signed (or PERSONAL_* keystore signed,
 #      if configured) release APK and publish it as a GitHub Release.
 #   4. On a conflicted rebase: push the conflicted branch, open a PR, and
 #      hand it to Copilot's coding agent instead of failing silently.
+#   5. If the rebase or build job fails for any other reason, open an issue
+#      with a link to the failed run and hand that to Copilot too, so a
+#      broken pipeline gets looked at even when nobody's watching it.
 #
 # Obtainium polls this repo's GitHub Releases and installs the APK asset
 # automatically — see docs/personal-mobile-pipeline.md.
@@ -99,35 +102,9 @@ jobs:
               --base main \
               --head "$PERSONAL_BOOKMARK")
 
-            # Copilot's coding agent isn't a normal collaborator, so REST
-            # assignment doesn't work -- look it up as a "suggested actor"
-            # and assign via GraphQL. Best-effort: if GitHub changes this,
-            # the PR is still opened for manual/Copilot-via-UI resolution.
-            owner="${{ github.repository_owner }}"
-            repo_name="${{ github.event.repository.name }}"
-            pr_node_id=$(gh pr view "$pr_url" --json id -q .id)
-            copilot_id=$(gh api graphql -f query='
-              query($owner:String!, $name:String!) {
-                repository(owner:$owner, name:$name) {
-                  suggestedActors(capabilities: [CAN_BE_ASSIGNED], first: 20) {
-                    nodes { login ... on Bot { id } ... on User { id } }
-                  }
-                }
-              }' -f owner="$owner" -f name="$repo_name" \
-              -q '.data.repository.suggestedActors.nodes[] | select(.login | test("copilot"; "i")) | .id' | head -1)
-
-            if [ -n "$copilot_id" ]; then
-              gh api graphql -f query='
-                mutation($assignable:ID!, $actor:ID!) {
-                  replaceActorsForAssignable(input: {assignableId: $assignable, actorIds: [$actor]}) {
-                    __typename
-                  }
-                }' -f assignable="$pr_node_id" -f actor="$copilot_id" \
-                || echo "::warning::Found Copilot actor id but assignment mutation failed -- assign it manually: $pr_url"
-            else
-              echo "::warning::Could not find an assignable Copilot actor on this repo (coding agent may not be enabled) -- assign it manually or resolve by hand: $pr_url"
-            fi
-
+            echo "conflicted=true" >> "$GITHUB_OUTPUT"
+            echo "pr_url=$pr_url" >> "$GITHUB_OUTPUT"
+            echo "pr_node_id=$(gh pr view "$pr_url" --json id -q .id)" >> "$GITHUB_OUTPUT"
             echo "should_build=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -137,6 +114,13 @@ jobs:
           version=$(git tag --points-at release | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | sed 's/^v//')
           echo "version_name=${version:-0.0.0}-personal" >> "$GITHUB_OUTPUT"
           echo "should_build=true" >> "$GITHUB_OUTPUT"
+
+      - name: Assign Copilot to the conflict PR
+        if: steps.rebase.outputs.conflicted == 'true'
+        uses: ./.github/actions/assign-copilot
+        with:
+          assignable-id: ${{ steps.rebase.outputs.pr_node_id }}
+          fallback-url: ${{ steps.rebase.outputs.pr_url }}
 
   build:
     name: Build and publish Android APK
@@ -155,6 +139,16 @@ jobs:
       - uses: ./.github/actions/apply-branding
         with:
           version: ${{ needs.rebase.outputs.version_name }}
+
+      # Personal preferences on top of the org's branding (see the script's
+      # own header comment for why this is a separate file, not an edit to
+      # apply-branding.sh). Guarded on existence since this workflow lives
+      # on main while the script lives on quickme-branding.
+      - name: Apply personal branding overlay
+        run: |
+          if [ -f branding/scripts/apply-personal-branding.sh ]; then
+            ./branding/scripts/apply-personal-branding.sh
+          fi
 
       # No PERSONAL_KEY_JKS secret configured -> android/app/build.gradle
       # falls back to Flutter's debug signing config automatically (see
@@ -245,3 +239,46 @@ jobs:
             --title "Personal Gallery build ${VERSION_NAME} (${VERSION_CODE})" \
             --notes "Automated personal build, rebased onto the fork's release tag by personal-mobile-pipeline.yml." \
             --latest
+
+  on-failure:
+    name: Escalate pipeline failures to Copilot
+    needs: [rebase, build]
+    # Runs on a genuine failure in either job -- not on the ordinary
+    # "release tag hasn't moved" or "rebase conflicted" skip paths, which
+    # already have their own handling (no-op silently, conflict PR above).
+    if: always() && (needs.rebase.result == 'failure' || needs.build.result == 'failure')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Open a failure issue
+        id: issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          failed_job="rebase"
+          [ "${{ needs.build.result }}" = "failure" ] && failed_job="build"
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          issue_url=$(gh issue create \
+            --repo "${{ github.repository }}" \
+            --title "Personal Mobile Pipeline failed ($failed_job) -- run ${{ github.run_id }}" \
+            --body "The scheduled/dispatched run failed in the **$failed_job** job.
+
+Logs: $run_url
+
+Please diagnose and fix whatever's broken (the workflow itself, the branding overlay script, or the mobile build) so the next scheduled run succeeds.")
+
+          echo "issue_url=$issue_url" >> "$GITHUB_OUTPUT"
+          echo "issue_node_id=$(gh issue view "$issue_url" --json id -q .id)" >> "$GITHUB_OUTPUT"
+
+      - name: Assign Copilot to the failure issue
+        uses: ./.github/actions/assign-copilot
+        with:
+          assignable-id: ${{ steps.issue.outputs.issue_node_id }}
+          fallback-url: ${{ steps.issue.outputs.issue_url }}
