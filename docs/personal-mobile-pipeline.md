@@ -11,16 +11,23 @@ sideloadable Android APK that Obtainium auto-installs.
   `schedule` (plus manual `workflow_dispatch`).
 - `rebase` job: installs `jj`, colocates it on the checkout, fetches
   `upstream` (`open-noodle/gallery`) and `origin`, then runs
-  `jj rebase -b quickme-branding -d release`.
-  - **No-op** (release tag unchanged since the last run): skips the build.
-  - **Conflict**: pushes the conflicted branch as-is, opens a PR against
-    `main`, and tries to assign it to Copilot's coding agent (via the
-    `suggestedActors` GraphQL lookup, since Copilot isn't a normal
-    collaborator and can't be assigned through the REST assignees endpoint).
-    If that assignment call ever breaks (GitHub API surface for this is
-    still new), the PR is still there for manual resolution — the next
-    scheduled run picks back up once it's fixed.
-  - **Clean rebase**: pushes `quickme-branding` and hands off to `build`.
+  `jj rebase -b quickme-branding -d release` (always attempted — a no-op
+  rebase when already based there is cheap).
+  - **Conflict** (checked unconditionally, not just when the rebase above
+    moved anything — a run can also inherit an already-conflicted commit a
+    previous run pushed that nobody resolved yet): pushes the conflicted
+    branch as-is, opens a PR against `main`, and tries to assign it to
+    Copilot's coding agent (via the `suggestedActors` GraphQL lookup, since
+    Copilot isn't a normal collaborator and can't be assigned through the
+    REST assignees endpoint). If that assignment call ever breaks (GitHub
+    API surface for this is still new), the PR is still there for manual
+    resolution — the next scheduled run picks back up once it's fixed.
+  - **Nothing new** (`quickme-branding`'s current commit already matches
+    the `targetCommitish` of the latest GitHub Release — see below): skips
+    the build. This is *not* the same as "release tag didn't move": pushing
+    a new personal commit onto `quickme-branding` without `release` moving
+    also produces a new tip, which correctly triggers a rebuild.
+  - **Otherwise**: pushes `quickme-branding` and hands off to `build`.
 - `build` job: applies the org's fork branding, then the personal branding
   overlay (see below), builds a release APK signed with the `PERSONAL_*`
   keystore secrets (falls back to Flutter's non-portable debug key if

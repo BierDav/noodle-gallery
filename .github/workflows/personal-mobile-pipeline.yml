@@ -80,16 +80,11 @@ jobs:
         run: |
           set -euo pipefail
 
-          before=$(jj log -r "$PERSONAL_BOOKMARK" --no-graph -T 'commit_id')
           jj rebase -b "$PERSONAL_BOOKMARK" -d release
-          after=$(jj log -r "$PERSONAL_BOOKMARK" --no-graph -T 'commit_id')
 
-          if [ "$before" = "$after" ]; then
-            echo "release tag hasn't moved -- nothing to rebase"
-            echo "should_build=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
+          # Checked unconditionally (not just when the rebase above actually
+          # moved anything): a run can also inherit an already-conflicted
+          # commit pushed by a previous run that nobody resolved yet.
           conflicted=$(jj log -r "${PERSONAL_BOOKMARK} & conflicts()" --no-graph -T 'commit_id')
           if [ -n "$conflicted" ]; then
             echo "::warning::Rebase onto the new release conflicted -- opening a PR for Copilot"
@@ -110,6 +105,24 @@ jobs:
           fi
 
           jj git push --remote origin --bookmark "$PERSONAL_BOOKMARK"
+
+          # Build iff the personal branding commit differs from whatever was
+          # last actually built -- not just "did release move today". Covers
+          # both triggers (release moved, or new personal commits landed on
+          # quickme-branding since the last build) with one check, instead
+          # of only reacting to the first.
+          current=$(jj log -r "$PERSONAL_BOOKMARK" --no-graph -T 'commit_id')
+          last_release_tag=$(gh release list --repo "${{ github.repository }}" --limit 1 --json tagName -q '.[0].tagName' 2>/dev/null || true)
+          last_built=""
+          if [ -n "$last_release_tag" ]; then
+            last_built=$(gh release view "$last_release_tag" --repo "${{ github.repository }}" --json targetCommitish -q '.targetCommitish' 2>/dev/null || true)
+          fi
+
+          if [ "$current" = "$last_built" ]; then
+            echo "personal branding ($current) matches the last build -- nothing new to ship"
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           version=$(git tag --points-at release | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | sed 's/^v//')
           echo "version_name=${version:-0.0.0}-personal" >> "$GITHUB_OUTPUT"
@@ -234,8 +247,14 @@ jobs:
         run: |
           tag="personal-mobile-${VERSION_NAME}-${VERSION_CODE}"
           apk="build/app/outputs/flutter-apk/gallery-personal-${VERSION_NAME}-${VERSION_CODE}.apk"
+          # --target pins the release to the exact commit that was built
+          # (quickme-branding's tip) rather than defaulting to main's HEAD --
+          # the rebase job's should_build check reads this back via
+          # `gh release view --json targetCommitish` to tell whether the
+          # personal branding has changed since the last build.
           gh release create "$tag" "$apk" \
             --repo "${{ github.repository }}" \
+            --target "$(git rev-parse HEAD)" \
             --title "Personal Gallery build ${VERSION_NAME} (${VERSION_CODE})" \
             --notes "Automated personal build, rebased onto the fork's release tag by personal-mobile-pipeline.yml." \
             --latest
