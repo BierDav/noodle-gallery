@@ -7,45 +7,64 @@ sideloadable Android APK that Obtainium auto-installs.
 
 ## How it works
 
-- `.github/workflows/personal-mobile-pipeline.yml` runs on a 30-minute
-  `schedule` (plus manual `workflow_dispatch`).
-- `rebase` job: installs `jj`, colocates it on the checkout, fetches
-  `upstream` (`open-noodle/gallery`) and `origin`, then runs
-  `jj rebase -b quickme-branding -d release` (always attempted — a no-op
-  rebase when already based there is cheap).
-  - **Conflict** (checked unconditionally, not just when the rebase above
-    moved anything — a run can also inherit an already-conflicted commit a
-    previous run pushed that nobody resolved yet): pushes the conflicted
-    branch as-is, opens a PR against `main`, and tries to assign it to
-    Copilot's coding agent (via the `suggestedActors` GraphQL lookup, since
-    Copilot isn't a normal collaborator and can't be assigned through the
-    REST assignees endpoint). If that assignment call ever breaks (GitHub
-    API surface for this is still new), the PR is still there for manual
-    resolution — the next scheduled run picks back up once it's fixed.
-  - **Nothing new** (`quickme-branding`'s current commit already matches
-    the `targetCommitish` of the latest GitHub Release — see below): skips
-    the build. This is *not* the same as "release tag didn't move": pushing
-    a new personal commit onto `quickme-branding` without `release` moving
-    also produces a new tip, which correctly triggers a rebuild.
-  - **Otherwise**: pushes `quickme-branding` and hands off to `build`.
+The pipeline is split across two files because of a GitHub constraint: a
+`schedule` trigger is only ever honored from the workflow file on the repo's
+**default branch** (`main`), even though `workflow_dispatch` and `push`
+happily fire from any branch that has the file. Since none of this pipeline
+belongs on `main` (it's fork-personal-only, `main` tracks upstream), the
+real pipeline lives entirely on `quickme-branding`, and a separate,
+minimal stub on `main` exists only to wake it up on a schedule:
+
+- `.github/workflows/personal-mobile-pipeline-trigger.yml` (on `main`): cron,
+  once daily. Its only job is `gh workflow run personal-mobile-pipeline.yml
+  --ref quickme-branding`. Nothing else — no jj, no secrets, no build logic.
+- `.github/workflows/personal-mobile-pipeline.yml` (on `quickme-branding`):
+  the actual pipeline. Runs on that daily dispatch, on a manual
+  `workflow_dispatch`, and on every `push` to `quickme-branding` (i.e. every
+  time you force-push a rebase yourself).
+  - `rebase` job: installs `jj`, colocates it on the checkout, fetches
+    `upstream` (`open-noodle/gallery`) and `origin`, then runs
+    `jj rebase --ignore-immutable -b quickme-branding -d release` --
+    **locally only, this job never pushes**. `--ignore-immutable` is
+    required: the `build` job's `gh release create` tags the exact commit it
+    builds, and jj's default `immutable_heads()` includes `tags()`, so every
+    build after the first would otherwise make its own commit immutable and
+    break the next rebase.
+    - **Conflict** (checked unconditionally, not just when the rebase above
+      moved anything — a run can also inherit an already-conflicted state
+      nobody force-pushed a fix for yet): the job just **fails**. Resolve
+      with `jj` locally and force-push `quickme-branding` yourself; a later
+      run picks up from there. Nothing gets pushed or opened automatically.
+    - **Clean, but not pushed yet** (the local rebase result differs from
+      `quickme-branding@origin`): logs that there's a new rebase to review
+      and skips the build. This is how "always builds against the latest
+      release" is enforced even on the `push` trigger — if what you pushed
+      isn't actually based on the current `release` tag, this job's own
+      local rebase would move it further, so it won't build the stale thing
+      you pushed.
+    - **Nothing new** (`quickme-branding@origin`'s commit already matches
+      the `targetCommitish` of the latest GitHub Release): skips the build.
+    - **Otherwise**: hands off to `build`.
 - `build` job: applies the org's fork branding, then the personal branding
   overlay (see below), builds a release APK signed with the `PERSONAL_*`
   keystore secrets (falls back to Flutter's non-portable debug key if
   they're unset — see below), and publishes it as a GitHub Release tagged
   `personal-mobile-<version>-<code>`, marked `--latest`.
 - `on-failure` job: runs whenever `rebase` or `build` genuinely fails (not
-  on the ordinary no-op/conflict paths, which have their own handling
-  above). Opens an issue linking the failed run and assigns it to Copilot's
-  coding agent via the same `.github/actions/assign-copilot` mechanism, so a
-  broken pipeline gets looked at even between checks.
+  on the ordinary no-op/conflict paths, which report themselves above).
+  Opens a plain issue linking the failed run so a broken pipeline gets
+  looked at even between checks (see "Copilot handoff caveat" below for why
+  it doesn't try to assign anyone).
 
 ## The `quickme-branding` bookmark
 
 A single jj commit, based directly on the `release` tag, carrying personal
-patches. Every scheduled run rebases this bookmark onto wherever `release`
-has moved to. To add more personal changes, commit them on top of
-`quickme-branding` locally and push; the workflow only ever moves the
-bookmark forward relative to `release`, it doesn't touch your commits.
+patches. Every run of `personal-mobile-pipeline.yml` rebases this bookmark
+onto wherever `release` has moved to, **locally, in the runner** — it never
+pushes that rebase for you. To pick up a new `release`, or to add more
+personal changes, do it locally with `jj`/`git` and force-push
+`quickme-branding` yourself; the workflow only ever builds what's already on
+`origin`, it never rewrites your pushed commit.
 
 **Rule: this commit only ever adds new files under `branding/scripts/` or
 `branding/assets-personal/`. It never modifies a tracked app source file
@@ -197,14 +216,16 @@ the app would otherwise infer, so `add` was the safer choice here).
 
 ## Copilot handoff caveat
 
-`.github/actions/assign-copilot` (used for both the conflict PR and the
-`on-failure` issue) looks Copilot up as a `suggestedActors` GraphQL "actor"
-and assigns it via `replaceActorsForAssignable` — the documented mechanism
-for assigning a bot that isn't a repo collaborator, since the REST assignees
-endpoint can't target it. This corner of GitHub's API is young — if GitHub
-changes it, the step fails open (logs a warning, leaves the issue/PR
-unassigned) rather than failing the run. Check the Actions log for
-`::warning::` lines after any conflicted rebase or pipeline failure.
+Earlier versions of this pipeline pushed conflicted rebases as a PR and
+assigned pipeline failures to Copilot's coding agent automatically, via
+`.github/actions/assign-copilot` (looks Copilot up as a `suggestedActors`
+GraphQL "actor" and assigns it via `replaceActorsForAssignable` — the
+documented mechanism for assigning a bot that isn't a repo collaborator,
+since the REST assignees endpoint can't target it). Both handoffs are
+disabled for now: a conflicted rebase just fails the job (see above) instead
+of pushing anything, and the `on-failure` issue is opened but left
+unassigned. The action itself is still checked in, unused, in case it's
+worth re-enabling later.
 
 ## Re-enabling other workflows
 

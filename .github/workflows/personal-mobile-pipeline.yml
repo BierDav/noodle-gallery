@@ -3,11 +3,15 @@ name: Personal Mobile Pipeline
 # Personal automation (this fork only — never present upstream, so it can
 # never collide with an upstream sync):
 #
-#   1. Poll for the fork's `release` tag moving (upstream open-noodle/gallery
-#      moves it on every "Release Gallery Server" run).
+#   1. Triggered by a push to `quickme-branding` (you force-pushing a new
+#      rebase), by the daily `personal-mobile-pipeline-trigger.yml` stub on
+#      `main` (the only place GitHub honors a `schedule` trigger from --
+#      this file itself can't cron), or manually.
 #   2. Use jj to rebase the `quickme-branding` bookmark (a small personal
-#      patch on top of the last release) onto the new tag, locally -- this
-#      job never pushes. Force-pushing the result is a manual, human step.
+#      patch on top of the last release) onto the fork's `release` tag
+#      (upstream open-noodle/gallery moves it on every "Release Gallery
+#      Server" run), locally -- this job never pushes. Force-pushing the
+#      result is a manual, human step.
 #   3. If that local rebase conflicts, fail the job instead of pushing
 #      conflict markers anywhere. Resolve with jj and force-push
 #      `quickme-branding` yourself; a later run picks up from there.
@@ -22,9 +26,10 @@ name: Personal Mobile Pipeline
 # automatically — see docs/personal-mobile-pipeline.md.
 
 on:
-  schedule:
-    - cron: '*/30 * * * *'
   workflow_dispatch: {}
+  push:
+    branches:
+      - quickme-branding
 
 concurrency:
   group: personal-mobile-pipeline
