@@ -1,0 +1,31 @@
+name: Personal Mobile Pipeline Trigger
+
+# Cron-only stub, deliberately kept on main. GitHub only ever honors a
+# `schedule` trigger from the workflow file on the repo's default branch --
+# workflow_dispatch and push both work from any branch, but schedule does
+# not. The actual pipeline (jj rebase check + Android build + GitHub
+# Release) is personal-fork-only and lives entirely on quickme-branding
+# (see .github/workflows/personal-mobile-pipeline.yml there and
+# docs/personal-mobile-pipeline.md); this file's only job is to wake it up
+# once a day so a moved upstream `release` tag gets noticed even if nobody
+# pushes to quickme-branding that day. No jj, no secrets, no build logic.
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch personal-mobile-pipeline.yml on quickme-branding
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run personal-mobile-pipeline.yml \
+            --repo "${{ github.repository }}" \
+            --ref quickme-branding
