@@ -41,13 +41,30 @@ sideloadable Android APK that Obtainium auto-installs.
 
 ## The `quickme-branding` bookmark
 
-A jj commit (or short stack of commits), based directly on the `release`
-tag, carrying personal patches. Every scheduled run rebases this bookmark
-onto wherever `release` has moved to. To add more personal changes, commit
-them on top of `quickme-branding` locally and push; the workflow only ever
-moves the bookmark forward relative to `release`, it doesn't touch your
-commits. It currently carries one thing:
-`branding/scripts/apply-personal-branding.sh`.
+A single jj commit, based directly on the `release` tag, carrying personal
+patches. Every scheduled run rebases this bookmark onto wherever `release`
+has moved to. To add more personal changes, commit them on top of
+`quickme-branding` locally and push; the workflow only ever moves the
+bookmark forward relative to `release`, it doesn't touch your commits.
+
+**Rule: this commit only ever adds new files under `branding/scripts/` or
+`branding/assets-personal/`. It never modifies a tracked app source file
+directly** (`AndroidManifest.xml`, `colors.dart`,
+`remote_album_sliver_app_bar.dart`, `pubspec.yaml`, the launcher icon PNGs,
+…). All of those get mutated only at build time, by the overlay script
+running inside the ephemeral `build` job — never committed. This was gotten
+wrong once while building this out (the mutated destination files got
+committed straight into `quickme-branding`) and had to be fixed by
+rebuilding the bookmark from scratch on top of `release` with only the
+script + assets. The reasoning is the same reasoning CLAUDE.md already gives
+for the org's own `apply-branding.sh`: committing branded output makes the
+fork's source diverge from upstream Immich at every touched line, so the
+*next* time upstream (or an org branding change) touches
+`remote_album_sliver_app_bar.dart` or `colors.dart`, `jj rebase` hits a real
+conflict there and needs Copilot/manual intervention — exactly what the
+separate-script design exists to avoid. Keeping the tracked files pristine
+means a rebase can only ever conflict on the (new, personal-only) script and
+asset files themselves, which nothing upstream will ever touch.
 
 ## Personal branding overlay
 
@@ -59,7 +76,7 @@ source of merge conflicts. A new file with nothing for a rebase to collide
 with sidesteps that entirely. The `build` job runs it right after the org's
 `apply-branding` action.
 
-It currently does two things:
+It currently does four things:
 
 1. Renames the Android home-screen label from "Noodle Gallery" to "Noodle"
    (only the `<application>` tag's label — the share-intent and view-intent
@@ -93,10 +110,38 @@ It currently does two things:
    The 192/432 content ratio matches the existing (pre-personal-branding)
    icon's safe-zone padding — check `identify -format "%@" <old foreground>`
    if that ever needs to change.
+3. Recolors the app's default ("indigo") theme from Google-blue to the same
+   coral as the web patch's `--immich-ui-primary-500` (light `#e85d38` /
+   dark `#f2a48b`). `immichBrandColorLight`/`Dark` in
+   `mobile/lib/constants/colors.dart` back that theme's seed + primary color
+   and aren't used anywhere else, so it's a safe, isolated two-line swap.
+4. Gives album cover titles (`_DynamicText` in
+   `remote_album_sliver_app_bar.dart`) the same "expressive Google Sans
+   Flex" treatment as the web patch's `css/50-album-title.css`: uppercase,
+   weight 800, and the variable font's `ROND=100`/`wdth=25` axes (fully
+   rounded, narrow) via Dart's `FontVariation`. Google Sans Flex is fetched
+   from a Google Fonts CDN on web; mobile can't rely on that, so the
+   variable TTF is bundled as an asset instead
+   (`branding/assets-personal/mobile/fonts/GoogleSansFlex-Variable.ttf`,
+   OFL-licensed like the already-bundled GoogleSans/GoogleSansCode) and
+   wired into `pubspec.yaml`'s `flutter.fonts` list. The auto-sizing
+   `_lineCount()` measurement was updated to uppercase its text too — it
+   has to measure what actually gets rendered, or picks a font size based
+   on a narrower (mixed-case) estimate than the (wider, uppercase) result.
 
-Add more personal overrides (accent colors, splash) to this same script as
-they come up; it only ever needs to exist on `quickme-branding`, never on
-`main`.
+   Regenerate the font (Latin subset only) if it ever needs updating:
+
+   ```bash
+   curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/125.0.0.0" \
+     "https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wdth,wght,ROND@25..151,1..1000,0..100" \
+     | grep -A2 '/\* latin \*/' # grab the woff2 URL from the last block
+   # download it, then decompress with fontTools (needs the `brotli` extra):
+   python3 -c "from fontTools.ttLib.woff2 import decompress; decompress('in.woff2', 'GoogleSansFlex-Variable.ttf')"
+   ```
+
+Add more personal overrides (splash screen, other screens' typography) to
+this same script as they come up; it only ever needs to exist on
+`quickme-branding`, never on `main`.
 
 ## Signing
 
@@ -133,6 +178,22 @@ Add the app in Obtainium with:
 - If prompted for an APK filter/pattern (multiple assets aren't published
   here, so this is mostly informational): the asset is named
   `gallery-personal-<version>-<code>.apk`.
+
+**One-tap add**: scan or open
+
+```
+https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https%3A%2F%2Fgithub.com%2FBierDav%2Fnoodle-gallery
+```
+
+on the phone (works with or without Obtainium already installed — the
+`https://` redirect opens in a browser first if needed). This is
+Obtainium's own `action=add` deep link
+(`lib/pages/home.dart` → `interpretLink`), which just pre-fills the "Add
+App" screen's URL field and lets Obtainium's normal GitHub-source detection
+fill in everything else — not a hand-built `additionalSettings` payload
+(the `action=app` deep link Obtainium uses for its own "share config" export
+takes a full JSON app object; deriving one by hand risks missing a default
+the app would otherwise infer, so `add` was the safer choice here).
 
 ## Copilot handoff caveat
 
