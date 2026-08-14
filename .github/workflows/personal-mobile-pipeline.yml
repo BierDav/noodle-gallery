@@ -1,0 +1,281 @@
+name: Personal Mobile Pipeline
+
+# Personal automation (this fork only — never present upstream, so it can
+# never collide with an upstream sync):
+#
+#   1. Poll for the fork's `release` tag moving (upstream open-noodle/gallery
+#      moves it on every "Release Gallery Server" run).
+#   2. Use jj to rebase the `quickme-branding` bookmark (a small personal
+#      patch on top of the last release) onto the new tag, locally -- this
+#      job never pushes. Force-pushing the result is a manual, human step.
+#   3. If that local rebase conflicts, fail the job instead of pushing
+#      conflict markers anywhere. Resolve with jj and force-push
+#      `quickme-branding` yourself; a later run picks up from there.
+#   4. Once `quickme-branding` has been force-pushed (by hand) so it matches
+#      the local rebase result, build a debug-signed (or PERSONAL_* keystore
+#      signed, if configured) release APK and publish it as a GitHub Release.
+#   5. If the rebase or build job fails, open an issue with a link to the
+#      failed run so a broken pipeline gets looked at even when nobody's
+#      watching it.
+#
+# Obtainium polls this repo's GitHub Releases and installs the APK asset
+# automatically — see docs/personal-mobile-pipeline.md.
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: personal-mobile-pipeline
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  PERSONAL_BOOKMARK: quickme-branding
+  UPSTREAM_URL: https://github.com/open-noodle/gallery.git
+
+jobs:
+  rebase:
+    name: Rebase personal branding onto release
+    runs-on: ubuntu-latest
+    outputs:
+      should_build: ${{ steps.rebase.outputs.should_build }}
+      version_name: ${{ steps.rebase.outputs.version_name }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: true
+
+      - name: Install jj
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(gh api repos/jj-vcs/jj/releases/latest -q .tag_name)
+          curl -fsSL "https://github.com/jj-vcs/jj/releases/download/${version}/jj-${version}-x86_64-unknown-linux-musl.tar.gz" -o /tmp/jj.tar.gz
+          tar -xzf /tmp/jj.tar.gz -C /tmp ./jj
+          sudo mv /tmp/jj /usr/local/bin/jj
+          jj --version
+
+      - name: Colocate jj and configure identity
+        run: |
+          jj git init --colocate .
+          jj config set --user user.name "gallery-personal-bot"
+          jj config set --user user.email "actions@users.noreply.github.com"
+
+      - name: Fetch origin and upstream
+        run: |
+          jj git remote add upstream "$UPSTREAM_URL" 2>/dev/null || true
+          jj git fetch --remote origin
+          jj git fetch --remote upstream
+          jj bookmark track "${PERSONAL_BOOKMARK}@origin"
+
+      - name: Rebase locally, fail on conflict, decide whether to build
+        id: rebase
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          # --ignore-immutable: the build job's "Publish GitHub Release" step
+          # tags the exact commit it built (gh release create always creates
+          # the tag), and jj's default immutable_heads() includes tags().
+          # So after the first successful build, PERSONAL_BOOKMARK's own tip
+          # is permanently immutable and every later rebase of it fails with
+          # "Commit ... is immutable" -- rewriting that same commit is
+          # exactly what this rebase does.
+          jj rebase --ignore-immutable -b "$PERSONAL_BOOKMARK" -d release
+
+          # This job never pushes -- it only checks, locally, whether
+          # PERSONAL_BOOKMARK still rebases cleanly onto the current release.
+          # Checked unconditionally (not just when the rebase above actually
+          # moved anything): a run can also inherit an already-conflicted
+          # state nobody force-pushed a fix for yet.
+          if [ -n "$(jj log -r "${PERSONAL_BOOKMARK} & conflicts()" --no-graph -T 'commit_id')" ]; then
+            echo "::error::Rebase onto the new release conflicted -- resolve with jj locally and force-push $PERSONAL_BOOKMARK yourself."
+            exit 1
+          fi
+
+          # A clean local rebase that doesn't match what's already on origin
+          # means there's a new rebase to review -- the human force-pushes it
+          # once they're happy with it, which is also what lets a later run
+          # build it (see the origin/last-build comparison below).
+          local_tip=$(jj log -r "$PERSONAL_BOOKMARK" --no-graph -T 'commit_id')
+          origin_tip=$(jj log -r "${PERSONAL_BOOKMARK}@origin" --no-graph -T 'commit_id')
+          if [ "$local_tip" != "$origin_tip" ]; then
+            echo "$PERSONAL_BOOKMARK rebases cleanly onto release but hasn't been force-pushed yet -- nothing to build until it is."
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Build iff the personal branding commit differs from whatever was
+          # last actually built -- not just "did release move today". Covers
+          # both triggers (release moved, or new personal commits landed on
+          # quickme-branding since the last build) with one check, instead
+          # of only reacting to the first.
+          last_release_tag=$(gh release list --repo "${{ github.repository }}" --limit 1 --json tagName -q '.[0].tagName' 2>/dev/null || true)
+          last_built=""
+          if [ -n "$last_release_tag" ]; then
+            last_built=$(gh release view "$last_release_tag" --repo "${{ github.repository }}" --json targetCommitish -q '.targetCommitish' 2>/dev/null || true)
+          fi
+
+          if [ "$origin_tip" = "$last_built" ]; then
+            echo "personal branding ($origin_tip) matches the last build -- nothing new to ship"
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          version=$(git tag --points-at release | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | sed 's/^v//')
+          echo "version_name=${version:-0.0.0}-personal" >> "$GITHUB_OUTPUT"
+          echo "should_build=true" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build and publish Android APK
+    needs: rebase
+    if: needs.rebase.outputs.should_build == 'true'
+    runs-on: ubuntu-latest
+    environment: mobile-build
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: refs/heads/quickme-branding
+          persist-credentials: false
+
+      - uses: ./.github/actions/apply-branding
+        with:
+          version: ${{ needs.rebase.outputs.version_name }}
+
+      # Personal preferences on top of the org's branding (see the script's
+      # own header comment for why this is a separate file, not an edit to
+      # apply-branding.sh).
+      - name: Apply personal branding overlay
+        run: ./branding/scripts/apply-personal-branding.sh
+
+      # No PERSONAL_KEY_JKS secret configured -> android/app/build.gradle
+      # falls back to Flutter's debug signing config automatically (see
+      # `hasKeystore` in mobile/android/app/build.gradle). That key is NOT
+      # stable across fresh runners, so update-in-place through Obtainium
+      # requires a real PERSONAL_* keystore once you're past the smoke test
+      # -- see docs/personal-mobile-pipeline.md.
+      - name: Write personal keystore (if configured)
+        env:
+          KEY_JKS: ${{ secrets.PERSONAL_KEY_JKS }}
+        working-directory: ./mobile
+        run: |
+          if [ -n "$KEY_JKS" ]; then
+            printf '%s' "$KEY_JKS" | base64 -d > android/key.jks
+          else
+            echo "No PERSONAL_KEY_JKS secret set -- falling back to Flutter's debug signing."
+          fi
+
+      - uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: 'stable'
+          flutter-version-file: ./mobile/pubspec.yaml
+          cache: true
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
+        with:
+          packages: ''
+
+      - name: Get Packages
+        working-directory: ./mobile
+        run: flutter pub get
+
+      - name: Generate translation file
+        working-directory: ./mobile
+        run: dart run easy_localization:generate -S ../i18n && dart run bin/generate_keys.dart
+
+      - name: Generate platform APIs
+        working-directory: ./mobile
+        run: |
+          dart run pigeon --input pigeon/native_sync_api.dart
+          dart run pigeon --input pigeon/local_image_api.dart
+          dart run pigeon --input pigeon/remote_image_api.dart
+          dart run pigeon --input pigeon/background_worker_api.dart
+          dart run pigeon --input pigeon/background_worker_lock_api.dart
+          dart run pigeon --input pigeon/connectivity_api.dart
+          dart run pigeon --input pigeon/network_api.dart
+          dart run pigeon --input pigeon/permission_api.dart
+          dart run pigeon --input pigeon/view_intent_api.dart
+          dart format lib/platform/native_sync_api.g.dart lib/platform/local_image_api.g.dart lib/platform/remote_image_api.g.dart lib/platform/background_worker_api.g.dart lib/platform/background_worker_lock_api.g.dart lib/platform/connectivity_api.g.dart lib/platform/network_api.g.dart lib/platform/permission_api.g.dart lib/platform/view_intent_api.g.dart
+
+      - name: Compute build number
+        id: build-meta
+        run: echo "version_code=$(( $(date +%s) / 60 ))" >> "$GITHUB_OUTPUT"
+
+      - name: Build signed Android APK
+        working-directory: ./mobile
+        env:
+          ALIAS: ${{ secrets.PERSONAL_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.PERSONAL_ANDROID_KEY_PASSWORD }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.PERSONAL_ANDROID_STORE_PASSWORD }}
+          VERSION_NAME: ${{ needs.rebase.outputs.version_name }}
+          VERSION_CODE: ${{ steps.build-meta.outputs.version_code }}
+        run: |
+          flutter build apk --release \
+            --build-name="$VERSION_NAME" \
+            --build-number="$VERSION_CODE"
+          mv build/app/outputs/flutter-apk/app-release.apk \
+             "build/app/outputs/flutter-apk/gallery-personal-${VERSION_NAME}-${VERSION_CODE}.apk"
+
+      - name: Publish GitHub Release for Obtainium
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION_NAME: ${{ needs.rebase.outputs.version_name }}
+          VERSION_CODE: ${{ steps.build-meta.outputs.version_code }}
+        working-directory: ./mobile
+        run: |
+          tag="personal-mobile-${VERSION_NAME}-${VERSION_CODE}"
+          apk="build/app/outputs/flutter-apk/gallery-personal-${VERSION_NAME}-${VERSION_CODE}.apk"
+          # --target pins the release to the exact commit that was built
+          # (quickme-branding's tip) rather than defaulting to main's HEAD --
+          # the rebase job's should_build check reads this back via
+          # `gh release view --json targetCommitish` to tell whether the
+          # personal branding has changed since the last build.
+          gh release create "$tag" "$apk" \
+            --repo "${{ github.repository }}" \
+            --target "$(git rev-parse HEAD)" \
+            --title "Personal Gallery build ${VERSION_NAME} (${VERSION_CODE})" \
+            --notes "Automated personal build, rebased onto the fork's release tag by personal-mobile-pipeline.yml." \
+            --latest
+
+  on-failure:
+    name: Open an issue on pipeline failure
+    needs: [rebase, build]
+    # Runs on a genuine failure in either job -- not on the ordinary
+    # "release tag hasn't moved" skip path or a conflicted rebase, both of
+    # which already report themselves (no-op silently, ::error:: above).
+    if: always() && (needs.rebase.result == 'failure' || needs.build.result == 'failure')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Open a failure issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          failed_job="rebase"
+          [ "${{ needs.build.result }}" = "failure" ] && failed_job="build"
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          body="The scheduled/dispatched run failed in the **$failed_job** job.\n\nLogs: $run_url\n\nPlease diagnose and fix whatever's broken (the workflow itself, the branding overlay script, or the mobile build) so the next scheduled run succeeds."
+
+          gh issue create \
+            --repo "${{ github.repository }}" \
+            --title "Personal Mobile Pipeline failed ($failed_job) -- run ${{ github.run_id }}" \
+            --body "$(printf '%b' "$body")"
