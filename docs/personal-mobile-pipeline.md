@@ -52,12 +52,44 @@ source of merge conflicts. A new file with nothing for a rebase to collide
 with sidesteps that entirely. The `build` job runs it right after the org's
 `apply-branding` action.
 
-Currently it does one thing: renames the Android home-screen label from
-"Noodle Gallery" to "Noodle" (only the `<application>` tag's label — the
-share-intent and view-intent filter labels elsewhere in the manifest are
-untouched). Add more personal overrides (icon, colors, splash) to this same
-script as they come up; it only ever needs to exist on `quickme-branding`,
-never on `main`.
+It currently does two things:
+
+1. Renames the Android home-screen label from "Noodle Gallery" to "Noodle"
+   (only the `<application>` tag's label — the share-intent and view-intent
+   filter labels elsewhere in the manifest are untouched).
+2. Overwrites the Android launcher icon (adaptive foreground + monochrome +
+   all five legacy `mipmap-*/ic_launcher.png` densities) with the personal
+   brand kit's coral aperture mark, source-of-truth for which lives outside
+   this repo (`~/Downloads/photos/brand` at time of writing — the same kit
+   already patched onto the self-hosted server's web UI via a Dockerfile
+   overlay). Pre-rendered PNGs are checked in at
+   `branding/assets-personal/mobile/android/` (a personal sibling to the
+   org's `branding/assets/`, same reasoning as the script itself: nothing
+   there for an upstream rebase to conflict with) and just get copied into
+   place — no ImageMagick/rsvg-convert needed in CI. The launcher
+   background stays the existing white (`ic_launcher_background` in
+   `colors.xml`) since the mark was rendered assuming a white backdrop,
+   matching how the brand kit renders `apple-icon-180.png`.
+
+   Regenerate the PNGs from the source SVG (`noodle-gallery-mark.svg`) with:
+
+   ```bash
+   rsvg-convert -w 2048 -h 2048 noodle-gallery-mark.svg -o mark.png
+   magick mark.png -resize 192x192 -background none -gravity center -extent 432x432 ic_launcher_foreground.png
+   magick mark.png -resize 192x192 -alpha extract mono_alpha.png
+   magick -size 192x192 xc:white mono_white.png
+   magick mono_white.png mono_alpha.png -compose CopyOpacity -composite mono_rgba.png
+   magick mono_rgba.png -background none -gravity center -extent 432x432 ic_launcher_monochrome.png
+   magick mark.png -resize 192x192 -background none -gravity center -extent 432x432 -resize 1024x1024 -background white -alpha remove -alpha off ic_launcher.png
+   ```
+
+   The 192/432 content ratio matches the existing (pre-personal-branding)
+   icon's safe-zone padding — check `identify -format "%@" <old foreground>`
+   if that ever needs to change.
+
+Add more personal overrides (accent colors, splash) to this same script as
+they come up; it only ever needs to exist on `quickme-branding`, never on
+`main`.
 
 ## Signing
 
