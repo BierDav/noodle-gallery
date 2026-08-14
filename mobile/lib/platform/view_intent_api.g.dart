@@ -9,14 +9,22 @@ import 'dart:typed_data' show Float64List, Int32List, Int64List;
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart' show immutable, protected, visibleForTesting;
 
-Object? _extractReplyValueOrThrow(List<Object?>? replyList, String channelName, {required bool isNullValid}) {
+Object? _extractReplyValueOrThrow(
+    List<Object?>? replyList,
+    String channelName, {
+    required bool isNullValid,
+}) {
   if (replyList == null) {
     throw PlatformException(
       code: 'channel-error',
       message: 'Unable to establish connection on channel: "$channelName".',
     );
   } else if (replyList.length > 1) {
-    throw PlatformException(code: replyList[0]! as String, message: replyList[1] as String?, details: replyList[2]);
+    throw PlatformException(
+      code: replyList[0]! as String,
+      message: replyList[1] as String?,
+      details: replyList[2],
+    );
   } else if (!isNullValid && (replyList.isNotEmpty && replyList[0] == null)) {
     throw PlatformException(
       code: 'null-error',
@@ -37,7 +45,9 @@ bool _deepEquals(Object? a, Object? b) {
     return a == b;
   }
   if (a is List && b is List) {
-    return a.length == b.length && a.indexed.every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
+    return a.length == b.length &&
+        a.indexed
+            .every(((int, dynamic) item) => _deepEquals(item.$2, b[item.$1]));
   }
   if (a is Map && b is Map) {
     if (a.length != b.length) {
@@ -86,8 +96,13 @@ int _deepHash(Object? value) {
   return value.hashCode;
 }
 
+
 class ViewIntentPayload {
-  ViewIntentPayload({this.path, required this.mimeType, this.localAssetId});
+  ViewIntentPayload({
+    this.path,
+    required this.mimeType,
+    this.localAssetId,
+  });
 
   String? path;
 
@@ -96,12 +111,15 @@ class ViewIntentPayload {
   String? localAssetId;
 
   List<Object?> _toList() {
-    return <Object?>[path, mimeType, localAssetId];
+    return <Object?>[
+      path,
+      mimeType,
+      localAssetId,
+    ];
   }
 
   Object encode() {
-    return _toList();
-  }
+    return _toList();  }
 
   static ViewIntentPayload decode(Object result) {
     result as List<Object?>;
@@ -121,15 +139,14 @@ class ViewIntentPayload {
     if (identical(this, other)) {
       return true;
     }
-    return _deepEquals(path, other.path) &&
-        _deepEquals(mimeType, other.mimeType) &&
-        _deepEquals(localAssetId, other.localAssetId);
+    return _deepEquals(path, other.path) && _deepEquals(mimeType, other.mimeType) && _deepEquals(localAssetId, other.localAssetId);
   }
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   int get hashCode => _deepHash(<Object?>[runtimeType, ..._toList()]);
 }
+
 
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
@@ -138,7 +155,7 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    } else if (value is ViewIntentPayload) {
+    }    else if (value is ViewIntentPayload) {
       buffer.putUint8(129);
       writeValue(buffer, value.encode());
     } else {
@@ -162,8 +179,8 @@ class ViewIntentHostApi {
   /// available for dependency injection.  If it is left null, the default
   /// BinaryMessenger will be used which routes to the host platform.
   ViewIntentHostApi({BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
-    : pigeonVar_binaryMessenger = binaryMessenger,
-      pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
+      : pigeonVar_binaryMessenger = binaryMessenger,
+        pigeonVar_messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
   final BinaryMessenger? pigeonVar_binaryMessenger;
 
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
@@ -171,8 +188,7 @@ class ViewIntentHostApi {
   final String pigeonVar_messageChannelSuffix;
 
   Future<ViewIntentPayload?> consumeViewIntent() async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.immich_mobile.ViewIntentHostApi.consumeViewIntent$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channelName = 'dev.flutter.pigeon.immich_mobile.ViewIntentHostApi.consumeViewIntent$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -182,10 +198,11 @@ class ViewIntentHostApi {
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
 
     final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
     return pigeonVar_replyValue as ViewIntentPayload?;
   }
 }

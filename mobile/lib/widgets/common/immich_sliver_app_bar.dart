@@ -92,7 +92,10 @@ class _ImmichLogoWithText extends StatelessWidget {
     duration: kThemeChangeDuration,
     child: SvgPicture.asset(
       context.isDarkTheme ? 'assets/immich-logo-inline-dark.svg' : 'assets/immich-logo-inline-light.svg',
-      height: 43,
+      // The "Noodle Gallery" wordmark is much wider (~5.8:1) than the old
+      // logotype (~3:1), so it needs a shorter height to keep the same
+      // on-screen footprint and avoid crowding the app bar actions.
+      height: 24,
     ),
   );
 }

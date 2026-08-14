@@ -275,8 +275,12 @@ class RemoteAlbumNotifier extends Notifier<RemoteAlbumState> {
         if (cancelToken.isCompleted) {
           pendingNotifier.clear();
         }
-        if (ref.read(manualUploadCancelTokenProvider) == cancelToken) {
-          ref.read(manualUploadCancelTokenProvider.notifier).state = null;
+        try {
+          if (ref.read(manualUploadCancelTokenProvider) == cancelToken) {
+            ref.read(manualUploadCancelTokenProvider.notifier).state = null;
+          }
+        } on StateError catch (_) {
+          // Provider container was disposed while the upload was still in flight; nothing left to clean up.
         }
       }
     }

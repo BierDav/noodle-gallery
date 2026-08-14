@@ -126,6 +126,9 @@ flutter:
     - assets/
     - assets/feature_message/
   fonts:
+    - family: GoogleSansFlex
+      fonts:
+        - asset: assets/fonts/GoogleSansFlex/GoogleSansFlex-Variable.ttf
     - family: GoogleSans
       fonts:
         - asset: fonts/GoogleSans/GoogleSans-Regular.ttf

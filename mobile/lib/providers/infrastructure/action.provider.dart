@@ -736,10 +736,18 @@ class ActionNotifier extends Notifier<void> {
         error: error.toString(),
       );
     } finally {
-      ref.read(manualUploadCancelTokenProvider.notifier).state = null;
-      Future.delayed(const Duration(seconds: 2), () {
-        progressNotifier.clear();
-      });
+      try {
+        ref.read(manualUploadCancelTokenProvider.notifier).state = null;
+        Future.delayed(const Duration(seconds: 2), () {
+          try {
+            progressNotifier.clear();
+          } on StateError catch (_) {
+            // Provider container was disposed while the upload was still in flight; nothing left to clean up.
+          }
+        });
+      } on StateError catch (_) {
+        // Provider container was disposed while the upload was still in flight; nothing left to clean up.
+      }
     }
   }
 

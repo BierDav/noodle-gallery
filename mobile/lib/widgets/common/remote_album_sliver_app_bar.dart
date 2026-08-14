@@ -548,7 +548,9 @@ class _DynamicText extends StatelessWidget {
 
   static const _baseTextStyle = TextStyle(
     color: Colors.white,
-    fontWeight: FontWeight.bold,
+    fontFamily: 'GoogleSansFlex',
+    fontWeight: FontWeight.w800,
+    fontVariations: [FontVariation('ROND', 100), FontVariation('wdth', 25)],
     letterSpacing: 0.5,
     shadows: [Shadow(offset: Offset(0, 2), blurRadius: 12, color: Colors.black54)],
     overflow: TextOverflow.ellipsis,
@@ -557,7 +559,7 @@ class _DynamicText extends StatelessWidget {
   int _lineCount(double fontSize) {
     final textPainter = TextPainter(
       text: TextSpan(
-        text: text,
+        text: text.toUpperCase(),
         style: _baseTextStyle.copyWith(fontSize: fontSize),
       ),
       maxLines: 3,
@@ -579,6 +581,6 @@ class _DynamicText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: _baseTextStyle.copyWith(fontSize: _fontSize()), maxLines: 3);
+    return Text(text.toUpperCase(), style: _baseTextStyle.copyWith(fontSize: _fontSize()), maxLines: 3);
   }
 }
