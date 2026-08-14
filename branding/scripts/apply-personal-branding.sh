@@ -33,3 +33,13 @@ cp "$assets/ic_launcher_monochrome.png" "$android_res/drawable/ic_launcher_monoc
 for density in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
   cp "$assets/ic_launcher.png" "$android_res/mipmap-${density}/ic_launcher.png"
 done
+
+# Accent color: same coral used for the web patch's --immich-ui-primary-500
+# (light) / dark equivalent. immichBrandColorLight/Dark back the app's
+# default ("indigo") theme's seed + primary color and aren't used anywhere
+# else, so this is a safe, isolated swap of the Google-blue defaults.
+sed -i.bak \
+  -e 's/const Color immichBrandColorLight = Color(0x[0-9A-Fa-f]\{8\});/const Color immichBrandColorLight = Color(0xFFE85D38);/' \
+  -e 's/const Color immichBrandColorDark = Color(0x[0-9A-Fa-f]\{8\});/const Color immichBrandColorDark = Color(0xFFF2A48B);/' \
+  mobile/lib/constants/colors.dart
+rm -f mobile/lib/constants/colors.dart.bak
