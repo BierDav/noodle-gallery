@@ -90,7 +90,7 @@ jobs:
           conflicted=$(jj log -r "${PERSONAL_BOOKMARK} & conflicts()" --no-graph -T 'commit_id')
           if [ -n "$conflicted" ]; then
             echo "::warning::Rebase onto the new release conflicted -- opening a PR for Copilot"
-            jj git push --remote origin --bookmark "$PERSONAL_BOOKMARK" --allow-new
+            jj git push --remote origin --bookmark "$PERSONAL_BOOKMARK"
 
             pr_url=$(gh pr create \
               --repo "${{ github.repository }}" \
@@ -132,7 +132,7 @@ jobs:
             exit 0
           fi
 
-          jj git push --remote origin --bookmark "$PERSONAL_BOOKMARK" --allow-new
+          jj git push --remote origin --bookmark "$PERSONAL_BOOKMARK"
 
           version=$(git tag --points-at release | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | sed 's/^v//')
           echo "version_name=${version:-0.0.0}-personal" >> "$GITHUB_OUTPUT"
