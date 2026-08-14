@@ -265,14 +265,12 @@ jobs:
           [ "${{ needs.build.result }}" = "failure" ] && failed_job="build"
           run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
+          body="The scheduled/dispatched run failed in the **$failed_job** job.\n\nLogs: $run_url\n\nPlease diagnose and fix whatever's broken (the workflow itself, the branding overlay script, or the mobile build) so the next scheduled run succeeds."
+
           issue_url=$(gh issue create \
             --repo "${{ github.repository }}" \
             --title "Personal Mobile Pipeline failed ($failed_job) -- run ${{ github.run_id }}" \
-            --body "The scheduled/dispatched run failed in the **$failed_job** job.
-
-Logs: $run_url
-
-Please diagnose and fix whatever's broken (the workflow itself, the branding overlay script, or the mobile build) so the next scheduled run succeeds.")
+            --body "$(printf '%b' "$body")")
 
           echo "issue_url=$issue_url" >> "$GITHUB_OUTPUT"
           echo "issue_node_id=$(gh issue view "$issue_url" --json id -q .id)" >> "$GITHUB_OUTPUT"
