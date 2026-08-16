@@ -90,9 +90,23 @@ class _ImmichLogoWithText extends StatelessWidget {
   Widget build(BuildContext context) => AnimatedOpacity(
     opacity: IconTheme.of(context).opacity ?? 1,
     duration: kThemeChangeDuration,
-    child: SvgPicture.asset(
-      context.isDarkTheme ? 'assets/immich-logo-inline-dark.svg' : 'assets/immich-logo-inline-light.svg',
+    // `SvgPicture(height: 43)` only sets a preferred size -- the title slot
+    // still hands it whatever width is left over after the actions row
+    // (which varies per page: Photos adds a grouping selector + sort button,
+    // Albums adds a create-album button, Library adds none), and its default
+    // BoxFit.contain shrinks height along with width once that's tighter
+    // than the logo's natural aspect ratio needs. FittedBox(fitHeight) makes
+    // height the authoritative dimension instead, so the wordmark renders at
+    // a consistent size across every page regardless of how crowded its row is.
+    child: SizedBox(
       height: 43,
+      child: FittedBox(
+        fit: BoxFit.fitHeight,
+        alignment: Alignment.centerLeft,
+        child: SvgPicture.asset(
+          context.isDarkTheme ? 'assets/immich-logo-inline-dark.svg' : 'assets/immich-logo-inline-light.svg',
+        ),
+      ),
     ),
   );
 }
