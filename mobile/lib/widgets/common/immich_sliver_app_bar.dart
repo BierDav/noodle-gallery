@@ -100,9 +100,18 @@ class _ImmichLogoWithText extends StatelessWidget {
   Widget build(BuildContext context) => AnimatedOpacity(
     opacity: IconTheme.of(context).opacity ?? 1,
     duration: kThemeChangeDuration,
-    child: SvgPicture.asset(
-      context.isDarkTheme ? 'assets/immich-logo-inline-dark.svg' : 'assets/immich-logo-inline-light.svg',
+    // SvgPicture's preferred height alone does not prevent a constrained title slot from shrinking
+    // the wordmark with BoxFit.contain. Fit by height instead, so it stays consistent across pages.
+    child: SizedBox(
       height: _kLogoHeight,
+      child: FittedBox(
+        fit: BoxFit.fitHeight,
+        alignment: Alignment.centerLeft,
+        child: SvgPicture.asset(
+          context.isDarkTheme ? 'assets/immich-logo-inline-dark.svg' : 'assets/immich-logo-inline-light.svg',
+        ),
+      ),
+    ),
     ),
   );
 }

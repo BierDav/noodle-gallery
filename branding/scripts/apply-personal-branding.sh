@@ -132,3 +132,64 @@ cp "$logo_assets/immich-logo-inline-dark.svg" mobile/assets/immich-logo-inline-d
 cp "$logo_assets/immich-logo-inline-light.svg" mobile/assets/immich-logo-inline-light.svg
 cp "$logo_assets/immich-text-dark.png" mobile/assets/immich-text-dark.png
 cp "$logo_assets/immich-text-light.png" mobile/assets/immich-text-light.png
+
+# Native launch splash: resized at build time from the immich-logo.png just
+# copied above, so the pre-Flutter splash screen shows the same coral
+# aperture mark as the in-app Flutter splash/login/avatar instead of
+# upstream's stock camera icon. The org's own apply-branding.sh has the same
+# resize-with-ImageMagick machinery for this (see its splash.png /
+# splash-android12.png handling), gated behind assets/splash.png -- which the
+# org has never supplied (branding/assets/README.md still lists it
+# unchecked) -- so this personal overlay is what actually brands these three
+# surfaces today:
+#   - drawable(-night)?-<density>/splash.png: the classic pre-Android-12
+#     launch_background.xml layer-list, centered over @drawable/background.
+#   - drawable(-night)?-<density>/android12splash.png: the Android 12+
+#     SplashScreen API's windowSplashScreenAnimatedIcon (values(-night)-v31/
+#     styles.xml), centered over a solid windowSplashScreenBackground colour
+#     baked into that same styles.xml, not into the PNG.
+#   - ios/Runner/Assets.xcassets/LaunchImage.imageset: the launch storyboard's
+#     centered LaunchImage, over LaunchBackground.
+# No separate night-mode mark is needed for any of these: the icon itself
+# stays transparent (immich-logo.png has an alpha channel), so one PNG per
+# size covers both themes -- only the background layers/colours differ, and
+# those are untouched here.
+resize_png() {
+  local src="$1" dest="$2" size="$3"
+  if command -v convert &>/dev/null; then
+    convert "$src" -resize "${size}x${size}" "$dest"
+  elif command -v magick &>/dev/null; then
+    magick "$src" -resize "${size}x${size}" "$dest"
+  else
+    echo "ERROR: ImageMagick convert or magick is required to resize splash assets" >&2
+    return 1
+  fi
+}
+
+splash_src="mobile/assets/immich-logo.png"
+
+for density in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
+  case "$density" in
+    mdpi) splash_size=80; android12_size=288 ;;
+    hdpi) splash_size=120; android12_size=432 ;;
+    xhdpi) splash_size=160; android12_size=576 ;;
+    xxhdpi) splash_size=240; android12_size=864 ;;
+    xxxhdpi) splash_size=320; android12_size=1152 ;;
+  esac
+
+  res_dir="$android_res/drawable-${density}"
+  resize_png "$splash_src" "$res_dir/splash.png" "$splash_size"
+  resize_png "$splash_src" "$res_dir/android12splash.png" "$android12_size"
+
+  night_dir="$android_res/drawable-night-${density}"
+  if [[ -d "$night_dir" ]]; then
+    resize_png "$splash_src" "$night_dir/android12splash.png" "$android12_size"
+  fi
+done
+
+ios_launchimg_dest="mobile/ios/Runner/Assets.xcassets/LaunchImage.imageset"
+if [[ -d "$ios_launchimg_dest" ]]; then
+  resize_png "$splash_src" "$ios_launchimg_dest/LaunchImage.png" 80
+  resize_png "$splash_src" "$ios_launchimg_dest/LaunchImage@2x.png" 160
+  resize_png "$splash_src" "$ios_launchimg_dest/LaunchImage@3x.png" 240
+fi
