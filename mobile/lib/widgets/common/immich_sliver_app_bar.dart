@@ -103,7 +103,7 @@ class _ImmichLogoWithText extends StatelessWidget {
     // SvgPicture's preferred height alone does not prevent a constrained title slot from shrinking
     // the wordmark with BoxFit.contain. Fit by height instead, so it stays consistent across pages.
     child: SizedBox(
-      height: _kLogoHeight,
+      height: 21.5,
       child: FittedBox(
         fit: BoxFit.fitHeight,
         alignment: Alignment.centerLeft,
