@@ -99,7 +99,7 @@ class _ImmichLogoWithText extends StatelessWidget {
     // height the authoritative dimension instead, so the wordmark renders at
     // a consistent size across every page regardless of how crowded its row is.
     child: SizedBox(
-      height: 43,
+      height: 21.5,
       child: FittedBox(
         fit: BoxFit.fitHeight,
         alignment: Alignment.centerLeft,

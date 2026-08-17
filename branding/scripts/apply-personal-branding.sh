@@ -166,6 +166,26 @@ resize_png() {
   fi
 }
 
+# Android 12+'s SplashScreen API centres this icon inside a system-drawn
+# shape (a circle on stock Android) and, unlike an adaptive icon, doesn't pad
+# it for you -- content drawn edge-to-edge gets clipped by that mask. Render
+# the mark at half the canvas size, transparent-padded back out to the full
+# size, so it sits inside the safe zone. The classic pre-31 splash.png and
+# iOS's LaunchImage are plain centered bitmaps with no OS-applied masking, so
+# they keep using the full-bleed resize_png above.
+resize_png_padded() {
+  local src="$1" dest="$2" size="$3"
+  local content_size=$((size / 2))
+  if command -v convert &>/dev/null; then
+    convert "$src" -resize "${content_size}x${content_size}" -background none -gravity center -extent "${size}x${size}" "$dest"
+  elif command -v magick &>/dev/null; then
+    magick "$src" -resize "${content_size}x${content_size}" -background none -gravity center -extent "${size}x${size}" "$dest"
+  else
+    echo "ERROR: ImageMagick convert or magick is required to resize splash assets" >&2
+    return 1
+  fi
+}
+
 splash_src="mobile/assets/immich-logo.png"
 
 for density in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
@@ -179,11 +199,11 @@ for density in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
 
   res_dir="$android_res/drawable-${density}"
   resize_png "$splash_src" "$res_dir/splash.png" "$splash_size"
-  resize_png "$splash_src" "$res_dir/android12splash.png" "$android12_size"
+  resize_png_padded "$splash_src" "$res_dir/android12splash.png" "$android12_size"
 
   night_dir="$android_res/drawable-night-${density}"
   if [[ -d "$night_dir" ]]; then
-    resize_png "$splash_src" "$night_dir/android12splash.png" "$android12_size"
+    resize_png_padded "$splash_src" "$night_dir/android12splash.png" "$android12_size"
   fi
 done
 
