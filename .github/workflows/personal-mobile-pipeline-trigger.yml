@@ -12,7 +12,8 @@ name: Personal Mobile Pipeline Trigger
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    # Avoid minute 0 where GitHub schedules are most likely to be delayed/dropped.
+    - cron: '17 6 * * *'
   workflow_dispatch: {}
 
 permissions:
