@@ -112,7 +112,6 @@ class _ImmichLogoWithText extends StatelessWidget {
         ),
       ),
     ),
-    ),
   );
 }
 
