@@ -157,6 +157,28 @@
       android:authorities="${applicationId}.androidx-startup"
       tools:node="remove" />
 
+    <!--
+      Exposes the server library to Android's system Photo Picker (Settings > Apps > Default
+      apps > Photo picker app > Cloud media app). Ships disabled: the class extends the platform
+      android.provider.CloudMediaProvider, which only exists on API 34+, so loading it on an
+      older device would crash the app at process start. ImmichApp.kt flips this on at runtime,
+      by component name only, exclusively on API 34+ devices - see its
+      enableCloudMediaProviderIfSupported() doc comment. android:permission restricts callers to
+      the system MediaProvider process (the only holder of MANAGE_CLOUD_MEDIA_PROVIDERS), so
+      exported="true" does not open this to arbitrary third-party apps.
+    -->
+    <provider
+      android:name=".cloudmedia.CloudMediaProviderImpl"
+      android:authorities="${applicationId}.cloudmedia"
+      android:enabled="false"
+      android:exported="true"
+      android:permission="com.android.providers.media.permission.MANAGE_CLOUD_MEDIA_PROVIDERS"
+      tools:targetApi="34">
+      <intent-filter>
+        <action android:name="android.content.action.CLOUD_MEDIA_PROVIDER" />
+      </intent-filter>
+    </provider>
+
 
     <!-- Widgets -->
     <receiver

@@ -267,6 +267,21 @@ object HttpClientManager {
     }
   }
 
+  /**
+   * The server base URLs currently configured for this account, in priority order (remote
+   * endpoint first, then local/external endpoints) - same list passed to [setRequestHeaders].
+   * Callers that need to build a request URL themselves (e.g. CloudMediaProvider, which issues
+   * its own blocking requests outside the Dart-driven fetch paths) should use the first entry.
+   */
+  fun getServerUrls(): List<String> {
+    val json = prefs.getString(PREFS_SERVER_URLS, null) ?: return emptyList()
+    return try {
+      Json.decodeFromString<List<String>>(json)
+    } catch (_: Exception) {
+      emptyList()
+    }
+  }
+
   fun loadCookieHeader(url: String): String? {
     val httpUrl = url.toHttpUrlOrNull() ?: return null
     return cookieJar.loadForRequest(httpUrl).takeIf { it.isNotEmpty() }
